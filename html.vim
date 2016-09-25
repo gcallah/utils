@@ -1,6 +1,7 @@
 " mappings for html editing
 
 map g i<html><head><title></title></head><body></body></html>
+map  o<li>
 map  i<em></em>4hi
 map  i<a href=""></a>3hi
 map  o<ul><li></ul>
