@@ -1,14 +1,17 @@
 set nocompatible
+set noerrorbells visualbell t_vb=
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 " let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
+Plugin 'VundleVim/Vundle.vim'
 " Plugin 'Lokaltog/vim-easymotion'
 " Plugin 'tpope/vim-fugitive.git'
 " Plugin 'scrooloose/nerdtree'
 " Plugin 'scrooloose/syntastic'
 " Plugin 'nvie/vim-flake8'
+Plugin 'tpope/vim-surround.git'
+Plugin 'tpope/vim-repeat.git'
 Plugin 'vim-scripts/indentpython.vim'
 Plugin 'jnurmine/Zenburn'
 Plugin 'altercation/vim-colors-solarized'
@@ -29,13 +32,12 @@ set fileformat=unix
 set showcmd
 set backup
 set noshowmatch
-set incsearch
-set hlsearch
+" set incsearch
+" set hlsearch
 set scrolloff=8
 set pastetoggle=<f5>
 set encoding=utf-8
 
-let python_highlight_all=1
 syntax on
 
 if has('gui_running')
@@ -60,4 +62,3 @@ function! ToggleSyntax()
 endfunction
 
 nmap <silent>  ;s  :call ToggleSyntax()<CR>
-map # o"""<CR>    Args:<CR><CR><Esc>i        Returns:<CR><CR><Esc>i    """<Esc>
