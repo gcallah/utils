@@ -33,7 +33,7 @@ set showcmd
 set backup
 set noshowmatch
 " set incsearch
-" set hlsearch
+set hlsearch
 set scrolloff=8
 set pastetoggle=<f5>
 set encoding=utf-8
