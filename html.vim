@@ -3,7 +3,6 @@
 map g i<html><head><link href="style.css" rel="stylesheet" type="text/css"/><title></title></head><body></body></html>
 map q i<ol><li></ol>
 map  o<li>
-map  o<ol><li><ol><li><li><ol type="a"><li><li><li><li></ol>
 map  a<em></em>4hi
 map  o<a href=""></a>3hi
 map  0o<ul><li></ul>
@@ -19,6 +18,9 @@ map <F4> 0o<h4></h4>ki
 map <F5> i<em>$a</em>
 map <F6> 0o<ol><li></ol>
 map <F7> o<div style="text-align:center"><p></p></div>
+map <F8> j0i    
+map <F9> j04x
+map <F10> <ol><li><ol><li><li><ol type="a"><li><li><li><li></ol>
 
 ab ahr <a href="">
 ab blq <blockquote>
