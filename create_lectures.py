@@ -17,8 +17,9 @@ if len(sys.argv) < 2:
 with open(sys.argv[1], "r") as f_in:
     freader = csv.reader(f_in)
     for row in freader:
-        print("Creating html page = " + row[HTML_PG] + "; title = " + row[TITLE])
-        call(LECTURE_SCRIPT + " " + row[TITLE] +
-             " <" + LECTURE_TEMPLATE +
+        print("<a href=\"" + row[HTML_PG] + "\">\n    "
+              + row[TITLE] + "\n</a>\n")
+        call(LECTURE_SCRIPT + " \"" + row[TITLE] +
+             "\" <" + LECTURE_TEMPLATE +
              " >" + row[HTML_PG],
              shell=True)
