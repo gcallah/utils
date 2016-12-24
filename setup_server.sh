@@ -1,4 +1,4 @@
-#/bin/sh
+#!/bin/sh
 
 echo "Getting berkeley code from GitHub."
 git clone https://github.com/gcallah/berkeley.git
