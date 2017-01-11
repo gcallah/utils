@@ -1,8 +1,8 @@
 #!/bin/sh
 
-echo "Getting berkeley code from GitHub."
-git clone https://github.com/gcallah/berkeley.git
-mv berkeley mysite
+echo "Getting $1 code from GitHub."
+git clone https://github.com/gcallah/$1.git
+mv $1 mysite
 
 
 echo "The following must be run interactively: once you run them, run mysite/db.sh."
