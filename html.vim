@@ -15,7 +15,8 @@ map  o
 map  0o<br>
 map  0o<p></p>kO
 map  0o<table><tr><th></th></tr><tr><td></td></tr></table>
-map  0o<img src="">hi
+" figure with caption
+map  0o<figure><img src=""><figcaption></figcaption></figure>
 " headings 1-4:
 map <F1> 0o<h1></h1>ki
 map <F2> 0o<h2></h2>ki
