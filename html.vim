@@ -1,16 +1,22 @@
 " mappings for html editing
 
+" create html skeleton
 map g i<html><head><link href="style.css" rel="stylesheet" type="text/css"/><title></title></head><body></body></html>
+" create a numbered list
 map q i<ol><li></ol>
+map \ s
 map  o<li>
 map  a<em></em>4hi
+" create hyperlink
 map  o<a href=""></a>3hi
+" create a list
 map  0o<ul><li></ul>
 map  o
 map  0o<br>
 map  0o<p></p>kO
 map  0o<table><tr><th></th></tr><tr><td></td></tr></table>
 map  0o<img src="">hi
+" headings 1-4:
 map <F1> 0o<h1></h1>ki
 map <F2> 0o<h2></h2>ki
 map <F3> 0o<h3></h3>ki
@@ -18,9 +24,13 @@ map <F4> 0o<h4></h4>ki
 map <F5> i<em>$a</em>
 map <F6> 0o<ol><li></ol>
 map <F7> o<div style="text-align:center"><p></p></div>
+" insert chars at beg. of line
 map <F8> j0i    
+" delete chars at beg. of line
 map <F9> j04x
+" multiple choice question
 map <F10> <ol><li><ol><li><li><ol type="a"><li><li><li><li></ol>
+" insert new line in text
 
 ab ahr <a href="">
 ab blq <blockquote>
