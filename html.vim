@@ -4,16 +4,20 @@
 map g i<html><head><link href="style.css" rel="stylesheet" type="text/css"/><title></title></head><body></body></html>
 " create a numbered list
 map q i<ol><li></ol>
+" break up a line
 map \ s
+" insert a list item
 map  o<li>
-map  a<em></em>4hi
 " create hyperlink
 map  o<a href=""></a>3hi
 " create a list
 map  0o<ul><li></ul>
+" insert an empty line
 map  o
 map  0o<br>
+" create new paragraph
 map  0o<p></p>kO
+" create a table
 map  0o<table><tr><th></th></tr><tr><td></td></tr></table>
 " figure with caption
 map  0o<figure><img src=""><figcaption></figcaption></figure>
@@ -22,7 +26,7 @@ map <F1> 0o<h1></h1>ki
 map <F2> 0o<h2></h2>ki
 map <F3> 0o<h3></h3>ki
 map <F4> 0o<h4></h4>ki
-map <F5> i<em>$a</em>
+' an ordered list
 map <F6> 0o<ol><li></ol>
 map <F7> o<div style="text-align:center"><p></p></div>
 " insert chars at beg. of line
