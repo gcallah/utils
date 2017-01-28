@@ -8,8 +8,11 @@ export GDIR="$HOME/GitProjects"
 
 set editing-mode vi
 
+alias pro=". ~/.bash_profile"
+
 alias alg="cd $GDIR/algorithms"
 alias box="cd $GDIR/indra/bigbox"
+alias emu="cd $GDIR/Emu86"
 alias doc="cd $GDIR/indra/docs"
 alias four="cd $GDIR/FourCritics"
 alias ftp="cd ~/.vim/after/ftplugin/"
@@ -28,12 +31,15 @@ alias rat="cd $GDIR/Rationalism"
 alias sch="cd $GDIR/indra/schelling"
 alias sta="cd $GDIR/statistics"
 alias utl="cd $GDIR/utils"
+alias xv6="cd $GDIR/utils"
 
-alias gpush="git push origin master"
-alias gpull="git pull origin master"
+alias gpushm="git push origin master"
+alias gpullm="git pull origin master"
+alias gcomm="git commit"
 
 # added by Anaconda3 2.1.0 installer
 export PATH="/Users/gcallah/anaconda/bin:$PATH"
 
 export PYTHONPATH="$GDIR/indra:$GDIR/mesa:$PYTHONPATH"
 
+export PATH="/Users/gcallah/gcc-cross/toolchain/bin":"$PATH"
