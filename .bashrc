@@ -19,17 +19,35 @@ PS1="$LIGHT_GRAY\$(date +%H:%M) \w$YELLOW \$(parse_git_branch)$LIGHT_GREEN\$ $LI
 # Load virtualenvwrapper
 source virtualenvwrapper.sh &> /dev/null
 
-export PYTHONPATH=$PYTHONPATH:/home/gcallah/Indra:/home/gcallah/mysite
+export
+DJANGO_SITE=$HOME/mysite
+EMU_SITE=$HOME/Emu86
+
+export
+PYTHONPATH=$PYTHONPATH:$HOME/Indra:$DJANGO_SITE:$DJANGO_SITE/berkeley:
 
 export DJANGO_SETTINGS_MODULE=mysite.settings
 
-alias doc="cd /home/gcallah/Indra/docs"
-alias ind="cd /home/gcallah/Indra/indra"
-alias sch="cd /home/gcallah/Indra/schelling"
+alias gpull="git pull origin master"
+alias gpush="git push origin master"
 
-alias css="cd /home/gcallah/mysite/mysite/static/berkeley"
-alias ber="cd /home/gcallah/mysite/berkeley"
-alias mig="cd /home/gcallah/mysite/berkeley/migrations"
-alias sit="cd /home/gcallah/mysite/mysite"
-alias tem="cd /home/gcallah/mysite/berkeley/templates"
-alias top="cd /home/gcallah/mysite"
+alias alg="cd $HOME/algorithms"
+
+alias doc="cd $HOME/Indra/docs"
+alias ind="cd $HOME/Indra/indra"
+alias sch="cd $HOME/Indra/schelling"
+
+alias sta="cd $HOME/statistics"
+
+alias emu="cd $EMU_SITE/Emu86"
+alias etem="cd $EMU_SITE/Emu86/templates"
+alias ecss="cd $EMU_SITE/mysite/static/Emu86"
+
+alias css="cd $DJANGO_SITE/mysite/static/berkeley"
+alias ber="cd $DJANGO_SITE/berkeley"
+alias mig="cd $DJANGO_SITE/berkeley/migrations"
+alias sit="cd $DJANGO_SITE/mysite"
+alias tem="cd $DJANGO_SITE/berkeley/templates"
+alias top="cd $DJANGO_SITE"
+
+workon django19
