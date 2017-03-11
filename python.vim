@@ -3,9 +3,15 @@
 let python_highlight_all=1
 
 noremap R :w<ENTER>:!python %
+
+" grep
+map g :!grep 
+
 map # o"""<CR>    Args:<CR><CR><Esc>i        Returns:<CR><CR><Esc>i    """<Esc>
 map  idef ():ki
 map  oimport
+" insert an empty line
+map  o
 map  oprint("")hi
 map <F1> oif :hi
 map <F2> oelif :hi

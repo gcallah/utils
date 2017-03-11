@@ -5,11 +5,6 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-" Plugin 'Lokaltog/vim-easymotion'
-" Plugin 'tpope/vim-fugitive.git'
-" Plugin 'scrooloose/nerdtree'
-" Plugin 'scrooloose/syntastic'
-" Plugin 'nvie/vim-flake8'
 Plugin 'tpope/vim-surround.git'
 Plugin 'tpope/vim-repeat.git'
 Plugin 'vim-scripts/indentpython.vim'
@@ -19,6 +14,8 @@ call vundle#end()            " required
 filetype plugin indent on    " required
 
 filetype plugin on
+
+autocmd BufRead,BufNewFile *.ptml set filetype=html
 
 set number
 set history=50
@@ -32,7 +29,6 @@ set fileformat=unix
 set showcmd
 set backup
 set noshowmatch
-" set incsearch
 set hlsearch
 set scrolloff=8
 set pastetoggle=<f5>
@@ -47,9 +43,6 @@ else
     colorscheme zenburn
 endif
 
-" noremap R :w<ENTER>:!python %
-
-filetype plugin indent on
 let loaded_matchparen = 1
 noremap #5 :!./%
 
