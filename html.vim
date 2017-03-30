@@ -1,7 +1,7 @@
 " mappings for html editing
 
 " create html skeleton
-map g i<html><head><link href="style.css" rel="stylesheet" type="text/css"/><title></title></head><body></body></html>
+map g i<html><head><link href="style.css" rel="stylesheet" type="text/css"/><title></title></head><body><h1></h1></body></html>
 " create <p> tag
 map q o<p>
 " create </p> tag
@@ -32,8 +32,12 @@ map <F4> 0o<h4></h4>ki
 map <F6> 0o<ol><li></ol>
 " centered text
 map <F7> o<div style="text-align:center"><p></p></div>
+" insert chars at beg. of line
+map <F8> j0i    
+" delete chars at beg. of line
+map <F9> j04x
 " multiple choice question
-map <F8> o<ol><li><ol><li><li><ol type="a"><li><li><li><li></ol>
+map <F10> <ol><li><ol><li><li><ol type="a"><li><li><li><li></ol>
 
 ab ahr <a href="">
 ab blq <blockquote>
