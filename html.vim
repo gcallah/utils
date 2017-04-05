@@ -2,10 +2,6 @@
 
 " create html skeleton
 map g i<html><head><link href="style.css" rel="stylesheet" type="text/css"/><title></title></head><body><h1></h1></body></html>
-" create <p> tag
-map q o<p>
-" create </p> tag
-map v o</p>
 " break up a line
 map \ s
 " insert a list item
