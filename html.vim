@@ -2,14 +2,10 @@
 
 " create html skeleton
 map g i<html><head><link href="style.css" rel="stylesheet" type="text/css"/><title></title></head><body><h1></h1></body></html>
-" create <p> tag
-map q o<p>
-" create </p> tag
-map v o</p>
 " break up a line
 map \ s
 " insert a list item
-map  o<li>
+map  o<li></li>
 " create hyperlink
 map  o<a href=""></a>3hi
 " create a list
@@ -37,7 +33,7 @@ map <F8> j0i    
 " delete chars at beg. of line
 map <F9> j04x
 " multiple choice question
-map <F10> <ol><li><ol><li><li><ol type="a"><li><li><li><li></ol>
+map <F10> <ol><li><ol><li></li><li><ol type="a"><li></li><li><li></li><li></li></ol>
 
 ab ahr <a href="">
 ab blq <blockquote>
