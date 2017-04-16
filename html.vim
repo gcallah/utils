@@ -3,7 +3,7 @@
 " create html skeleton
 map g i<html><head><link href="style.css" rel="stylesheet" type="text/css"/><title></title></head><body><h1></h1></body></html>
 " details and summary
-map > i<details>    <summary></summary></details>
+map > i<details><summary></summary></details>
 " break up a line
 map \ s
 " insert a list item
