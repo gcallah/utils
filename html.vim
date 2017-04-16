@@ -3,18 +3,19 @@
 " create html skeleton
 map g i<html><head><link href="style.css" rel="stylesheet" type="text/css"/><title></title></head><body><h1></h1></body></html>
 " details and summary
-map > i<details>    <summary></summary></details>
+map > i<details>    <summary></summary></details>
 " break up a line
 map \ s
 " insert a list item
-map  o<li></li>
+map  o<li></li>
 " create hyperlink
 map  o<a href=""></a>3hi
 " create a list
 map  0o<ul><li></li></ul>
 " insert an empty line
 map  o
-map  0o<br>
+" insert a break
+map  0o<br />
 " create new paragraph
 map  0o<p></p>kO
 " create a table
