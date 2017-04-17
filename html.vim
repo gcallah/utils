@@ -22,6 +22,8 @@ map  0o<p></p>kO
 map  0o<table><tr><th></th></tr><tr><td></td></tr></table>
 " figure with caption
 map  0o<figure><img src=""><figcaption></figcaption></figure>
+" multiple choice question
+map  <ol><li><ol><li></li><li><ol type="a"><li></li><li><li></li><li></li></ol>
 " headings 1-4:
 map <F1> 0o<h1></h1>ki
 map <F2> 0o<h2></h2>ki
@@ -35,8 +37,6 @@ map <F7> o<div style="text-align:center"><p></p></div>
 map <F8> j0i    
 " delete chars at beg. of line
 map <F9> j04x
-" multiple choice question
-map <F10> <ol><li><ol><li></li><li><ol type="a"><li></li><li><li></li><li></li></ol>
 
 ab ahr <a href="">
 ab blq <blockquote>
