@@ -10,6 +10,7 @@ set editing-mode vi
 
 alias pro=". ~/.bash_profile"
 
+alias agl="cd $GDIR/AgileCourseware"
 alias alg="cd $GDIR/algorithms"
 alias ass="cd $GDIR/Emu86/assembler"
 alias book="cd $GDIR/BookReviews"
