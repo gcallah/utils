@@ -30,7 +30,7 @@ map <F2> 0o<h2></h2>ki
 map <F3> 0o<h3></h3>ki
 map <F4> 0o<h4></h4>ki
 " an ordered list
-map <F6> 0o<ol><li></ol>
+map <F6> 0o<ol><li></li></ol>
 " centered text
 map <F7> o<div style="text-align:center"><p></p></div>
 " insert chars at beg. of line
