@@ -23,7 +23,7 @@ map  0o<table><tr><th></th></tr><tr><td></td></tr></table>
 " figure with caption
 map  0o<figure><img src=""><figcaption></figcaption></figure>
 " multiple choice question
-map  <ol><li><ol><li></li><li><ol type="a"><li></li><li><li></li><li></li></ol>
+map  i<ol><li><ol><li></li><li><ol type="a"><li></li><li><li></li><li></li></ol>
 " headings 1-4:
 map <F1> 0o<h1></h1>ki
 map <F2> 0o<h2></h2>ki
