@@ -2,20 +2,12 @@ body {
     margin: 0;
     padding: 0;
     font-size: 20px;
-    color: #ddd;
-    background: #444;
+    color: #333;
+    background: #def;
 }
-
-a:link {
-    color: #acf;
-}
-
-a:visited {
-    color: #cbf;
-}
-
 
 table, th, td {
+    border-collapse: collapse;
     border: 1px solid black;
     }
     th, td {
@@ -23,11 +15,20 @@ table, th, td {
     }
 
 p {
-    margin: 8px 40px 8px 40px;
+    margin: 8px 60px 8px 60px;
+}
+
+hr {
+    margin: 24px 240px 24px 240px;
+}
+
+blockquote {
+    margin: 8px 64px 8px 64px;
+    font-size: 18px;
 }
 
 ol, ul, dl, li {
-    margin: 20px 12px 8px 12px;
+    margin: 20px 60px 8px 60px;
 }
 
 p {
@@ -40,46 +41,93 @@ h1,h2,h3,h4,h5 {
 }
 
 h1 {
-    margin: 28px 8px 24px 8px;
+    margin: 36px 8px 24px 8px;
     text-align: center;
     font-weight: 300;
     font-size: 32px;
-    color: #339;
-    background-color: #cfc;
+    background-color: #063;
+    color: #fcc;
 }
 
 h2 {
+    text-align: center;
     font-size: 26px;
-    margin: 20px 24px 12px 24px;
-    color: #9cc;
+    margin: 32px 24px 12px 24px;
+    color: #903;
 }
 
 h2.subhead {
     font-weight:
     normal;
-    margin-top:
-    0;
 }
 
 h3 {
-    font-size: 20px;
-    margin: 20px 32px 12px 32px;
-    color: #ecb;
+    font-size: 22px;
+    margin: 20px 80px 12px 120px;
+    color: #137;
     font-weight: bold;
 }
 
 h4 {
     font-size: 18px;
-    margin: 16px 40px 12px 40px;
+    margin: 16px 100px 12px 100px;
     color: #339;
     font-weight: bold;
 }
 
-h5 {
-    font-size: 16px;
-    margin: 16px 48px 12px 48px;
-    color: #600;
-    font-weight: bold;
+figure {
+    text-align: center;
+/*    margin: 12px 20px 12px 100px;  */
+}
+
+figcaption {
+    color: #606;
+    font-style: italic;
+    text-align: center;
+    margin: 16px 20px 12px 20px;
+}
+
+table {
+    margin: 20px 140px 20px 140px;
+}
+
+table, th, td {
+    border: 1px solid black;
+    }
+    th, td {
+            padding: 15px;
+    }
+
+td {
+    background: #fff;
+}
+
+th {
+    background: #dcf;
+}
+
+div.homework {
 
 }
 
+div.other {
+
+}
+
+summary#sum1 {
+    font-size: 30px;
+    color: #903;
+    margin: 16px 24px 16px 24px;
+}
+
+summary#sum2 {
+    font-size: 26px;
+    color: #137;
+    margin: 12px 24px 12px 40px;
+}
+
+summary#sum3 {
+    font-size: 22px;
+    color: #339;
+    margin: 8px 24px 8px 56px;
+}
