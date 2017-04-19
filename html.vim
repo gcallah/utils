@@ -21,7 +21,7 @@ map  0o<p></p>kO
 " create a table
 map  0o<table><tr><th></th></tr><tr><td></td></tr></table>
 " figure with caption
-map  0o<figure><img src=""><figcaption></figcaption></figure>
+map  0o<figure>    <img src="">    <figcaption>    </figcaption></figure>
 " multiple choice question
 map  i<ol><li></li><li><ol type="a"><li></li><li><li></li><li></li></ol></ol>
 " headings 1-4:
