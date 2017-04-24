@@ -30,7 +30,7 @@ answers = 'abcdefghijklmnopqrstuvwxyz'
 with open(quiz_file, "r") as f_in:
     freader = csv.reader(f_in)
     print(INDENT1 + '<details>')
-    print(INDENT2 + '<summary id="sum1">')
+    print(INDENT2 + '<summary class="sum1">')
     print(INDENT3 + 'Quiz')
     print(INDENT2 + '</summary>')
     print(INDENT2 + '<ol>')
@@ -58,7 +58,7 @@ with open(quiz_file, "r") as f_in:
 
     print(INDENT2 + '</ol>')
     print(INDENT2 + '<details>')
-    print(INDENT3 + '<summary id="sum4">')
+    print(INDENT3 + '<summary class="sum4">')
     print(INDENT4 + 'Answers')
     print(INDENT3 + '</summary>')
     print(INDENT3 + '<p>')

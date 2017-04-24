@@ -3,7 +3,11 @@
 # fmt.awk: format into 60 character lines.
 # From Kernighan and Pike.
 
-/./  { for (i = 1; i <= NF; i++) addword($i) }
+/./  {
+        for (i = 1; i <= NF; i++) addword($i) 
+        print  # preserve existing lines!
+}
+
 /^$/ { printline(); print "" }
 END  { printline() }
 
