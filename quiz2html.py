@@ -43,6 +43,7 @@ with open(quiz_file, "r") as f_in:
         print(INDENT3 + '<ol type="a">')
         j = 0
         for a in row[FIRST_ANSWER:]:
+            a = a.strip()
             if a.startswith(CORRECT):
                 a = a[1:]
                 answer_key += str(i) + '. ' + answers[j] + "; "
