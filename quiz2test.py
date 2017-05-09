@@ -31,13 +31,13 @@ with open(quiz_file, "r") as f_in:
     for row in freader:
         print(INDENT1 + '<li>')
         print(INDENT2 + row[QUESTION])
-        print(INDENT1 + '</li>')
         print(INDENT1 + '<ol type="a">')
         j = 0
         for a in row[FIRST_ANSWER:]:
             correct = ""
             a = a.strip()
             if a.startswith(CORRECT):
+                a = a[1:]
                 correct = " *"
             print(INDENT2 + '<li>')
             print(INDENT2 + a + correct)
@@ -45,6 +45,7 @@ with open(quiz_file, "r") as f_in:
             j += 1
 
         print(INDENT1 + '</ol>')
+        print(INDENT1 + '</li>')
         i += 1
 
     print(INDENT2 + '</ol>')
