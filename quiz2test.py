@@ -15,6 +15,7 @@ CORRECT = '^'
 
 INDENT1 = "        "
 INDENT2 = INDENT1 + INDENT1
+INDENT3 = INDENT2 + INDENT1
 
 quiz_file = None
 
@@ -31,7 +32,7 @@ with open(quiz_file, "r") as f_in:
     for row in freader:
         print(INDENT1 + '<li>')
         print(INDENT2 + row[QUESTION])
-        print(INDENT1 + '<ol type="a">')
+        print(INDENT2 + '<ol type="a">')
         j = 0
         for a in row[FIRST_ANSWER:]:
             correct = ""
@@ -39,13 +40,11 @@ with open(quiz_file, "r") as f_in:
             if a.startswith(CORRECT):
                 a = a[1:]
                 correct = " *"
-            print(INDENT2 + '<li>')
-            print(INDENT2 + a + correct)
-            print(INDENT2 + '</li>')
+            print(INDENT3 + '<li>')
+            print(INDENT3 + a + correct)
+            print(INDENT3 + '</li>')
             j += 1
 
-        print(INDENT1 + '</ol>')
+        print(INDENT2 + '</ol>')
         print(INDENT1 + '</li>')
         i += 1
-
-    print(INDENT2 + '</ol>')
