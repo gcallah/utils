@@ -23,7 +23,6 @@ if len(sys.argv) < 2:
     exit(1)
 
 quiz_file = sys.argv[1]
-answer_key = ''
 answers = 'abcdefghijklmnopqrstuvwxyz'
 
 with open(quiz_file, "r") as f_in:
@@ -36,12 +35,12 @@ with open(quiz_file, "r") as f_in:
         print(INDENT1 + '<ol type="a">')
         j = 0
         for a in row[FIRST_ANSWER:]:
+            correct = ""
             a = a.strip()
             if a.startswith(CORRECT):
-                a = a[1:]
-                answer_key += str(i) + '. ' + answers[j] + "; "
+                correct = " *"
             print(INDENT2 + '<li>')
-            print(INDENT2 + a)
+            print(INDENT2 + a + correct)
             print(INDENT2 + '</li>')
             j += 1
 
