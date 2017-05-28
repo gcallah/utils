@@ -37,6 +37,9 @@ with open(quiz_file, "r") as f_in:
     
     i = 1
     for row in freader:
+        if len(row) == 0 or row.isspace():  # allow blank lines
+            next
+
         print(INDENT3 + '<li>')
         print(INDENT4 + row[QUESTION])
         print(INDENT3 + '</li>')
@@ -49,7 +52,7 @@ with open(quiz_file, "r") as f_in:
                 answer_key += str(i) + '. ' + answers[j] + "; "
             print(INDENT4 + '<li>')
             print(INDENT4 + '<input type="radio" name="q'
-                  + str(i) + '" value="new">')
+                  + str(i) + '" value="' + answers[j] + '">')
             print(INDENT4 + a)
             print(INDENT4 + '</li>')
             j += 1
