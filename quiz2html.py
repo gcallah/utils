@@ -37,8 +37,10 @@ with open(quiz_file, "r") as f_in:
     
     i = 1
     for row in freader:
+        print(len(row))
         if len(row) < 2:  # allow blank lines; len of 1 makes no sense!
-            next
+            print("Skipping row")
+            continue
 
         print(INDENT3 + '<li>')
         print(INDENT4 + row[QUESTION])
