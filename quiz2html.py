@@ -37,7 +37,7 @@ with open(quiz_file, "r") as f_in:
     
     i = 1
     for row in freader:
-        if len(row) == 0 or row.isspace():  # allow blank lines
+        if len(row) < 2:  # allow blank lines; len of 1 makes no sense!
             next
 
         print(INDENT3 + '<li>')
