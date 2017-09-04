@@ -11,7 +11,7 @@ ARG_ERROR = 1
 MATCH_ERROR = 2
 
 tag_stack = []
-
+line_no = 0
 void_tags = {"area", "base", "br", "col", "hr", "img", "input", "link", "meta", "param"}
 
 
@@ -31,7 +31,7 @@ class OurHTMLParser(HTMLParser):
             open_tag = tag_stack.pop()
             if close_tag != open_tag:
                 print("Close tag '" + close_tag + "' does not match open tag '"
-                      + open_tag + "'")
+                      + open_tag + "' at line number " + str(line_no))
                 exit(MATCH_ERROR)
 
     def handle_data(self, data):
