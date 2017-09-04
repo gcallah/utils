@@ -27,8 +27,13 @@ quiz_file = sys.argv[1]
 answer_key = ''
 answers = 'abcdefghijklmnopqrstuvwxyz'
 
+if len(sys.argv) > 2:
+    delimiter = sys.argv[2]
+else:
+    delimiter = ","
+
 with open(quiz_file, "r") as f_in:
-    freader = csv.reader(f_in)
+    freader = csv.reader(f_in, delimiter=delimiter)
     print(INDENT1 + '<details>')
     print(INDENT2 + '<summary class="sum1">')
     print(INDENT3 + 'Quiz')
@@ -38,7 +43,7 @@ with open(quiz_file, "r") as f_in:
     i = 1
     for row in freader:
         if len(row) < 2:  # allow blank lines; len of 1 makes no sense!
-            next
+            continue
 
         print(INDENT3 + '<li>')
         print(INDENT4 + row[QUESTION])

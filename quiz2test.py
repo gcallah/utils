@@ -26,8 +26,13 @@ if len(sys.argv) < 2:
 quiz_file = sys.argv[1]
 answers = 'abcdefghijklmnopqrstuvwxyz'
 
+if len(sys.argv) > 2:
+    delimiter = sys.argv[2]
+else:
+    delimiter = ","
+
 with open(quiz_file, "r") as f_in:
-    freader = csv.reader(f_in)
+    freader = csv.reader(f_in, delimiter=delimiter)
     i = 1
     for row in freader:
         print(INDENT1 + '<li>')
