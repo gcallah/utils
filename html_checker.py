@@ -18,12 +18,10 @@ void_tags = {"area", "base", "br", "col", "hr", "img", "input", "link", "meta", 
 class OurHTMLParser(HTMLParser):
     def handle_starttag(self, tag, attrs):
         if tag not in void_tags:
-            print("Encountered an open tag :", tag)
             tag_stack.append(tag)
 
     def handle_endtag(self, close_tag):
         if close_tag not in void_tags:
-            print("Encountered an end tag :", close_tag)
             open_tag = tag_stack.pop()
             if close_tag != open_tag:
                 print("Close tag '" + close_tag + "' does not match open tag '"
