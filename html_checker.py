@@ -9,6 +9,7 @@ from html.parser import HTMLParser
 
 ARG_ERROR = 1
 MATCH_ERROR = 2
+MAX_LINE = 80
 
 tag_stack = []
 line_no = 0
@@ -30,9 +31,11 @@ class OurHTMLParser(HTMLParser):
 
     def handle_data(self, data):
         """
-        Here we might look for long lines or other such problems.
+        Here we can look for long lines or other such problems.
         """
-        pass
+        if len(data) > MAX_LINE:
+            print("WARNING: long line found at line number " + str(line_no))
+
 
 parser = OurHTMLParser()
 
