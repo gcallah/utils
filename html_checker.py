@@ -13,6 +13,7 @@ MAX_LINE = 80
 
 tag_stack = []
 line_no = 0
+saw_error = False
 void_tags = {"area", "base", "br", "col", "hr", "img", "input", "link", "meta", "param"}
 
 
@@ -27,7 +28,7 @@ class OurHTMLParser(HTMLParser):
             if close_tag != open_tag:
                 print("Close tag '" + close_tag + "' does not match open tag '"
                       + open_tag + "' at line number " + str(line_no))
-                exit(MATCH_ERROR)
+                saw_error = True
 
     def handle_data(self, data):
         """
@@ -49,4 +50,7 @@ file = open(file_nm, "r")
 for line_no, line in enumerate(file): 
     parser.feed(line)
 
-exit(0)
+if saw_error:
+    exit(MATCH_ERROR)
+else:
+    exit(0)
