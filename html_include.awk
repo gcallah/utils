@@ -12,7 +12,6 @@ BEGIN {
     if (template_path != "") {
         file = template_path "/" $2
     }
-
     while((getline < file ) > 0 ) {
     	print $0
     }
