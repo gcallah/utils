@@ -23,6 +23,7 @@ class OurHTMLParser(HTMLParser):
             tag_stack.append(tag)
 
     def handle_endtag(self, close_tag):
+        global saw_error
         if close_tag not in void_tags:
             open_tag = tag_stack.pop()
             if close_tag != open_tag:
