@@ -11,13 +11,19 @@ def ask(msg):
     ans = input()
     return ans.strip()
 
+def ask_int(msg):
+    ans = "NAN"
+    while not ans.isdigit():
+        ans = ask(msg)
+    return ans
+
 def add_item(item):
     return item + DELIM
 
 answers = []
 
-chap = ask("Enter chapter # for question: ")
-section = ask("Enter section # for question: ")
+chap = ask_int("Enter chapter # for question: ")
+section = ask_int("Enter section # for question: ")
 question = ask("Enter question: ")
 correct = ask("Enter correct answer (we will randomize for you!): ")
 correct = CORR_MARK + correct
