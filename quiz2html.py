@@ -51,7 +51,7 @@ with open(quiz_file, "r") as f_in:
         print(INDENT3 + '<li>')
         print(INDENT4 + row[QUESTION])
         print(INDENT3 + '</li>')
-        print(INDENT3 + '<ol type="a">')
+        print(INDENT3 + '<ol type="a" class="nested">')
         j = 0
         for a in row[FIRST_ANSWER:]:
             a = a.strip()
