@@ -3,10 +3,12 @@ A little script to get and properly format questions for quizzes, homework,
 etc.
 """
 
+import sys
 import random
 
 DELIM = '#'
 CORR_MARK = '^'
+
 
 def ask(msg):
     print(msg, end='')
@@ -22,9 +24,15 @@ def ask_int(msg):
 def add_item(item):
     return item + DELIM
 
+if len(sys.argv) < 2:
+    print("Must enter a directory for quizzes.")
+    exit(1)
+
+quiz_dir = sys.argv[1]
+
 chap = ask_int("Enter chapter # for question: ")
 section = ask_int("Enter section # for question: ")
-file_nm = "quiz" + chap + "." + section + ".txt"
+file_nm = quiz_dir + "/quiz" + chap + "." + section + ".txt"
 f = open(file_nm, "a")
 
 while True:
