@@ -3,7 +3,9 @@ A little script to get and properly format questions for quizzes, homework,
 etc.
 """
 
-DELIM = '`'
+import random
+
+DELIM = '#'
 CORR_MARK = '^'
 
 def ask(msg):
@@ -20,30 +22,36 @@ def ask_int(msg):
 def add_item(item):
     return item + DELIM
 
-answers = []
-
 chap = ask_int("Enter chapter # for question: ")
 section = ask_int("Enter section # for question: ")
-question = ask("Enter question: ")
-correct = ask("Enter correct answer (we will randomize for you!): ")
-correct = CORR_MARK + correct
-answers.append(correct)
+file_nm = "quiz" + chap + "." + section + ".txt"
+f = open(file_nm, "a")
 
-new_bad = ""
 while True:
-    new_bad = ask("Enter a wrong answer (blank to stop entering): ")
-    if len(new_bad) < 1:
+    answers = []
+
+    question = ask("Enter question (blank to stop entering): ")
+    if len(question) < 1:
         break
-    else:
-        answers.append(new_bad)
 
-s = ""
-s += add_item(chap)
-s += add_item(section)
-s += add_item(question)
-for answer in answers:
-    s += add_item(answer)
+    correct = ask("Enter correct answer (we will randomize for you!): ")
+    correct = CORR_MARK + correct
+    answers.append(correct)
+    
+    new_bad = ""
+    while True:
+        new_bad = ask("Enter a wrong answer (blank to stop entering): ")
+        if len(new_bad) < 1:
+            break
+        else:
+            answers.append(new_bad)
+    
+    s = ""
+    s += add_item(question)
+    random.shuffle(answers)
+    for answer in answers:
+        s += add_item(answer)
 
-s = s[0:-1]
-print(s)
+    s = s[0:-1]
+    f.write(s + "\n")
 
