@@ -27,15 +27,18 @@ quiz_file = sys.argv[1]
 answer_key = ''
 answers = 'abcdefghijklmnopqrstuvwxyz'
 
+delimiter = ","
 if len(sys.argv) > 2:
     delimiter = sys.argv[2]
-else:
-    delimiter = ","
+
+sum_level = "2"
+if len(sys.argv) > 3:
+    sum_level = sys.argv[3]
 
 with open(quiz_file, "r") as f_in:
     freader = csv.reader(f_in, delimiter=delimiter)
     print(INDENT1 + '<details>')
-    print(INDENT2 + '<summary class="sum1">')
+    print(INDENT2 + '<summary class="sum' + sum_level + '">')
     print(INDENT3 + 'Quiz')
     print(INDENT2 + '</summary>')
     print(INDENT2 + '<ol>')
@@ -67,7 +70,7 @@ with open(quiz_file, "r") as f_in:
 
     print(INDENT2 + '</ol>')
     print(INDENT2 + '<details>')
-    print(INDENT3 + '<summary class="sum2">')
+    print(INDENT3 + '<summary class="sum3">')
     print(INDENT4 + 'Answers')
     print(INDENT3 + '</summary>')
     print(INDENT3 + '<p>')
