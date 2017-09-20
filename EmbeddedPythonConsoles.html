@@ -1,28 +1,58 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title>Creating Embedded Python Consoles</title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="1504.83">
-  <style type="text/css">
-    p.p2 {margin: 0.0px 0.0px 12.0px 0.0px; line-height: 14.0px; font: 28.0px Times; color: #000000; -webkit-text-stroke: #000000}
-    li.li3 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 28.0px Times; color: #000000}
-    li.li4 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 28.0px Times; color: #000000; -webkit-text-stroke: #000000}
-    span.s1 {font-kerning: none}
-    span.s2 {-webkit-text-stroke: 0px #000000}
-    ol.ol1 {list-style-type: decimal}
-  </style>
-</head>
+    <head>
+        <link href="style.css" rel="stylesheet" type="text/css"/>
+      <title>
+          Creating Embedded Python Consoles
+      </title>
+    </head>
 <body>
-<h1 style="margin: 0.0px 0.0px 16.1px 0.0px; line-height: 28.0px; font: 40.0px Times; color: #000000; -webkit-text-stroke: #000000"><span class="s1"><b>Creating Embedded Python Consoles<span class="Apple-converted-space"> </span></b></span></h1>
-<p class="p2"><span class="s1">Here are the steps for embedding a Python console (from PythonAnywhere, at present) inside a web page for one of our courses, or otherwise.<span class="Apple-converted-space"> </span></span></p>
-<ol class="ol1">
-  <li class="li3">Create a gist on GitHub by copying for repos, from the gist get https hash url.</li>
-  <li class="li3">modify ptml file, include python_anywhere.txt. This file exist algorithms/templates directory.</li>
-  <li class="li3">Include instruction for how to load and run the code in python console. Use example from textbook.</li>
-  <li class="li4"><span class="s2"></span><span class="s1">Test, test, test</span></li>
-</ol>
+    <h1>
+        Creating Embedded Python Consoles
+    </h1>
+    <p>
+        Here are the steps for embedding a Python console
+        (from PythonAnywhere, at present) inside a web
+        page for one of our courses, or otherwise.
+    </p>
+
+    <ol>
+      <li>
+          Create a gist on GitHub by copying in the module
+          you want the students to run from the main repo
+          (or elsewhere).
+      </li>
+      <li>
+          From the gist repo copy the URL of the gist.
+      </li>
+      <li>
+          Modify ptml file to include <i>python_anywhere.txt</i>
+			at the place you want the console to appear.
+          This file exists in the algorithms/templates directory.
+      </li>
+      <li>
+          Include instruction for how to load and run
+          the code in python console.
+          <br />
+          Here is a sample of what sort of instrucitons you need:
+          <br />
+          <pre>
+          <code>
+    !git clone https://gist.github.com/25ffc0600a866535adef05c5d8eca34a.git 
+    cd 25ffc0600a866535adef05c5d8eca34a 
+    from find_max_subarray import * 
+    A = [13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7] 
+          </code>
+          </pre>
+      </li>
+          
+      <li>
+          Use sample data from the textbook on the web page.
+      </li>
+
+      <li>
+          Test, test, test
+      </li>
+    </ol>
 </body>
 </html>
