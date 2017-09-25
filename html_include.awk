@@ -2,13 +2,16 @@
 # this file preprocesses HTML files to put in includes
 
 BEGIN {
+    # Need to set TEMPLATE_DIR in ENV
+    template_path = ENVIRON["TEMPLATE_DIR"]
+    quiz_path = ENVIRON["QUIZ_DIR"]
 }
 
 /<!--include/ {
     file = $2
 
-    # Need to set TEMPLATE_DIR in ENV
-    template_path = ENVIRON["TEMPLATE_DIR"]
+    # if file starts with 'quiz' use quiz_path not template_path
+
     if (template_path != "") {
         file = template_path "/" $2
     }
