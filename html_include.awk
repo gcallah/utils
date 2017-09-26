@@ -11,8 +11,10 @@ BEGIN {
     file = $2
 
     # if file starts with 'quiz' use quiz_path not template_path
-
-    if (template_path != "") {
+    if (quiz_path != "" && match($2, /quiz)) {
+        file = quiz_path "/" $2
+    }
+    else if (template_path != "") {
         file = template_path "/" $2
     }
     while((getline < file ) > 0 ) {
