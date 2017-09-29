@@ -11,7 +11,7 @@ HTTP_SUCCESS = "200"
 SMTP_SERVER = 'smtp.mail.me.com'
 PORT = 587
 LOGIN_NAME = "gcallah@mac.com"
-PASSWD = "1E9m9m9a!"
+PASSWD = "jkhjkhjkhjkh"
 
 url = ""
 
