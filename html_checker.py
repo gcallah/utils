@@ -6,6 +6,7 @@ More checks will be added later.
 
 import sys
 from html.parser import HTMLParser
+import re
 
 ARG_ERROR = 1
 MATCH_ERROR = 2
@@ -15,6 +16,10 @@ tag_stack = []
 line_no = 0
 saw_error = False
 void_tags = {"area", "base", "br", "col", "hr", "img", "input", "link", "meta", "param"}
+
+
+def line_msg():
+    return " at line number " + str(line_no)
 
 
 class OurHTMLParser(HTMLParser):
@@ -27,17 +32,22 @@ class OurHTMLParser(HTMLParser):
         if close_tag not in void_tags:
             open_tag = tag_stack.pop()
             if close_tag != open_tag:
-                print("Close tag '" + close_tag + "' does not match open tag '"
-                      + open_tag + "' at line number " + str(line_no))
+                print("ERROR: " +
+                      "Close tag '" + close_tag + "' does not match open tag '"
+                      + open_tag + "'" + line_msg())
                 saw_error = True
 
     def handle_data(self, data):
         """
         Here we can look for long lines or other such problems.
         """
+        global saw_error
+        # print(data)
         if len(data) > MAX_LINE:
-            print("WARNING: long line found at line number " + str(line_no))
-
+            print("WARNING: long line found" + line_msg())
+        if re.search('[\x00-\x09\x0B-\x0C\x0E-\x1F\x80-\xFF]' , data) is not None:
+            print("ERROR: Invalid chacacter at" + line_msg())
+            saw_error = True
 
 parser = OurHTMLParser()
 
@@ -48,7 +58,8 @@ else:
     file_nm = sys.argv[1]
 
 file = open(file_nm, "r") 
-for line_no, line in enumerate(file): 
+for line in file: 
+    line_no += 1
     parser.feed(line)
 
 if saw_error:
