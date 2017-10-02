@@ -45,8 +45,12 @@ class OurHTMLParser(HTMLParser):
         # print(data)
         if len(data) > MAX_LINE:
             print("WARNING: long line found" + line_msg())
-        if re.search('[\x00-\x09\x0B-\x0C\x0E-\x1F\x80-\xFF]' , data) is not None:
+        if re.search('[\x00-\x09\x0B-\x0C\x0E-\x1F\x80-\xFF]' , data):
             print("ERROR: Invalid chacacter at" + line_msg())
+            saw_error = True
+        if re.search('[<>]' , data):
+            print("ERROR: Use &gt; or &lt; instead of < or >"
+                  + line_msg())
             saw_error = True
 
 parser = OurHTMLParser()
