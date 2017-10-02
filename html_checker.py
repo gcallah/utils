@@ -33,7 +33,8 @@ class OurHTMLParser(HTMLParser):
             open_tag = tag_stack.pop()
             if close_tag != open_tag:
                 print("ERROR: " +
-                      "Close tag '" + close_tag + "' does not match open tag '"
+                      "Close tag '" + close_tag + 
+                      "' does not match open tag '"
                       + open_tag + "'" + line_msg())
                 saw_error = True
 
@@ -45,13 +46,13 @@ class OurHTMLParser(HTMLParser):
         # print(data)
         if len(data) > MAX_LINE:
             print("WARNING: long line found" + line_msg())
-        if re.search('[\x00-\x09\x0B-\x0C\x0E-\x1F\x80-\xFF]' , data):
-            print("ERROR: Invalid chacacter at" + line_msg())
-            saw_error = True
-        if re.search('[<>]' , data):
-            print("ERROR: Use &gt; or &lt; instead of < or >"
-                  + line_msg())
-            saw_error = True
+#        if re.search('[\x00-\x09\x0B-\x0C\x0E-\x1F\x80-\xFF]' , data):
+#            print("ERROR: Invalid chacacter" + line_msg())
+#            saw_error = True
+#        if re.search('[<>]' , data):
+#            print("ERROR: Use &gt; or &lt; instead of < or >"
+#                  + line_msg())
+#            saw_error = True
 
 parser = OurHTMLParser()
 
