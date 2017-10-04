@@ -9,13 +9,14 @@ from html.parser import HTMLParser
 import re
 
 ARG_ERROR = 1
-MATCH_ERROR = 2
+PARSE_ERROR = 2
 MAX_LINE = 80
 
 tag_stack = []
 line_no = 0
 saw_error = False
-void_tags = {"area", "base", "br", "col", "hr", "img", "input", "link", "meta", "param"}
+void_tags = {"area", "base", "br", "col", "hr", "img", "input", "link", 
+             "meta", "param"}
 
 
 def line_msg():
@@ -49,9 +50,6 @@ class OurHTMLParser(HTMLParser):
         if re.search('\x09' , data):
             print("WARNING: tab character found" + line_msg()
                  + "; please uses spaces instead of tabs.")
-        if re.search('[\x00-\x08\x0B-\x0C\x0E-\x1F\x80-\xFF]' , data):
-            print("ERROR: Invalid chacacter" + line_msg())
-            saw_error = True
 #        if re.search('[<>]' , data):
 #            print("ERROR: Use &gt; or &lt; instead of < or >"
 #                  + line_msg())
@@ -71,6 +69,6 @@ for line in file:
     parser.feed(line)
 
 if saw_error:
-    exit(MATCH_ERROR)
+    exit(PARSE_ERROR)
 else:
     exit(0)
