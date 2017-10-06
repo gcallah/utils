@@ -15,7 +15,7 @@ MAX_LINE = 80
 tag_stack = []
 line_no = 0
 saw_error = False
-void_tags = {"area", "base", "br", "col", "hr", "img", "input", "link", 
+void_tags = {"area", "base", "br", "col", "hr", "img", "input", "link",
              "meta", "param"}
 
 
@@ -24,6 +24,9 @@ def line_msg():
 
 
 class OurHTMLParser(HTMLParser):
+    def __init__(self):
+        super(OurHTMLParser, self).__init__(convert_charrefs=False)
+
     def handle_starttag(self, tag, attrs):
         if tag not in void_tags:
             tag_stack.append(tag)
@@ -34,7 +37,7 @@ class OurHTMLParser(HTMLParser):
             open_tag = tag_stack.pop()
             if close_tag != open_tag:
                 print("ERROR: " +
-                      "Close tag '" + close_tag + 
+                      "Close tag '" + close_tag +
                       "' does not match open tag '"
                       + open_tag + "'" + line_msg())
                 saw_error = True
@@ -47,13 +50,14 @@ class OurHTMLParser(HTMLParser):
         # print(data)
         if len(data) > MAX_LINE:
             print("WARNING: long line found" + line_msg())
-        if re.search('\x09' , data):
+        if re.search('\x09', data):
             print("WARNING: tab character found" + line_msg()
-                 + "; please uses spaces instead of tabs.")
-#        if re.search('[<>]' , data):
-#            print("ERROR: Use &gt; or &lt; instead of < or >"
-#                  + line_msg())
-#            saw_error = True
+                  + "; please uses spaces instead of tabs.")
+        if re.search('[<>]', data):
+            print("ERROR: Use &gt; or &lt; instead of < or >"
+                  + line_msg())
+            saw_error = True
+
 
 parser = OurHTMLParser()
 
@@ -63,8 +67,8 @@ if len(sys.argv) < 2:
 else:
     file_nm = sys.argv[1]
 
-file = open(file_nm, "r") 
-for line in file: 
+file = open(file_nm, "r")
+for line in file:
     line_no += 1
     parser.feed(line)
 
