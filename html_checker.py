@@ -58,7 +58,6 @@ class OurHTMLParser(HTMLParser):
                   + line_msg())
             saw_error = True
 
-
 parser = OurHTMLParser()
 
 if len(sys.argv) < 2:
