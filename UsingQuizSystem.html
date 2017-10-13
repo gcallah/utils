@@ -25,7 +25,8 @@
                 Each project will have a script called <b>qentry.sh</b>
                 that will run the Python script with proper parameters
                 and do the follow-up steps necessary: if you are on Windows,
-                you can always look at the script and do these steps manually.
+                you can always look at the script
+                and do these steps manually.
                 And someone could create a PowerShell script to do the same
                 steps...
             </li>
@@ -36,6 +37,12 @@
                 for inclusion in a web page.
                 <br />
                 Run it like: ../utils/quiz2html.py quiz1.1.txt &gt; quiz1.1.qhtm
+                <br />
+                <b>But</b>, you should not have to run this by hand! Use the
+                <i>makefile</i> in the quizzes directory.
+                <br />
+                <b>But</b>, better yet, you shouldn't even have to do 
+                that by hand... <i>qentry.sh</i> runs make for you.
             </li>
             <li>
                 <b>quiz2test.py</b>:
