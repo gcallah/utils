@@ -34,8 +34,8 @@ class OurHTMLParser(HTMLParser):
     def handle_endtag(self, close_tag):
         global saw_error
         if len(tag_stack) == 0:
-            print("ERROR: unmatched open tag "
-                  + open_tag + "'"  + line_msg())
+            print("ERROR: unmatched close tag "
+                  + close_tag + "'"  + line_msg())
             saw_error = True
         elif close_tag not in void_tags:
             open_tag = tag_stack.pop()
