@@ -13,7 +13,7 @@ BEGIN {
     next
 }
 
-/<!--include/ {
+/<!-- *include/ {
     file = $2
 
     # if file starts with 'quiz' use quiz_path not template_path
