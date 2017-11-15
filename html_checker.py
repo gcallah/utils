@@ -37,7 +37,6 @@ class OurHTMLParser(HTMLParser):
             tag_stack.append(tag)
 
     def handle_endtag(self, close_tag):
-        print("Endtag: ", close_tag)
         global saw_error
         if len(tag_stack) == 0:
             print("ERROR: unmatched close tag "
