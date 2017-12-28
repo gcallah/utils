@@ -41,7 +41,7 @@ with open(quiz_file, "r") as f_in:
     print(INDENT2 + '<summary class="sum' + sum_level + '">')
     print(INDENT3 + 'Quiz')
     print(INDENT2 + '</summary>')
-    print(INDENT2 + '<ol>')
+    print(INDENT2 + '<ol class="nested">')
     
     i = 1
     for row in freader:
