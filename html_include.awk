@@ -23,10 +23,15 @@ BEGIN {
     else if (template_path != "") {
         file = template_path "/" $2
     }
+    i = 0
     while((getline < file ) > 0 ) {
     	print $0
+        i++
     }
     close(file)
+    if (i == 0) {
+        print "<p>We attempted to read from " file " but failed."
+    }
     next
 }
 
