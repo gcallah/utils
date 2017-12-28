@@ -30,7 +30,9 @@ BEGIN {
     }
     close(file)
     if (i == 0) {
-        print "<p>We attempted to read from " file " but failed."
+        s = "<p>We attempted to read from " file " but failed.</p>"
+        print s > "/dev/stderr"
+        print s
     }
     next
 }
