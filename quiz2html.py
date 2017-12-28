@@ -39,7 +39,7 @@ with open(quiz_file, "r") as f_in:
     freader = csv.reader(f_in, delimiter=delimiter)
     print(INDENT1 + '<details>')
     print(INDENT2 + '<summary class="sum' + sum_level + '">')
-    print(INDENT3 + 'Quiz')
+    print(INDENT3 + 'Test Yourself!')
     print(INDENT2 + '</summary>')
     print(INDENT2 + '<ol class="nested">')
     
