@@ -2,7 +2,7 @@
 # this file preprocesses HTML files to put in includes
 
 BEGIN {
-    # Need to set TEMPLATE_DIR in ENV
+    # Need to set these variables in ENV
     template_path = ENVIRON["TEMPLATE_DIR"]
     quiz_path = ENVIRON["QUIZ_DIR"]
 }
