@@ -1,12 +1,11 @@
-# import shutil
-# shutil.copy2('C:/Users/VivekPC/Desktop/New folder/about.html', 'C:/Users/VivekPC/Desktop/about.html')
-#
-#
+# This file converts between our html format and django template files.
+# Pass the file to convert on the command line.
+# Writes to stdout.
 
 import sys
 
 if len(sys.argv) < 2:
-    print("Must supply a HTML file.")
+    print("Must supply an HTML file.")
     exit(1)
 
 html_file = sys.argv[1]
@@ -49,7 +48,6 @@ for line in range(len(input)):
   if  "</body>" in input[line]:
     pos3 = line
 
-print pos3
 del input[pos3:]
 
 
@@ -61,5 +59,5 @@ for i in range(len(input)):
     output.append(input[i])
 
 output.append("""{% endblock content %}""")
-print output
+print(output)
 
