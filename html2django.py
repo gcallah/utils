@@ -59,5 +59,8 @@ for i in range(len(input)):
     output.append(input[i])
 
 output.append("""{% endblock content %}""")
-print(output)
+for line in output:
+    print line
+
+
 
