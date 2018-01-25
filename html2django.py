@@ -60,7 +60,7 @@ for i in range(len(input)):
 
 output.append("""{% endblock content %}""")
 for line in output:
-    print line
+    print (line)
 
 
 
