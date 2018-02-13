@@ -1,3 +1,4 @@
+TARG_DIR=html_src
 FILES=*.html
 for f in $FILES
 do
@@ -9,6 +10,5 @@ do
 	#echo "Processing $extension file..."
 	filename="${filename%.*}"
 	#echo "Processing $filename file..."
-  	../utils/html2ptml.awk < $f > test/$filename.ptml
-  # html2ptml.awk <$f > (What goes here?!)
+  	../utils/html2ptml.awk < $f > $TARG_DIR/$filename.ptml
 done
