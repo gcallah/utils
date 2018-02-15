@@ -1,19 +1,20 @@
 """
-Script to check proper nesting and matching of html tags.
-Right now, this only cheecks tags that stand alone on a line.
-More checks will be added later.
+Script to check spellings of words in the webpage. Also allows the users
+to add words to the dictionary.
 """
 
 import sys
 from html.parser import HTMLParser
 import re
-
-ARG_ERROR = 1
-SPELL_ERROR = 2
-
 line_no = 0
-saw_error = False
 
+d = []
+addedWords = []
+dictionary = open("English.txt", "r")
+words = dictionary.readlines()
+
+for word in words:
+    d.append(word.split()[0].lower())
 
 def line_msg():
     return " at line number " + str(line_no)
@@ -25,17 +26,17 @@ class OurHTMLParser(HTMLParser):
         super(OurHTMLParser, self).__init__(convert_charrefs=False)
 
     def handle_data(self, data):
-        """
-        Here we can look for long lines or other such problems.
-        """
-        global saw_error
-        # print(data)
-        if len(data) > MAX_LINE:
-            print("WARNING: long line found" + line_msg())
+        webPageWords = data.split()
 
-# when you see an error, set:
-#            saw_error = True
+        for webPageWord in webPageWords:
+            lowerWord = webPageWord.lower()
+            if lowerWord not in d and lowerWord not in addedWords:
+                response = input("Do you want to add the word "+ webPageWord+ "?(y/n)")
 
+                if response == 'y':
+                    addedWords.append(lowerWord)
+
+        d.append(addedWords)
 parser = OurHTMLParser()
 
 if len(sys.argv) < 2:
@@ -44,12 +45,8 @@ if len(sys.argv) < 2:
 else:
     file_nm = sys.argv[1]
 
-file = open(file_nm, "r")
+file = open(file_nm, "r",)
 for line in file:
     line_no += 1
     parser.feed(line)
 
-if saw_error:
-    exit(SPELL_ERROR)
-else:
-    exit(0)
