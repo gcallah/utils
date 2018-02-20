@@ -30,21 +30,34 @@ class OurHTMLParser(HTMLParser):
         self.is_in_script_tag = False
         super(OurHTMLParser, self).__init__(convert_charrefs=False)
 
+    def is_number(self, word):
+        try:
+            float(word)
+            return True
+        except ValueError:
+            return False
+
     def handle_data(self, data):
         webPageWords = data.split()
 
         for webPageWord in webPageWords:
-            lowerWord = webPageWord.lower()
+            word = webPageWord.strip("()[]{}").strip()
+            if self.is_number(webPageWord):
+                continue
+            lowerWord = word.lower()
             if lowerWord not in d:
                 valid = False
                 while not valid:
                     response = input("Do you want to add the word "+ webPageWord+ "?(yes/no/skip)\n")
+                    # 'yes' to improve dictionary
                     if response.lower() == 'yes':
                         addedWords.add(lowerWord)
                         d.add(lowerWord)
                         valid = True
+                    # 'skip' strings which are unique (say checksum) but not errors
                     elif response.lower() == 'skip':
                         valid = True
+                    # 'no' if it is really a typo
                     elif response.lower() == 'no':
                         global saw_error
                         valid = True
