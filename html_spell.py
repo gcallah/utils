@@ -5,22 +5,27 @@ to add words to the dictionary.
 
 import sys
 from html.parser import HTMLParser
-import re
+
+ARG_ERROR = 1
+SPELL_ERROR = 2
+
 line_no = 0
+saw_error = False
 
-d = []
-addedWords = []
-dictionary = open("English.txt", "r")
-words = dictionary.readlines()
+d = set()
+addedWords = set()
 
-for word in words:
-    d.append(word.split()[0].lower())
+with open('English.txt', 'r') as f:
+    for line in f:
+        d.add(line.split()[0].lower())
+
 
 def line_msg():
     return " at line number " + str(line_no)
 
 
 class OurHTMLParser(HTMLParser):
+
     def __init__(self):
         self.is_in_script_tag = False
         super(OurHTMLParser, self).__init__(convert_charrefs=False)
@@ -31,12 +36,26 @@ class OurHTMLParser(HTMLParser):
         for webPageWord in webPageWords:
             lowerWord = webPageWord.lower()
             if lowerWord not in d and lowerWord not in addedWords:
-                response = input("Do you want to add the word "+ webPageWord+ "?(y/n)")
+                valid = False
+                while not valid:
+                    response = input("Do you want to add the word "+ webPageWord+ "?(yes/no/skip)\n")
+                    if response.lower() == 'yes':
+                        addedWords.add(lowerWord)
+                        valid = True
+                    elif response.lower() == 'skip':
+                        valid = True
+                    elif response.lower() == 'no':
+                        global saw_error
+                        valid = True
+                        saw_error = True
+                        print("ERROR: '%s' not found in dictionary" % lowerWord)
+                    else:
+                        print("Invalid response, Please try again!")
 
-                if response == 'y':
-                    addedWords.append(lowerWord)
+        d.update(addedWords)
+        addedWords.clear()
 
-        d.append(addedWords)
+
 parser = OurHTMLParser()
 
 if len(sys.argv) < 2:
@@ -50,3 +69,7 @@ for line in file:
     line_no += 1
     parser.feed(line)
 
+if saw_error:
+    exit(SPELL_ERROR)
+else:
+    exit(0)
