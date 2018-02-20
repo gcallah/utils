@@ -35,12 +35,13 @@ class OurHTMLParser(HTMLParser):
 
         for webPageWord in webPageWords:
             lowerWord = webPageWord.lower()
-            if lowerWord not in d and lowerWord not in addedWords:
+            if lowerWord not in d:
                 valid = False
                 while not valid:
                     response = input("Do you want to add the word "+ webPageWord+ "?(yes/no/skip)\n")
                     if response.lower() == 'yes':
                         addedWords.add(lowerWord)
+                        d.add(lowerWord)
                         valid = True
                     elif response.lower() == 'skip':
                         valid = True
@@ -51,9 +52,6 @@ class OurHTMLParser(HTMLParser):
                         print("ERROR: '%s' not found in dictionary" % lowerWord)
                     else:
                         print("Invalid response, Please try again!")
-
-        d.update(addedWords)
-        addedWords.clear()
 
 
 parser = OurHTMLParser()
@@ -68,6 +66,10 @@ file = open(file_nm, "r",)
 for line in file:
     line_no += 1
     parser.feed(line)
+
+with open('English.txt', 'a+') as f:
+    f.writelines(i+'\n' for i in addedWords)
+    addedWords.clear()
 
 if saw_error:
     exit(SPELL_ERROR)
