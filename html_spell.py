@@ -8,14 +8,15 @@ from html.parser import HTMLParser
 
 ARG_ERROR = 1
 SPELL_ERROR = 2
+DICT_FILE = "English.txt"
 
 line_no = 0
 saw_error = False
 
 d = set()
-addedWords = set()
+added_words = set()
 
-with open('English.txt', 'r') as f:
+with open(DICT_FILE, 'r') as f:
     for line in f:
         d.add(line.split()[0].lower())
 
@@ -38,23 +39,23 @@ class OurHTMLParser(HTMLParser):
             return False
 
     def handle_data(self, data):
-        webPageWords = data.split()
+        web_page_words = data.split()
 
-        for webPageWord in webPageWords:
-            word = webPageWord.strip("()[]{}").strip()
-            if self.is_number(webPageWord):
+        for web_page_word in web_page_words:
+            word = web_page_word.strip("()[]{}").strip()
+            if self.is_number(word):
                 continue
-            lowerWord = word.lower()
-            if lowerWord not in d:
+            lower_word = word.lower()
+            if lower_word not in d:
                 valid = False
                 while not valid:
-                    response = input("Do you want to add the word "+ webPageWord+ "?(yes/no/skip)\n")
+                    response = input("Do you want to add %s to dictionary?(yes/no/skip)\n" % word)
                     # 'yes' to improve dictionary
                     if response.lower() == 'yes':
-                        addedWords.add(lowerWord)
-                        d.add(lowerWord)
+                        added_words.add(lower_word)
+                        d.add(lower_word)
                         valid = True
-                    # 'skip' strings which are unique (say checksum) but not errors
+                    # 'skip' strings which are unique (say checksum or names) but not errors
                     elif response.lower() == 'skip':
                         valid = True
                     # 'no' if it is really a typo
@@ -62,7 +63,7 @@ class OurHTMLParser(HTMLParser):
                         global saw_error
                         valid = True
                         saw_error = True
-                        print("ERROR: '%s' not found in dictionary" % lowerWord)
+                        print("ERROR: '%s' not found in dictionary" % lower_word)
                     else:
                         print("Invalid response, Please try again!")
 
@@ -80,9 +81,9 @@ for line in file:
     line_no += 1
     parser.feed(line)
 
-with open('English.txt', 'a+') as f:
-    f.writelines(i+'\n' for i in addedWords)
-    addedWords.clear()
+with open(DICT_FILE, 'a+') as f:
+    f.writelines(i + '\n' for i in added_words)
+    added_words.clear()
 
 if saw_error:
     exit(SPELL_ERROR)
