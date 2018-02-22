@@ -5,6 +5,7 @@ to add words to the dictionary.
 
 import sys
 from html.parser import HTMLParser
+import string
 
 ARG_ERROR = 1
 SPELL_ERROR = 2
@@ -38,11 +39,17 @@ class OurHTMLParser(HTMLParser):
         except ValueError:
             return False
 
+    def is_symbol(self, char):
+        if char in string.punctuation:
+            return True
+
     def handle_data(self, data):
         web_page_words = data.split()
 
         for web_page_word in web_page_words:
-            word = web_page_word.strip("()[]{}").strip()
+            if len(web_page_word) == 1 and self.is_symbol(web_page_word):
+                continue
+            word = web_page_word.strip(string.punctuation).strip() # strip other punctuations
             if self.is_number(word):
                 continue
             lower_word = word.lower()
