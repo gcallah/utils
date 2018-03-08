@@ -5,7 +5,9 @@ More checks will be added later.
 """
 
 import sys
+import urllib.request as req
 from html.parser import HTMLParser
+from urllib.parse import urlparse, urljoin
 import re
 
 ARG_ERROR = 1
@@ -23,15 +25,40 @@ void_tags = {"area", "base", "br", "col", "hr", "img", "input", "link",
 def line_msg():
     return " at line number " + str(line_no)
 
+def is_accessible(link):
+    '''
+    Here we check if the web page is accessible.
+    '''
+    try:
+        request = req.Request(link)
+        response = req.urlopen(request)
+        return True
+    except:
+        return False
+
+def check_urls_accessibility(links):
+    print("Checking accessibility of urls...")
+    for link in parser.links:
+        if not is_accessible(link):
+            link = urljoin("https://gcallah.github.io/DevOps/", link)
+            if not is_accessible(link):
+                print("WARNING: url not accessible" + line_msg()
+                + "; " + link)
+                saw_error = True
 
 class OurHTMLParser(HTMLParser):
     def __init__(self):
         self.is_in_script_tag = False
+        self.links = []
         super(OurHTMLParser, self).__init__(convert_charrefs=False)
 
     def handle_starttag(self, tag, attrs):
         if tag == "script":
             self.is_in_script_tag = True
+
+        if tag == "a":
+            attr = dict(attrs)
+            self.links.append(attr['href'])
 
         if tag not in void_tags:
             tag_stack.append(tag)
@@ -69,6 +96,9 @@ class OurHTMLParser(HTMLParser):
                   + line_msg())
             saw_error = True
 
+# if you want url checking invoke program with -u flag
+url_check = False
+
 parser = OurHTMLParser()
 
 if len(sys.argv) < 2:
@@ -81,6 +111,9 @@ file = open(file_nm, "r")
 for line in file:
     line_no += 1
     parser.feed(line)
+
+if url_check:
+    check_urls_accessibility(parser.links)
 
 if saw_error:
     exit(PARSE_ERROR)
