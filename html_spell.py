@@ -78,7 +78,7 @@ class OurHTMLParser(HTMLParser):
 parser = OurHTMLParser()
 
 if len(sys.argv) < 2:
-    print("Must supply file name to process.")
+    print("USAGE: html_spell.py fileToProcess mainDcitionary customDictionary")
     exit(ARG_ERROR)
 else:
     file_nm = sys.argv[1]
