@@ -18,7 +18,7 @@ BEGIN {
 /<syntax>/   { 
     print "<h5>Syntax</h5>\n"
     in_list = 1
-    print "<ul>"
+    print "<ul class=\"nested\">"
     next
 }
 
