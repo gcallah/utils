@@ -8,16 +8,12 @@ BEGIN {
     INDENT3 = INDENT2 INDENT1
     in_comments = 1
     error = 0
-    if (ARGC < 2) {
-        print "Must pass file to process" > "/dev/stderr"
+    if(ARGC < 3) {
+        print "Must pass file to process and title" > "/dev/stderr"
         error = 1
         exit 1
     }
-    split(ARGV[1], a, "/")
-    filename = a[2]
-    split(filename, a2, ".")
-    title = a2[1]
-    title = toupper(substr(title, 1, 1)) tolower(substr(title, 2));
+    title = ARGV[2]
 }
 
 /{% block content %}/ {
