@@ -41,7 +41,9 @@ BEGIN {
 
 {
     if(in_list) {
-        print "<li>" $0
+        print "<li>"
+        print
+        print "</li>"
     }
     else {
         print
