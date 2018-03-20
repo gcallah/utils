@@ -46,23 +46,20 @@ class OurHTMLParser(HTMLParser):
                         global saw_error
                         valid = True
                         saw_error = True
-                        print("ERROR: '%s' not found in "
-                              "dictionary" % lower_word)
+                        print("ERROR: " + word + line_msg())
                     else:
                         print("Invalid response, Please try again!")
 
 
 parser = OurHTMLParser()
 
-if len(sys.argv) < 2:
-    print ("USAGE: html_spell.py fileToProcess")
-    # print("USAGE: html_spell.py fileToProcess mainDcitionary customDictionary")
+if len(sys.argv) < 4:
+    print("USAGE: html_spell.py fileToProcess mainDcitionary customDictionary")
     exit(ARG_ERROR)
 
 file_nm = sys.argv[1]
-main_dict = "English.txt"
-# main_dict = sys.argv[2]
-# custom_dict = sys.argv[3]
+main_dict = sys.argv[2]
+custom_dict = sys.argv[3]
 line_no = 0
 saw_error = False
 d = set()
@@ -73,6 +70,9 @@ with open(main_dict, 'r') as f:
     for line in f:
         d.add(line.split()[0].lower())
 
+with open(custom_dict, 'r') as f:
+    for line in f:
+        d.add(line.split()[0].lower())
 
 def line_msg():
     return " at line number " + str(line_no)
@@ -91,12 +91,12 @@ def is_symbol(char):
         return True
 
 
-file = open(file_nm, "r",)
-for line in file:
-    line_no += 1
-    parser.feed(line)
+with open(file_nm, "r",) as f:
+    for line in f:
+        line_no += 1
+        parser.feed(line)
 
-with open(main_dict, 'a+') as f:
+with open(custom_dict, 'a+') as f:
     f.writelines(i + '\n' for i in added_words)
     added_words.clear()
 
