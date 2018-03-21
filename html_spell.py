@@ -23,6 +23,7 @@ class OurHTMLParser(HTMLParser):
         for web_page_word in web_page_words:
             if len(web_page_word) == 1 and is_symbol(web_page_word):
                 continue
+
             # strip other punctuations
             word = web_page_word.strip(string.punctuation).strip()
             if is_number(word):
@@ -53,8 +54,9 @@ class OurHTMLParser(HTMLParser):
 
 parser = OurHTMLParser()
 
-if len(sys.argv) < 4:
-    print("USAGE: html_spell.py fileToProcess mainDcitionary customDictionary")
+print (len(sys.argv))
+if len(sys.argv) != 4:
+    print("USAGE: html_spell.py fileToProcess mainDictionary customDictionary")
     exit(ARG_ERROR)
 
 file_nm = sys.argv[1]
@@ -65,11 +67,12 @@ saw_error = False
 d = set()
 added_words = set()
 
-
+# Loading words from main Dictionary into the python set data structure
 with open(main_dict, 'r') as f:
     for line in f:
         d.add(line.split()[0].lower())
 
+# Loading words from custom Dictionary into the python set data structure
 with open(custom_dict, 'r') as f:
     for line in f:
         d.add(line.split()[0].lower())
@@ -89,6 +92,8 @@ def is_number(word):
 def is_symbol(char):
     if char in string.punctuation:
         return True
+    else:
+        return False
 
 
 with open(file_nm, "r",) as f:
