@@ -24,6 +24,9 @@ class OurHTMLParser(HTMLParser):
         web_page_words = data.split()
 
         for web_page_word in web_page_words:
+            if web_page_word == "":
+                continue
+
             if len(web_page_word) == 1 and is_symbol(web_page_word):
                 continue
 
