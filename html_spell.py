@@ -17,7 +17,7 @@ class OurHTMLParser(HTMLParser):
         self.is_in_script_tag = False
         super(OurHTMLParser, self).__init__(convert_charrefs=False)
 
-    def is_word(self, strg, search=re.compile(r'[^a-zA-Z]').search):
+    def is_word(self, strg, search=re.compile(r'[^a-zA-Z-]').search):
         return not bool(search(strg))
 
     def handle_data(self, data):
