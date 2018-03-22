@@ -6,6 +6,7 @@ to add words to the dictionary.
 import sys
 from html.parser import HTMLParser
 import string
+import re
 
 ARG_ERROR = 1
 SPELL_ERROR = 2
@@ -16,11 +17,17 @@ class OurHTMLParser(HTMLParser):
         self.is_in_script_tag = False
         super(OurHTMLParser, self).__init__(convert_charrefs=False)
 
+    def is_word(self, strg, search=re.compile(r'[^a-zA-Z]').search):
+        return not bool(search(strg))
+
     def handle_data(self, data):
         web_page_words = data.split()
 
         for web_page_word in web_page_words:
             if len(web_page_word) == 1 and is_symbol(web_page_word):
+                continue
+
+            if not self.is_word(web_page_word):
                 continue
 
             # strip other punctuations
