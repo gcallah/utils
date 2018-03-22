@@ -12,7 +12,6 @@ SPELL_ERROR = 2
 
 
 class OurHTMLParser(HTMLParser):
-
     def __init__(self):
         self.is_in_script_tag = False
         super(OurHTMLParser, self).__init__(convert_charrefs=False)
@@ -54,7 +53,6 @@ class OurHTMLParser(HTMLParser):
 
 parser = OurHTMLParser()
 
-print (len(sys.argv))
 if len(sys.argv) != 4:
     print("USAGE: html_spell.py fileToProcess mainDictionary customDictionary")
     exit(ARG_ERROR)
@@ -77,6 +75,7 @@ with open(custom_dict, 'r') as f:
     for line in f:
         d.add(line.split()[0].lower())
 
+
 def line_msg():
     return " at line number " + str(line_no)
 
@@ -96,7 +95,7 @@ def is_symbol(char):
         return False
 
 
-with open(file_nm, "r",) as f:
+with open(file_nm, "r", ) as f:
     for line in f:
         line_no += 1
         parser.feed(line)
@@ -109,4 +108,3 @@ if saw_error:
     exit(SPELL_ERROR)
 else:
     exit(0)
-
