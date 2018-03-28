@@ -9,6 +9,7 @@ import urllib.request as req
 from html.parser import HTMLParser
 from urllib.parse import urlparse, urljoin
 import re
+import argparse
 
 ARG_ERROR = 1
 PARSE_ERROR = 2
@@ -24,27 +25,6 @@ void_tags = {"area", "base", "br", "col", "hr", "img", "input", "link",
 
 def line_msg():
     return " at line number " + str(line_no)
-
-def is_accessible(link):
-    '''
-    Here we check if the web page is accessible.
-    '''
-    try:
-        request = req.Request(link)
-        response = req.urlopen(request)
-        return True
-    except:
-        return False
-
-def check_urls_accessibility(links):
-    print("Checking accessibility of urls...")
-    for link in parser.links:
-        if not is_accessible(link):
-            link = urljoin("https://gcallah.github.io/DevOps/", link)
-            if not is_accessible(link):
-                print("WARNING: url not accessible" + line_msg()
-                + "; " + link)
-                saw_error = True
 
 class OurHTMLParser(HTMLParser):
     def __init__(self):
@@ -96,26 +76,50 @@ class OurHTMLParser(HTMLParser):
                   + line_msg())
             saw_error = True
 
-# if you want url checking invoke program with -u flag
-url_check = False
+    def is_accessible(self, link):
+        '''
+        Here we check if the web page is accessible.
+        '''
+        mock_header = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
+        for i in range(3):
+            try:
+                request = req.Request(link, headers = mock_header)
+                response = req.urlopen(request)
+                return True
+            except:
+                pass
+        return False
 
-parser = OurHTMLParser()
+    def check_urls_accessibility(self, links):
+        print("Checking accessibility of urls...")
+        for link in parser.links:
+            if not self.is_accessible(link):
+                link = urljoin("https://gcallah.github.io/DevOps/", link)
+                if not self.is_accessible(link):
+                    print("WARNING: url not accessible" + line_msg()
+                    + "; " + link)
+                    saw_error = True
 
-if len(sys.argv) < 2:
-    print("Must supply file name to process.")
-    exit(ARG_ERROR)
-else:
-    file_nm = sys.argv[1]
+if __name__ == '__main__':
+    # if you want url checking invoke program with --u flag
+    arg_parser = argparse.ArgumentParser()
+    arg_parser.add_argument("html_filename")
+    arg_parser.add_argument("--u", action = "store_true")
+    args = arg_parser.parse_args()
+    url_check = args.u
 
-file = open(file_nm, "r")
-for line in file:
-    line_no += 1
-    parser.feed(line)
+    parser = OurHTMLParser()
+    file_nm = args.html_filename
 
-if url_check:
-    check_urls_accessibility(parser.links)
+    file = open(file_nm, "r")
+    for line in file:
+        line_no += 1
+        parser.feed(line)
 
-if saw_error:
-    exit(PARSE_ERROR)
-else:
-    exit(0)
+    if url_check:
+        parser.check_urls_accessibility(parser.links)
+
+    if saw_error:
+        exit(PARSE_ERROR)
+    else:
+        exit(0)
