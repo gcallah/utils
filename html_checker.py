@@ -104,7 +104,7 @@ if __name__ == '__main__':
     # if you want url checking invoke program with --u flag
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument("html_filename")
-    arg_parser.add_argument("--u", action = "store_true")
+    arg_parser.add_argument("-u", action = "store_true")
     args = arg_parser.parse_args()
     url_check = args.u
 
