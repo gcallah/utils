@@ -15,6 +15,10 @@ ARG_ERROR = 1
 PARSE_ERROR = 2
 MAX_LINE = 80
 
+HEADER_TXT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) \
+            AppleWebKit/537.36 (KHTML, like Gecko) \
+            Chrome/50.0.2661.102 Safari/537.36'
+
 tag_stack = []
 line_no = 0
 saw_error = False
@@ -80,7 +84,7 @@ class OurHTMLParser(HTMLParser):
         '''
         Here we check if the web page is accessible.
         '''
-        mock_header = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
+        mock_header = {'User-Agent': HEADER_TXT}
         for i in range(3):
             try:
                 request = req.Request(link, headers = mock_header)
