@@ -102,7 +102,8 @@ class OurHTMLParser(HTMLParser):
                 if not self.is_accessible(link):
                     print("WARNING: url not accessible" + line_msg()
                     + "; " + link)
-                    saw_error = True
+# we need an if / else here for error / warning settings:
+#                    saw_error = True
 
 if __name__ == '__main__':
     # if you want url checking invoke program with --u flag
