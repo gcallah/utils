@@ -19,6 +19,8 @@ HEADER_TXT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) \
             AppleWebKit/537.36 (KHTML, like Gecko) \
             Chrome/50.0.2661.102 Safari/537.36'
 
+HEADER_FOR_RELATIVE_LINK = "https://gcallah.github.io/DevOps/"
+
 tag_stack = []
 line_no = 0
 saw_error = False
@@ -97,10 +99,20 @@ class OurHTMLParser(HTMLParser):
     def check_urls_accessibility(self, links):
         print("Checking accessibility of urls...")
         for link in parser.links:
-            if not self.is_accessible(link):
-                link = urljoin("https://gcallah.github.io/DevOps/", link)
-                if not self.is_accessible(link):
-                    print("WARNING: url not accessible" + line_msg()
+            '''
+            If it is a relative link, we will add a header 
+            link to verify its accessbility again
+            '''
+            if not self.is_accessible(link):  
+                if link.startswith('http') or link.startswith('https'):
+                    self.print_warning_msg(link, line_msg())
+                else:
+                    link = urljoin(HEADER_FOR_RELATIVE_LINK, link)
+                    if not self.is_accessible(link):
+                        self.print_warning_msg(link, line_msg())
+    
+    def print_warning_msg(self, link, line):
+        print("WARNING: url not accessible" + line
                     + "; " + link)
 # we need an if / else here for error / warning settings:
 #                    saw_error = True
