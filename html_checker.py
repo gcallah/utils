@@ -19,8 +19,6 @@ HEADER_TXT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) \
             AppleWebKit/537.36 (KHTML, like Gecko) \
             Chrome/50.0.2661.102 Safari/537.36'
 
-HEADER_FOR_RELATIVE_LINK = "https://gcallah.github.io/DevOps/"
-
 tag_stack = []
 line_no = 0
 saw_error = False
@@ -96,7 +94,7 @@ class OurHTMLParser(HTMLParser):
                 pass
         return False
 
-    def check_urls_accessibility(self, links):
+    def check_urls_accessibility(self, links, relative_link_header):
         print("Checking accessibility of urls...")
         for link in parser.links:
             '''
@@ -107,7 +105,7 @@ class OurHTMLParser(HTMLParser):
                 if link.startswith('http') or link.startswith('https'):
                     self.print_warning_msg(link, line_msg())
                 else:
-                    link = urljoin(HEADER_FOR_RELATIVE_LINK, link)
+                    link = urljoin(relative_link_header, link)
                     if not self.is_accessible(link):
                         self.print_warning_msg(link, line_msg())
     
@@ -122,8 +120,10 @@ if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument("html_filename")
     arg_parser.add_argument("-u", action = "store_true")
+    arg_parser.add_argument('relative_link_header')
     args = arg_parser.parse_args()
     url_check = args.u
+    relative_link_header = args.relative_link_header
 
     parser = OurHTMLParser()
     file_nm = args.html_filename
@@ -134,7 +134,7 @@ if __name__ == '__main__':
         parser.feed(line)
 
     if url_check:
-        parser.check_urls_accessibility(parser.links)
+        parser.check_urls_accessibility(parser.links, relative_link_header)
 
     if saw_error:
         exit(PARSE_ERROR)
