@@ -1,4 +1,6 @@
+# statement of what program does here.
 # Need to refactor the code: better functional approach required
+import sys
 import requests
 import json
 import dateutil.parser
@@ -7,11 +9,22 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-# extracting the present time
-time_now = datetime.datetime.now()
 
 # setting a days of inactivity limit
-days_of_inactivity_limit = 14
+days_of_inactivity_limit = 14  # default value
+# this command line handling should be made slicker with falgs, etc.
+#  see html_checker.py for an example.
+if len(sys.argv) >= 2:
+    days_of_inactivity_limit = int(sys.argv[1])
+
+# this file (not in the repo!) should contain email name / password:
+EMAIL_INFO = "trello_email.txt"
+
+with open(EMAIL_INFO, "r") as email_info:
+    pass
+
+# extracting the present time
+time_now = datetime.datetime.now()
 
 # trying to read all the boards where I am a member
 url_member = "https://api.trello.com/1/members/dsd2981"
@@ -66,8 +79,12 @@ for i in range(0, len(board_ids)):
 # set up the SMTP server
 s = smtplib.SMTP(host='smtp.gmail.com', port=587)
 s.starttls()
-s.login(user="devopsnyu@gmail.com", password="devopsnyu123")
 
+# this should be read from a local config file:
+s.login(user="devopsnyu@gmail.com", password="security_risk!")
+# that's not the real password: just noting we have to change this.
+
+# this should come from a file or ENV variable:
 to_contacts = ["dsd298@nyu.edu", "ejc369@nyu.edu"]
 for i in range(0, len(to_contacts)):
     msg = MIMEMultipart()       # create a message
