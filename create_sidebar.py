@@ -37,31 +37,33 @@ parsed_lines = [parseLine(line) for line in lines]
 nested = []
 i = 0
 while i < len(parsed_lines):
+	# filter empty lines
     if not parsed_lines[i][1].strip():
         i += 1
         continue
     level = []
     if parsed_lines[i][0] == 0:
-        # filter empty lines
+    	# if the line has no url
+    	# treat it as a collaspable and expand it
         if parsed_lines[i][2] is None:
             level = [parsed_lines[i][1]]
             sublevel = []
             j = i + 1
             if j >= len(parsed_lines):
-                print "ERROR: Bad input format at %s" % parsed_lines[i][1]
+                print "ERROR: Bad input at %s" % parsed_lines[i][1]
                 sys.exit()
             while j < len(parsed_lines) and parsed_lines[j][0] > 0:
                 if parsed_lines[j][0] != 1:
-                    print "ERROR: Bad input format at %s" % parsed_lines[j][1]
+                    print "ERROR: Bad input at %s" % parsed_lines[j][1]
                     sys.exit()
                 subsublevel = [parsed_lines[j][1], []]
                 k = j + 1
                 if k >= len(parsed_lines):
-                    print "ERROR: Bad input format at %s" % parsed_lines[j][1]
+                    print "ERROR: Bad input at %s" % parsed_lines[j][1]
                     sys.exit()
                 while k < len(parsed_lines) and parsed_lines[k][0] > 1:
                     if parsed_lines[k][0] != 2:
-                        print "ERROR: Bad input format at %s" % parsed_lines[k][1]
+                        print "ERROR: Bad input at %s" % parsed_lines[k][1]
                         sys.exit()
                     subsublevel[1].append([parsed_lines[k][1], parsed_lines[k][2]])
                     k += 1
@@ -69,12 +71,14 @@ while i < len(parsed_lines):
                 j = k
             level.append(sublevel)
             i = j
+        # if the line does have a url
+        # create a link tab
         else:
             level = [parsed_lines[i][1], parsed_lines[i][2]]
             i += 1
         nested.append(level)
     else:
-        print "ERROR: Bad input format at %s" % parsed_lines[i][1]
+        print "ERROR: Bad input at %s" % parsed_lines[i][1]
         sys.exit()
 
 # write generated sidebar
@@ -85,7 +89,7 @@ with open(output_fname, 'w+') as f:
     # write lists
     f.write("    <ul class=\"list-unstyled components\">\n")
 
-    context_empty_spaces = 8 # TO DO: add several empty spaces before your html code
+    context_empty_spaces = 8 #add several empty spaces before the html code
     submenu_counter = 0
     for level in nested:
         f.write(create_line_with_spaces(context_empty_spaces, "<li>\n"))
