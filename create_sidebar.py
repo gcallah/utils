@@ -10,16 +10,21 @@ def parseLine(line):
             break
 
     # save section name
-    splitted_line = line.split('^', 1)
+    splitted_line = line.split('^')
     section_name = splitted_line[0][star_count:]
 
-    # save url if there is one
-    if len(splitted_line) > 1:
-        url = splitted_line[1]
+    # save url and glyphicon if there is one
+    # returns [star_count, section_name, url, glyphicon]
+    if len(splitted_line) > 2:
+        return [star_count, section_name, splitted_line[1], splitted_line[2]]
+    elif len(splitted_line) > 1:
+        if splitted_line[1].startswith("glyphicon"):
+            return [star_count, section_name, None, splitted_line[1]]
+        else:
+            return [star_count, section_name, splitted_line[1], None]
     else:
-        url = None
-
-    return [star_count, section_name, url]
+        return [star_count, section_name, None, None]
+  
 
 def create_line_with_spaces(n, str):
     return ' ' * n + str
@@ -37,14 +42,14 @@ parsed_lines = [parseLine(line) for line in lines]
 nested = []
 i = 0
 while i < len(parsed_lines):
-	# filter empty lines
+    # filter empty lines
     if not parsed_lines[i][1].strip():
         i += 1
         continue
     level = []
     if parsed_lines[i][0] == 0:
-    	# if the line has no url
-    	# treat it as a collaspable and expand it
+        # if the line has no url
+        # treat it as a collaspable and expand it
         if parsed_lines[i][2] is None:
             level = [parsed_lines[i][1]]
             sublevel = []
@@ -70,11 +75,12 @@ while i < len(parsed_lines):
                 sublevel.append(subsublevel)
                 j = k
             level.append(sublevel)
+            level.append(parsed_lines[i][3])
             i = j
         # if the line does have a url
         # create a link tab
         else:
-            level = [parsed_lines[i][1], parsed_lines[i][2]]
+            level = [parsed_lines[i][1], parsed_lines[i][2], parsed_lines[i][3]]
             i += 1
         nested.append(level)
     else:
@@ -95,7 +101,8 @@ with open(output_fname, 'w+') as f:
         f.write(create_line_with_spaces(context_empty_spaces, "<li>\n"))
         if isinstance(level[1], list):
             f.write(create_line_with_spaces(context_empty_spaces + 4, "<a href=\"#Submenu%d\" data-toggle=\"collapse\" aria-expanded=\"false\">\n" % submenu_counter))
-            #f.write(create_line_with_spaces(context_empty_spaces + 8, "<i class=\"glyphicon glyphicon-duplicate\"></i>\n"))
+            if level[2] is not None:
+                f.write(create_line_with_spaces(context_empty_spaces + 8, "<i class=\"glyphicon %s\"></i>\n" % level[2]))
             f.write(create_line_with_spaces(context_empty_spaces + 8, level[0] + "\n"))
             f.write(create_line_with_spaces(context_empty_spaces + 4, "</a>\n"))
             f.write(create_line_with_spaces(context_empty_spaces + 4, "<ul class=\"collapse list-unstyled\" id=\"Submenu%d\">\n" % submenu_counter))
@@ -113,7 +120,8 @@ with open(output_fname, 'w+') as f:
             f.write(create_line_with_spaces(context_empty_spaces + 4, "</ul>\n"))
         else:
             f.write(create_line_with_spaces(context_empty_spaces + 4, "<a href=\"%s\">\n" % level[1]))
-            #f.write(create_line_with_spaces(context_empty_spaces + 8, "<i class=\"glyphicon glyphicon-home\"></i>\n"))
+            if level[2] is not None:
+                f.write(create_line_with_spaces(context_empty_spaces + 8, "<i class=\"glyphicon %s\"></i>\n" % level[2]))
             f.write(create_line_with_spaces(context_empty_spaces + 8, level[0] + "\n"))
             f.write(create_line_with_spaces(context_empty_spaces + 4, "</a>\n"))
 
