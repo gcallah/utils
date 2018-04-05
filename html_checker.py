@@ -15,6 +15,8 @@ ARG_ERROR = 1
 PARSE_ERROR = 2
 MAX_LINE = 80
 
+# for some reason, the following header seems to work best:
+#  meaning fewer false URL erros
 HEADER_TXT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) \
             AppleWebKit/537.36 (KHTML, like Gecko) \
             Chrome/50.0.2661.102 Safari/537.36'

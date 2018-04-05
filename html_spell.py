@@ -17,25 +17,15 @@ class OurHTMLParser(HTMLParser):
         self.is_in_script_tag = False
         super(OurHTMLParser, self).__init__(convert_charrefs=False)
 
-    def is_word(self, strg, search=re.compile(r'[^a-zA-Z-]').search):
-        return not bool(search(strg))
-
     def handle_data(self, data):
         web_page_words = data.split()
 
         for web_page_word in web_page_words:
-            if web_page_word == "":
-                continue
-
-            if len(web_page_word) == 1 and is_symbol(web_page_word):
-                continue
-
-            if not self.is_word(web_page_word):
-                continue
-
             # strip other punctuations
             word = web_page_word.strip(string.punctuation).strip()
-            if is_number(word):
+            if not is_word(web_page_word):
+                continue
+            if len(web_page_word) == 1:
                 continue
             lower_word = word.lower()
             if lower_word not in d:
@@ -86,23 +76,12 @@ with open(custom_dict, 'r') as f:
         d.add(line.split()[0].lower())
 
 
+def is_word(s, search=re.compile(r'[^a-zA-Z-\']').search):
+    return not bool(search(s))
+
+
 def line_msg():
     return " at line number " + str(line_no)
-
-
-def is_number(word):
-    try:
-        float(word)
-        return True
-    except ValueError:
-        return False
-
-
-def is_symbol(char):
-    if char in string.punctuation:
-        return True
-    else:
-        return False
 
 
 with open(file_nm, "r", ) as f:
@@ -118,3 +97,4 @@ if saw_error:
     exit(SPELL_ERROR)
 else:
     exit(0)
+
