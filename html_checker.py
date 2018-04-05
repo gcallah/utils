@@ -42,7 +42,8 @@ class OurHTMLParser(HTMLParser):
 
         if tag == "a":
             attr = dict(attrs)
-            self.links.append(attr['href'])
+            if 'href' in attr:
+                self.links.append(attr['href'])
 
         if tag not in void_tags:
             tag_stack.append(tag)
