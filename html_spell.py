@@ -76,7 +76,7 @@ with open(custom_dict, 'r') as f:
         d.add(line.split()[0].lower())
 
 
-def is_word(s, search=re.compile(r'[^a-zA-Z-]').search):
+def is_word(s, search=re.compile(r'[^a-zA-Z-\']').search):
     return not bool(search(s))
 
 
