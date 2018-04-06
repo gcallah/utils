@@ -29,6 +29,31 @@ def parseLine(line):
 def create_line_with_spaces(n, str):
     return ' ' * n + str
 
+def create_nested_list(lines):
+    if len(lines) == 0:
+        print "UNEXPECTED ERROR: Empty list in recursion"
+        sys.exit()
+    start_star_count = lines[0][0]
+    start_index = 0
+    end_index = 0
+    level = []
+    while end_index < len(lines):
+        if not lines[end_index][1].strip():
+            end_index += 1
+        if lines[end_index][2] is None:
+            end_index += 1
+            if lines[end_index][0] <= start_star_count:
+                print "ERROR: Bad input format at %s" % lines[end_index][1]
+                sys.exit()
+            while end_index < len(lines) and lines[end_index][0] > start_star_count:
+                end_index += 1
+            level.append([lines[start_index][1], create_nested_list(lines[start_index + 1:end_index]), lines[start_index][3]])
+        else:
+            level.append(lines[end_index][1:4])
+            end_index += 1
+        start_index = end_index
+    return level
+
 input_fname = "sidebar_input_sample.txt"
 output_fname = "sidebar_output_sample.txt"
 with open(input_fname) as f:
@@ -39,53 +64,7 @@ lines = [line.rstrip('\r') for line in lines] # for windows machines
 parsed_lines = [parseLine(line) for line in lines]
 
 # create a nested list
-nested = []
-i = 0
-while i < len(parsed_lines):
-    # filter empty lines
-    if not parsed_lines[i][1].strip():
-        i += 1
-        continue
-    level = []
-    if parsed_lines[i][0] == 0:
-        # if the line has no url
-        # treat it as a collaspable and expand it
-        if parsed_lines[i][2] is None:
-            level = [parsed_lines[i][1]]
-            sublevel = []
-            j = i + 1
-            if j >= len(parsed_lines):
-                print "ERROR: Bad input at %s" % parsed_lines[i][1]
-                sys.exit()
-            while j < len(parsed_lines) and parsed_lines[j][0] > 0:
-                if parsed_lines[j][0] != 1:
-                    print "ERROR: Bad input at %s" % parsed_lines[j][1]
-                    sys.exit()
-                subsublevel = [parsed_lines[j][1], []]
-                k = j + 1
-                if k >= len(parsed_lines):
-                    print "ERROR: Bad input at %s" % parsed_lines[j][1]
-                    sys.exit()
-                while k < len(parsed_lines) and parsed_lines[k][0] > 1:
-                    if parsed_lines[k][0] != 2:
-                        print "ERROR: Bad input at %s" % parsed_lines[k][1]
-                        sys.exit()
-                    subsublevel[1].append([parsed_lines[k][1], parsed_lines[k][2]])
-                    k += 1
-                sublevel.append(subsublevel)
-                j = k
-            level.append(sublevel)
-            level.append(parsed_lines[i][3])
-            i = j
-        # if the line does have a url
-        # create a link tab
-        else:
-            level = [parsed_lines[i][1], parsed_lines[i][2], parsed_lines[i][3]]
-            i += 1
-        nested.append(level)
-    else:
-        print "ERROR: Bad input at %s" % parsed_lines[i][1]
-        sys.exit()
+nested = create_nested_list(parsed_lines)
 
 # write generated sidebar
 with open(output_fname, 'w+') as f:
