@@ -24,7 +24,7 @@ def parseLine(line):
             return [star_count, section_name, splitted_line[1], None]
     else:
         return [star_count, section_name, None, None]
-  
+
 
 def create_line_with_spaces(n, str):
     return ' ' * n + str
@@ -64,12 +64,12 @@ lines = [line.rstrip('\r') for line in lines] # for windows machines
 parsed_lines = [parseLine(line) for line in lines]
 
 # create a nested list
-nested = create_nested_list(parsed_lines)
+nested = create_nested_list(parsed_lines[2:len(parsed_lines)-1])
 
 # write generated sidebar
 with open(output_fname, 'w+') as f:
     # write title
-    f.write("<!-- Sidebar Holder -->\n<nav id=\"sidebar\">\n    <div id=\"sidebarCollapse\">\n        <div class=\"sidebar-header\">\n            <h1>DevOps</h1>\n            <strong>DO</strong>\n        </div>\n    </div>\n")
+    f.write("<!-- Sidebar Holder -->\n<nav id=\"sidebar\">\n    <div id=\"sidebarCollapse\">\n        <div class=\"sidebar-header\">\n            <h1>%s</h1>\n            <strong>%s</strong>\n        </div>\n    </div>\n" % (lines[0][1], lines[1][1]))
 
     # write lists
     f.write("    <ul class=\"list-unstyled components\">\n")
