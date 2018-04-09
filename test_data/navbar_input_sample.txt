@@ -1,5 +1,4 @@
-DevOps
-DO
+DevOps^Do
 *Home^https://gcallah.github.io/DevOps/index.html^glyphicon-home
 *Main Areas of Coverage^glyphicon-duplicate
 **Build
