@@ -24,7 +24,7 @@ BEGIN {
         print new_file " already exists."
     else {
         print "We are going to add " new_file
-        if (system(CREATE " < " TEMPLATE " > " new_file) != 0) {
+        if (system(CREATE " <" TEMPLATE " >" new_file " " title) != 0) {
             print "Could not create " new_file
         }
     }
