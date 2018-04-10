@@ -57,7 +57,7 @@ def create_nested_list(lines):
         if lines[end_index][2] is None:
             end_index += 1
             if lines[end_index][0] != start_star_count + 1:
-                print "ERROR: Bad input at %s. Star count does not match context." % lines[end_index][1]
+                print "ERROR: Bad input at %s. Number of stars does not match context." % lines[end_index][1]
                 sys.exit()
             while end_index < len(lines) and lines[end_index][0] > start_star_count:
                 end_index += 1
@@ -67,6 +67,33 @@ def create_nested_list(lines):
             end_index += 1
         start_index = end_index
     return level
+
+def create_submenu(level_list, context_empty_spaces, submenu_id, submenu_counter, f):
+	# if submenu_id is None, create a uncollapsable menu
+	# else, create a collapsable menu
+    if submenu_id is not None:
+        f.write(create_line_with_spaces(context_empty_spaces, "<ul class=\"collapse list-unstyled\" id=\"Submenu%d\">\n" % submenu_id))
+    else:
+        f.write(create_line_with_spaces(context_empty_spaces, "<ul class=\"list-unstyled components\">\n"))
+    for level in level_list:
+        f.write(create_line_with_spaces(context_empty_spaces + 4, "<li>\n"))
+        if isinstance(level[1], list):
+            f.write(create_line_with_spaces(context_empty_spaces + 8, "<a href=\"#Submenu%d\" data-toggle=\"collapse\" aria-expanded=\"false\">\n" % submenu_counter))
+            if level[2] is not None:
+                f.write(create_line_with_spaces(context_empty_spaces + 12, "<i class=\"glyphicon %s\"></i>\n" % level[2]))
+            f.write(create_line_with_spaces(context_empty_spaces + 12, level[0] + "\n"))
+            f.write(create_line_with_spaces(context_empty_spaces + 8, "</a>\n"))
+            submenu_counter += 1
+            create_submenu(level[1], context_empty_spaces + 8, submenu_counter - 1, submenu_counter, f)
+        else:
+            f.write(create_line_with_spaces(context_empty_spaces + 8, "<a href=\"%s\">\n" % level[1]))
+            if level[2] is not None:
+                f.write(create_line_with_spaces(context_empty_spaces + 12, "<i class=\"glyphicon %s\"></i>\n" % level[2]))
+            f.write(create_line_with_spaces(context_empty_spaces + 12, level[0] + "\n"))
+            f.write(create_line_with_spaces(context_empty_spaces + 8, "</a>\n"))
+
+        f.write(create_line_with_spaces(context_empty_spaces + 4, "</li>\n"))
+    f.write(create_line_with_spaces(context_empty_spaces, "</ul>\n"))
 
 # TO DO: should read file names from command line input
 input_fname = "test_data/menu_OOP.txt"
@@ -97,38 +124,10 @@ with open(output_fname, 'w+') as f:
     # write title
     f.write("<!-- Sidebar Holder -->\n<nav id=\"sidebar\">\n    <div id=\"sidebarCollapse\">\n        <div class=\"sidebar-header\">\n            <h1>%s</h1>\n            <strong>%s</strong>\n        </div>\n    </div>\n" % (title_line[1], title_line[2]))
 
-    # write lists
-    f.write("    <ul class=\"list-unstyled components\">\n")
-
-    context_empty_spaces = 8 #add several empty spaces before the html code
+    # write contents
+    context_empty_spaces = 4
+    submenu_id = None
     submenu_counter = 0
-    for level in nested:
-        f.write(create_line_with_spaces(context_empty_spaces, "<li>\n"))
-        if isinstance(level[1], list):
-            f.write(create_line_with_spaces(context_empty_spaces + 4, "<a href=\"#Submenu%d\" data-toggle=\"collapse\" aria-expanded=\"false\">\n" % submenu_counter))
-            if level[2] is not None:
-                f.write(create_line_with_spaces(context_empty_spaces + 8, "<i class=\"glyphicon %s\"></i>\n" % level[2]))
-            f.write(create_line_with_spaces(context_empty_spaces + 8, level[0] + "\n"))
-            f.write(create_line_with_spaces(context_empty_spaces + 4, "</a>\n"))
-            f.write(create_line_with_spaces(context_empty_spaces + 4, "<ul class=\"collapse list-unstyled\" id=\"Submenu%d\">\n" % submenu_counter))
-            submenu_counter += 1
-            for sublevel in level[1]:
-                f.write(create_line_with_spaces(context_empty_spaces + 8, "<li>\n"))
-                f.write(create_line_with_spaces(context_empty_spaces + 12, "<a href=\"#Submenu%d\" data-toggle=\"collapse\" aria-expanded=\"false\">%s</a>\n" % (submenu_counter, sublevel[0])))
-                f.write(create_line_with_spaces(context_empty_spaces + 12, "<ul class=\"collapse list-unstyled\" id=\"Submenu%d\">\n" % submenu_counter))
-                submenu_counter += 1
-                for subsublevel in sublevel[1]:
-                    f.write(create_line_with_spaces(context_empty_spaces + 16, "<li><a href=\"%s\">%s</a></li>\n" % (subsublevel[1], subsublevel[0])))
+    create_submenu(nested, context_empty_spaces, submenu_id, submenu_counter, f)
 
-                f.write(create_line_with_spaces(context_empty_spaces + 12, "</ul>\n"))
-                f.write(create_line_with_spaces(context_empty_spaces + 8, "</li>\n"))
-            f.write(create_line_with_spaces(context_empty_spaces + 4, "</ul>\n"))
-        else:
-            f.write(create_line_with_spaces(context_empty_spaces + 4, "<a href=\"%s\">\n" % level[1]))
-            if level[2] is not None:
-                f.write(create_line_with_spaces(context_empty_spaces + 8, "<i class=\"glyphicon %s\"></i>\n" % level[2]))
-            f.write(create_line_with_spaces(context_empty_spaces + 8, level[0] + "\n"))
-            f.write(create_line_with_spaces(context_empty_spaces + 4, "</a>\n"))
-
-        f.write(create_line_with_spaces(context_empty_spaces, "</li>\n"))
-    f.write("    </ul>\n</nav>\n")
+    f.write("</nav>\n")
