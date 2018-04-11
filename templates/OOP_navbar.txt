@@ -1,0 +1,300 @@
+<!-- Sidebar Holder -->
+<nav id="sidebar">
+    <div id="sidebarCollapse">
+        <div class="sidebar-header">
+            <h1>Objected Oriented Programs</h1>
+            <strong>OOP</strong>
+        </div>
+    </div>
+    <ul class="list-unstyled components">
+        <li>
+            <a href="https://gcallah.github.io/OOP/index.html">
+                <i class="glyphicon glyphicon-home"></i>
+                Home
+            </a>
+        </li>
+        <li>
+            <a href="#Submenu0" data-toggle="collapse" aria-expanded="false">
+                <i class="glyphicon glyphicon-duplicate"></i>
+                Book Contents
+            </a>
+            <ul class="collapse list-unstyled" id="Submenu0">
+                <li>
+                    <a href="#Submenu1" data-toggle="collapse" aria-expanded="false">
+                        Preface
+                    </a>
+                    <ul class="collapse list-unstyled" id="Submenu1">
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Forth Edition
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Third Edition
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Second Edition
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                First Edition
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#Submenu2" data-toggle="collapse" aria-expanded="false">
+                        Part I: Introductory Materials
+                    </a>
+                    <ul class="collapse list-unstyled" id="Submenu2">
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Notes to the Reader
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                A Tour of C++: The Basics
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                A Tour of C++: Abstraction Mechanisms
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                A Tour of C++: Containers and Algorithms
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                A Tour of C++: Concurrency and Utilities
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#Submenu3" data-toggle="collapse" aria-expanded="false">
+                        Part II: Basic Facilities
+                    </a>
+                    <ul class="collapse list-unstyled" id="Submenu3">
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Types and Declarations
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Pointers, Arrays, and References
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Structures, Unions, and Enumerations
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Statements
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Expressions
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Select Operations
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Functions
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Exception Handling
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Namespaces
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Source Files and Programs
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#Submenu4" data-toggle="collapse" aria-expanded="false">
+                        Part III: Abstraction Mechanisms
+                    </a>
+                    <ul class="collapse list-unstyled" id="Submenu4">
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Classes
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Construction, Cleanup, Copy, and Move
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Overloading
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Special Operators
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Derived Classes
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Class Hierarchies
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Run-Time Type Information
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Templates
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Generic Programming
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Specialization
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Instantiation
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Templates and Hierarchies
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Metaprogramming
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                A Matrix Design
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#Submenu5" data-toggle="collapse" aria-expanded="false">
+                        Part IV: The Standard Library
+                    </a>
+                    <ul class="collapse list-unstyled" id="Submenu5">
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Standard Library Summary
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                STL Containers
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                STL Algorithms
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                STL Iterators
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Memory and Resources
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Utilities
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Strings
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Regular Expressions
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                I/O Streams
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Locales
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Numerics
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Concurrency
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Threads and Tasks
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                The C Standard Library
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://gcallah.github.io/OOP/index.html">
+                                Compatibility
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</nav>
