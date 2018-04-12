@@ -96,8 +96,8 @@ def create_submenu(level_list, context_empty_spaces, submenu_id, submenu_counter
     f.write(create_line_with_spaces(context_empty_spaces, "</ul>\n"))
 
 # TO DO: should read file names from command line input
-input_fname = "test_data/menu_OOP.txt"
-output_fname = "create_sidebar_output.txt"
+input_fname = sys.argv[-2]
+output_fname = sys.argv[-1]
 with open(input_fname) as f:
     lines = f.readlines()
 lines = [line.rstrip('\n') for line in lines]
