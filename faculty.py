@@ -2,25 +2,26 @@
 # program to process SJC CVS file for faculty.
 
 import csv
+from typing import List
 
-NAME = 0
-CAMPUS = 1
-DEPT = 2
-RANK = 3
-URL = 4
+NAME = 0 # type: int
+CAMPUS = 1 # type: int
+DEPT = 2 # type: int
+RANK = 3 # type: int
+URL = 4 # type: int
 
 with open("/home/gcallah/utils/faculty.csv","r") as f_in:
     freader = csv.reader(f_in)
     with open("/home/gcallah/utils/out.csv","w") as f_out:
         for row in freader:
            # nms = "Judy A. Cardoza"
-            nms = row[NAME].split()
-            no_mi = [cln for cln in nms if "." not in cln]
+            nms = row[NAME].split() # type: List[str]
+            no_mi = [cln for cln in nms if "." not in cln] # type: List[str]
             if len(no_mi) < 2:
                 print(no_mi)
                 continue
             # print("No mi:" + str(no_mi))
-            no_titles = no_mi
+            no_titles = no_mi # type: List[str]
             if len(no_mi) >= 2:
                 no_titles = no_mi[0:2]
             # print("No titles:" + str(no_titles))

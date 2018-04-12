@@ -6,8 +6,8 @@ etc.
 import sys
 import random
 
-DELIM = '#'
-CORR_MARK = '^'
+DELIM = '#' # type: str
+CORR_MARK = '^' # type: str
 
 
 def ask(msg):

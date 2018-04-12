@@ -10,35 +10,36 @@ from html.parser import HTMLParser
 from urllib.parse import urlparse, urljoin
 import re
 import argparse
+from typing import List,Set
 
-ARG_ERROR = 1
-PARSE_ERROR = 2
-MAX_LINE = 80
+ARG_ERROR = 1 # type: int
+PARSE_ERROR = 2 # type: int
+MAX_LINE = 80 # type: int
 
-tag_stack = []
-line_no = 0
-saw_error = False
+tag_stack = [] # type: List[str]
+line_no = 0 # type: int
+saw_error = False # type: bool
 
 void_tags = {"area", "base", "br", "col", "hr", "img", "input", "link",
-             "meta", "param"}
+             "meta", "param"} # type: Set[str]
 
-def line_msg():
+def line_msg() -> str:
     return " at line number " + str(line_no)
 
 class OurHTMLParser(HTMLParser):
-    def __init__(self):
+    def __init__(self) -> None:
         self.is_in_script_tag = False
         super(OurHTMLParser, self).__init__(convert_charrefs=False)
-
-    def handle_starttag(self, tag, attrs):
+    #There is no definition for attrs in this file.
+    def handle_starttag(self, tag: str, attrs: object) -> None:
         if tag == "script":
             self.is_in_script_tag = True
 
         if tag not in void_tags:
             tag_stack.append(tag)
 
-    def handle_endtag(self, close_tag):
-        global saw_error
+    def handle_endtag(self, close_tag: str) -> None:
+        global saw_error # type :bool
         if len(tag_stack) == 0:
             print("ERROR: unmatched close tag "
                   + close_tag + "'" + line_msg())
@@ -54,11 +55,11 @@ class OurHTMLParser(HTMLParser):
         if close_tag is "script":
             self.is_in_script_tag = True
 
-    def handle_data(self, data):
+    def handle_data(self, data: str) -> None:
         """
         Here we can look for long lines or other such problems.
         """
-        global saw_error
+        global saw_error # type :bool
         # print(data)
         if len(data) > MAX_LINE:
             print("WARNING: long line found" + line_msg())

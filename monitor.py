@@ -7,13 +7,13 @@ from html.parser import HTMLParser
 import smtplib
 import requests
 
-HTTP_SUCCESS = "200"
-SMTP_SERVER = 'smtp.mail.me.com'
-PORT = 587
-LOGIN_NAME = "gcallah@mac.com"
-PASSWD = "jkhjkhjkhjkh"
+HTTP_SUCCESS = "200" # type: str
+SMTP_SERVER = 'smtp.mail.me.com' # type: str
+PORT = 587  # type: int
+LOGIN_NAME = "gcallah@mac.com" # type: str
+PASSWD = "jkhjkhjkhjkh" # type: str
 
-url = ""
+url = "" # type: str
 
 if len(sys.argv) < 2:
     print("Must supply server URL to check.")
@@ -21,7 +21,7 @@ if len(sys.argv) < 2:
 else:
     url = sys.argv[1]
 
-page = requests.get(url)
+page = requests.get(url) # type: object
 # if we need the content, it is in: page.content
 
 if HTTP_SUCCESS not in str(page):

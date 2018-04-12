@@ -3,17 +3,17 @@
 # Writes to stdout.
 
 import sys
-
+from typing import TextIO,List
 if len(sys.argv) < 2:
     print("Must supply an HTML file.")
     exit(1)
 
-html_file = sys.argv[1]
+html_file = sys.argv[1] # type: str
 
 # [Prof] - the file name has to come from command line
 # f = open('C:/Users/VivekPC/Desktop/about.html',"r")
-f = open(html_file, "r")
-input = f.readlines()
+f = open(html_file, "r") # type: TextIO
+input = f.readlines() # type: List[str]
 f.close()
 
 # Testing
@@ -24,12 +24,12 @@ f.close()
 # remove list items from <!DOCTYPE html> to next 22 lines (inclusive)
 # [Prof] - we need to go until we start seeing text that wil appeR ON SCREEN
 # [Prof] - These tags could include: <hn> - where n can be 1 - 5 or <p> or <figure> or <img>
-pos1 = 0
+pos1 = 0 # type: int
 for i in range(len(input)):
     if "<!DOCTYPE html>" in input[i]:
         pos1 = i
 
-pos2 = 0
+pos2 = 0 # type: int
 for i in range(len(input)):
     if "<h1>" in input[i] or "<p>" in input[i] or "<h2>" in input[i] \
         or "<h3>" in input[i] or "<h4>" in input[i] or "<h5>" in input[i]\
@@ -43,7 +43,7 @@ del input[pos1:pos2]
 
 # Removing tag </html>
 # [Prof] - remove from </body> onwards
-pos3 = 0
+pos3 = 0 # type: int
 for line in range(len(input)):
   if  "</body>" in input[line]:
     pos3 = line
@@ -51,7 +51,7 @@ for line in range(len(input)):
 del input[pos3:]
 
 
-output = []
+output = []  # type: List[str]
 output.append("""{% extends "base.html" %}""""\n")
 output.append("""{% block content %}""""\n")
 output.append("""<div class="module">""""\n")
@@ -59,6 +59,7 @@ for i in range(len(input)):
     output.append(input[i])
 
 output.append("""{% endblock content %}""")
+# mypy code find type error here: line is defined as int, but it need to be string in this expression
 for line in output:
     print(line, end="")
 
