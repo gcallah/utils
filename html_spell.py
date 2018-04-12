@@ -64,6 +64,7 @@ line_no = 0
 saw_error = False
 d = set()
 added_words = set()
+code_tag_on = False
 
 # Loading words from main Dictionary into the python set data structure
 with open(main_dict, 'r') as f:
@@ -86,8 +87,16 @@ def line_msg():
 
 with open(file_nm, "r", ) as f:
     for line in f:
+        if "<code>" in line:
+            code_tag_on = True
+
+        if "</code>" in line:
+            code_tag_on = False
+            continue
+
+        if not code_tag_on:
+            parser.feed(line)
         line_no += 1
-        parser.feed(line)
 
 with open(custom_dict, 'a+') as f:
     f.writelines(i + '\n' for i in added_words)
