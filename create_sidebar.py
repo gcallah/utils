@@ -1,76 +1,39 @@
 import sys
-
-def parseLine(line):
-    if not line.strip():
-        return [-1, "", None, None]
-
-    # count stars
-    star_count = 0
-    for char in line:
-        if char == '*':
-            star_count += 1
-        else:
-            break
-    # save title and section name
-    splitted_line = line.split('^')
-    if star_count == 0:
-        # for title
-        if len(splitted_line) != 2:
-            print "ERROR: Bad input at %s. You must specify full-title and short-title." % line
-            sys.exit()
-        return [star_count, splitted_line[0], splitted_line[1]]
-    else:
-        section_name = splitted_line[0][star_count:]
-        # save url and glyphicon if there is one
-        # returns [star_count, section_name, url, glyphicon]
-        if len(splitted_line) > 3:
-            print "ERROR: Bad input at %s. At most 3 ^ separators are accepted." % line
-            sys.exit()
-        elif len(splitted_line) > 2:
-            return [star_count, section_name, splitted_line[1], splitted_line[2]]
-        elif len(splitted_line) > 1:
-            if splitted_line[1].startswith("glyphicon"):
-                return [star_count, section_name, None, splitted_line[1]]
-            else:
-                return [star_count, section_name, splitted_line[1], None]
-        else:
-            return [star_count, section_name, None, None]
+from pylib.parse_course import *
 
 
 def create_line_with_spaces(n, str):
     return ' ' * n + str
 
-def create_nested_list(lines):
-    if len(lines) == 0:
+def create_nested_list(items):
+    if len(items) == 0:
         print "UNEXPECTED ERROR: Empty list in recursion"
         sys.exit()
-    start_star_count = lines[0][0]
-    if start_star_count == 0:
-        print "ERROR: Bad input at %s. Star count should be at least 1 in contents." % lines[0]
+    start_ind_level = items[0].ind_level
+    if start_ind_level == 0:
+        print "ERROR: Bad input at %s. Indent level should be at least 1 in contents." % items[0]
         sys.exit()
     start_index = 0
     end_index = 0
     level = []
-    while end_index < len(lines):
-        if not lines[end_index][1].strip():
+    while end_index < len(items):
+        if items[end_index].url is None:
             end_index += 1
-        if lines[end_index][2] is None:
-            end_index += 1
-            if lines[end_index][0] != start_star_count + 1:
-                print "ERROR: Bad input at %s. Number of stars does not match context." % lines[end_index][1]
+            if items[end_index].ind_level != start_ind_level + 1:
+                print "ERROR: Bad input at %s. Indent level does not match context." % items[end_index]
                 sys.exit()
-            while end_index < len(lines) and lines[end_index][0] > start_star_count:
+            while end_index < len(items) and items[end_index].ind_level > start_ind_level:
                 end_index += 1
-            level.append([lines[start_index][1], create_nested_list(lines[start_index + 1:end_index]), lines[start_index][3]])
+            level.append([items[start_index].title, create_nested_list(items[start_index + 1:end_index]), items[start_index].url])
         else:
-            level.append(lines[end_index][1:4])
+            level.append([items[end_index].title, items[end_index].url, items[end_index].glyphicon])
             end_index += 1
         start_index = end_index
     return level
 
 def create_submenu(level_list, context_empty_spaces, submenu_id, submenu_counter, f):
-	# if submenu_id is None, create a uncollapsable menu
-	# else, create a collapsable menu
+    # if submenu_id is None, create a uncollapsable menu
+    # else, create a collapsable menu
     if submenu_id is not None:
         f.write(create_line_with_spaces(context_empty_spaces, "<ul class=\"collapse list-unstyled\" id=\"Submenu%d\">\n" % submenu_id))
     else:
@@ -95,34 +58,35 @@ def create_submenu(level_list, context_empty_spaces, submenu_id, submenu_counter
         f.write(create_line_with_spaces(context_empty_spaces + 4, "</li>\n"))
     f.write(create_line_with_spaces(context_empty_spaces, "</ul>\n"))
 
-# TO DO: should read file names from command line input
+# TO DO: check sys argv
 input_fname = sys.argv[-2]
 output_fname = sys.argv[-1]
-with open(input_fname) as f:
-    lines = f.readlines()
-lines = [line.rstrip('\n') for line in lines]
-lines = [line.rstrip('\r') for line in lines] # for windows machines
 
-parsed_lines = []
-for line in lines:
-    parsed_line = parseLine(line)
-    # discard empty lines
-    if parsed_line[0] > -1:
-        parsed_lines.append(parsed_line)
+try:
+    course_items = parse_course(input_fname)
+except InputError as ie:
+    print "ERROR: Bad input at %s. %s" % (ie.value, ie.message)
+    sys.exit()
 
-title_line = parsed_lines[0]
+for course_item in course_items:
+    course_item.print_item()
+
+title_item = course_items[0]
 # title is required
-if title_line[0] != 0:
-    print "ERROR: Bad input. No title found. Add a new line of <full-title>^<short-title> to the head of your input file."
+if title_item.ind_level != 0:
+    print "ERROR: Bad input. No title found."
+    sys.exit()
+elif title_item.short_title is None:
+    print "ERROR: Bad input. Short title is required for navbar title."
     sys.exit()
 
 # create a nested list with contents
-nested = create_nested_list(parsed_lines[1:])
+nested = create_nested_list(course_items[1:])
 
 # write generated sidebar
 with open(output_fname, 'w+') as f:
     # write title
-    f.write("<!-- Sidebar Holder -->\n<nav id=\"sidebar\">\n    <div id=\"sidebarCollapse\">\n        <div class=\"sidebar-header\">\n            <h1>%s</h1>\n            <strong>%s</strong>\n        </div>\n    </div>\n" % (title_line[1], title_line[2]))
+    f.write("<!-- Sidebar Holder -->\n<nav id=\"sidebar\">\n    <div id=\"sidebarCollapse\">\n        <div class=\"sidebar-header\">\n            <h1>%s</h1>\n            <strong>%s</strong>\n        </div>\n    </div>\n" % (title_item.title, title_item.short_title))
 
     # write contents
     context_empty_spaces = 4
