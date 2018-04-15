@@ -58,7 +58,8 @@ def create_submenu(level_list, context_empty_spaces, submenu_id, submenu_counter
         f.write(create_line_with_spaces(context_empty_spaces + 4, "</li>\n"))
     f.write(create_line_with_spaces(context_empty_spaces, "</ul>\n"))
 
-# TO DO: check sys argv
+if len(sys.argv) != 2:
+	print "ERROR: Wrong number of arguments. Please specify input file name and output file name."
 input_fname = sys.argv[-2]
 output_fname = sys.argv[-1]
 
