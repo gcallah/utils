@@ -7,6 +7,7 @@ import sys
 from html.parser import HTMLParser
 import string
 import re
+import os.path
 
 ARG_ERROR = 1
 SPELL_ERROR = 2
@@ -51,10 +52,20 @@ class OurHTMLParser(HTMLParser):
                         print("Invalid response, Please try again!")
 
 
-parser = OurHTMLParser()
-
 if len(sys.argv) != 4:
     print("USAGE: html_spell.py fileToProcess mainDictionary customDictionary")
+    exit(ARG_ERROR)
+
+if not os.path.isfile(sys.argv[1]):
+    print(sys.argv[1] + "is not a file")
+    exit(ARG_ERROR)
+
+if not os.path.isfile(sys.argv[2]):
+    print(sys.argv[2] + "is not a file")
+    exit(ARG_ERROR)
+
+if not os.path.isfile(sys.argv[3]):
+    print(sys.argv[3] + "is not a file")
     exit(ARG_ERROR)
 
 file_nm = sys.argv[1]
@@ -65,8 +76,11 @@ saw_error = False
 d = set()
 added_words = set()
 code_tag_on = False
+parser = OurHTMLParser()
+
 
 # Loading words from main Dictionary into the python set data structure
+
 with open(main_dict, 'r') as f:
     for line in f:
         d.add(line.split()[0].lower())
