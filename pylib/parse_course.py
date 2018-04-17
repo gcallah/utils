@@ -1,15 +1,26 @@
+
+MIN_FLDS = 2
+MAX_FLDS = 5
+SEP = '^'
+INDENT_LEVEL = 0
+TITLE = 1
+URL = 2
+SHORT_TITLE = 3
+GLYPHICON = 4
+
 class CourseItem:
-    def __init__(self, ind_level, title, url, short_title, glyphicon):
-        self.ind_level = ind_level
-        self.title = title
-        self.url = url
-        self.short_title = short_title
-        self.glyphicon = glyphicon
+    def __init__(self, flds):
+        self.ind_level = flds[INDENT_LEVEL]
+        self.title = flds[TITLE]
+        self.url = flds[URL]
+        self.short_title = flds[SHORT_TITLE]
+        self.glyphicon = flds[GLYPHICON]
 
     # for debug
     def print_item(self):
-        print_list = [self.ind_level, self.title, self.url, self.short_title, self.glyphicon]
-        print print_list
+        print_list = [self.ind_level, self.title, self.url,
+                      self.short_title, self.glyphicon]
+        print(print_list)
 
 class InputError(Exception):
     def __init__(self, value, message):
@@ -17,9 +28,6 @@ class InputError(Exception):
         self.message = message
 
 def parse_course(file):
-    separator = '^'
-    min_length = 2
-    max_length = 5
     with open(file) as f:
         lines = f.readlines()
         lines = [line.rstrip('\n') for line in lines]
@@ -31,33 +39,34 @@ def parse_course(file):
             if not line.strip():
                 continue
             # split with separator
-            splitted_line = line.split(separator)
-            for i in range(0, len(splitted_line)):
-                if not splitted_line[i].strip():
-                    splitted_line[i] = None
-            # make sure length of splitted line is in valid range
-            if len(splitted_line) < min_length or len(splitted_line) > max_length:
-                raise InputError(line, "Wrong number of arguments. Your input should have [%d, %d] arguments separated by %s." % (min_length, max_length, separator))
+            flds = line.split(SEP)
+            for i in range(0, len(flds)):
+                if not flds[i].strip():
+                    flds[i] = None
+            for i in range(len(flds), MAX_FLDS):
+                flds.append(None)
+
+            num_flds = len(flds)
+            # make sure # of fields is in valid range
+            if num_flds < MIN_FLDS or num_flds > MAX_FLDS:
+                raise InputError(line,
+                                 "You have %d fields. Your input \
+should have between %d and %d fields \
+separated by %s."
+                                 % (num_flds, MIN_FLDS, MAX_FLDS, SEP))
             else:
                 # make sure indent level is present and has a valid value
-                if splitted_line[0] is None:
+                if flds[INDENT_LEVEL] is None:
                     raise InputError(line, "Indent level is required.")
                 else:
-                    try:
-                        ind_level = int(splitted_line[0])
-                        if ind_level < 0:
-                            raise ValueError
-                    except ValueError:
-                        raise InputError(line, "Indent level must be a non-negative integer.")
+                    ind_level = int(flds[INDENT_LEVEL])
+                    if ind_level < 0:
+                        raise InputError(line,
+                                         "Indent level is " + str(ind_level) +
+                                         "; it must be a non-negative integer.")
                 # make sure title is present
-                if splitted_line[1] is None:
+                if flds[TITLE] is None:
                     raise InputError(line, "Title is required.")
                 # create a CourseItem object
-                if len(splitted_line) == 3:
-                    course_items.append(CourseItem(int(splitted_line[0]), splitted_line[1], splitted_line[2], None, None))
-                elif len(splitted_line) == 4:
-                    course_items.append(CourseItem(int(splitted_line[0]), splitted_line[1], splitted_line[2], splitted_line[3], None))
-                else:
-                    course_items.append(CourseItem(int(splitted_line[0]), splitted_line[1], splitted_line[2], splitted_line[3], splitted_line[4]))
-
+                course_items.append(CourseItem(flds))
     return course_items
