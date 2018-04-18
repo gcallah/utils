@@ -58,8 +58,8 @@ def create_submenu(level_list, context_empty_spaces, submenu_id, submenu_counter
         f.write(create_line_with_spaces(context_empty_spaces + 4, "<li>\n"))
         if isinstance(level[1], list):
             f.write(create_line_with_spaces(context_empty_spaces + 8,
-                    "<a href=\"#Submenu%d\" data-toggle=\"collapse\" " +
-                    "aria-expanded=\"false\">\n" % submenu_counter))
+                    "<a href=\"#Submenu%d\" data-toggle=\"collapse\"  \
+aria-expanded=\"false\">\n" % submenu_counter))
             if level[2] is not None:
                 f.write(create_line_with_spaces(context_empty_spaces + 12,
                         "<i class=\"glyphicon %s\"></i>\n" % level[2]))

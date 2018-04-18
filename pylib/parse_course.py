@@ -10,7 +10,7 @@ GLYPHICON = 4
 
 class CourseItem:
     def __init__(self, flds):
-        self.ind_level = flds[INDENT_LEVEL]
+        self.ind_level = int(flds[INDENT_LEVEL])
         self.title = flds[TITLE]
         self.url = flds[URL]
         self.short_title = flds[SHORT_TITLE]
