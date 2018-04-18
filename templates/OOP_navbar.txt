@@ -2,7 +2,7 @@
 <nav id="sidebar">
     <div id="sidebarCollapse">
         <div class="sidebar-header">
-            <h1>Objected Oriented Programs</h1>
+            <h1>Objected-Oriented Programs</h1>
             <strong>OOP</strong>
         </div>
     </div>

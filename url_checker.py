@@ -87,13 +87,13 @@ class OurHTMLParser(HTMLParser):
                     + "; " + link)
 
 if __name__ == '__main__':
-    # if you want url checking invoke program with -u flag
+    # if you want invalid url to throw errors invoke program with -e flag
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument("html_filename")
-    arg_parser.add_argument("-u", action = "store_true")
+    arg_parser.add_argument("-e", action = "store_true")
     arg_parser.add_argument('relative_link_header')
     args = arg_parser.parse_args()
-    url_check = args.u
+    url_error = args.e
     relative_link_header = args.relative_link_header
 
     parser = OurHTMLParser()
@@ -104,8 +104,7 @@ if __name__ == '__main__':
         line_no += 1
         parser.feed(line)
 
-    if url_check:
-        parser.check_urls_accessibility(parser.links, relative_link_header)
+    parser.check_urls_accessibility(parser.links, relative_link_header)
 
     if saw_error:
         exit(PARSE_ERROR)

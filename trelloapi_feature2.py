@@ -1,3 +1,10 @@
+"""
+Script to send an email to professor whenever
+any cards in the DevOps course boards hits
+testing list
+This script will be executed every hour
+"""
+
 import requests
 import json
 import dateutil.parser
@@ -5,17 +12,17 @@ import datetime
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+
 # extracting the present time
 time_now = datetime.datetime.utcnow()
 
 # setting a days of inactivity limit: 1 hour
-seconds_of_inactivity_limit = 3600
+seconds_of_inactivity_limit = 3600 # default value: 1 hour = 3600 seconds
 
-# trying to read all the boards where I am a member
+# trying to read all the boards where I (Datta) am a member
 url_member = "https://api.trello.com/1/members/dsd2981"
 querystring = {"key":"b282952c1211b7eb3c16b7c3adfbbf7f","token":"12f1ebbfd62746257dbfb66c07ce42d1240d0a0cf0d1959b5706f411edd6315d"}
 response_member = requests.request("GET", url_member, params=querystring)
-
 
 # converting the html object to a json object for easy convenience of handling the object
 data_member = json.loads(response_member.text)
@@ -58,13 +65,17 @@ for i in range(0, len(board_ids)):
             message += data_board_cards[i]['name'] + " " + data_board_cards[i]['shortUrl'] +"\n"
     message += "\n"
 
-
 # set up the SMTP server
 s = smtplib.SMTP(host='smtp.gmail.com', port=587)
 s.starttls()
-s.login(user="devopsnyu@gmail.com", password="***********")
 
-to_contacts = ["dsd298@nyu.edu", "ejc369@nyu.edu"]
+# reading login credentials from a EMAIL_INFO.txt file
+# Format of EMAIL_INFO.txt file: <email_id> <password>
+text_file = open("EMAIL_INFO.txt","r")
+lines = text_file.read().split(' ')
+s.login(user=lines[0], password=lines[1])
+
+to_contacts = ["dsd298@nyu.edu"]
 for i in range(0, len(to_contacts)):
     msg = MIMEMultipart()       # create a message
     # message = "this is a test"
@@ -77,4 +88,6 @@ for i in range(0, len(to_contacts)):
 
     s.send_message(msg)
     del msg
+
+# closing SMTP connection
 s.quit()

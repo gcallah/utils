@@ -1,4 +1,4 @@
-Objected Oriented Programs^OOP
+Objected-Oriented Programs^OOP
 *Home^https://gcallah.github.io/OOP/index.html^glyphicon-home
 *Book Contents^glyphicon-duplicate
 **Preface

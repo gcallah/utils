@@ -1,6 +1,9 @@
-# statement of what program does here.
-# Need to refactor the code: better functional approach required
-import sys
+"""
+Script to send an email to professor whenever
+any cards in the DevOps course boards did not
+move from last 14 days
+This script can be executed every EOD
+"""
 import requests
 import json
 import dateutil.parser
@@ -9,22 +12,11 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+# extracting the present time
+time_now = datetime.datetime.utcnow()
 
 # setting a days of inactivity limit
-days_of_inactivity_limit = 14  # default value
-# this command line handling should be made slicker with falgs, etc.
-#  see html_checker.py for an example.
-if len(sys.argv) >= 2:
-    days_of_inactivity_limit = int(sys.argv[1])
-
-# this file (not in the repo!) should contain email name / password:
-EMAIL_INFO = "trello_email.txt"
-
-with open(EMAIL_INFO, "r") as email_info:
-    pass
-
-# extracting the present time
-time_now = datetime.datetime.now()
+days_of_inactivity_limit = 14 #default value: 14 days
 
 # trying to read all the boards where I am a member
 url_member = "https://api.trello.com/1/members/dsd2981"
@@ -63,7 +55,7 @@ for i in range(0, len(board_ids)):
 
         # calculating the time difference between present time and card's latest activity time
         time_difference = time_now - card_latest_activity_timestamp
-
+#         print(time_difference.seconds)
         # extracting name of list of card using the list id
         url_card_list = "https://api.trello.com/1/lists/" + data_board_cards[i]['idList'] + "/name"
         response_card_list = requests.request("GET", url_card_list, params=querystring)
@@ -76,15 +68,18 @@ for i in range(0, len(board_ids)):
             message += data_board_cards[i]['name'] + " " + data_board_cards[i]['shortUrl'] + "\n"
     message += "\n"
 
+message += "Note: Removed cards in Wish List and Done List"
+
 # set up the SMTP server
 s = smtplib.SMTP(host='smtp.gmail.com', port=587)
 s.starttls()
 
-# this should be read from a local config file:
-s.login(user="devopsnyu@gmail.com", password="security_risk!")
-# that's not the real password: just noting we have to change this.
+# reading login credentials from a EMAIL_INFO.txt file
+# Format of EMAIL_INFO.txt file: <email_id> <password>
+text_file = open("EMAIL_INFO.txt","r")
+lines = text_file.read().split(' ')
+s.login(user=lines[0], password=lines[1])
 
-# this should come from a file or ENV variable:
 to_contacts = ["dsd298@nyu.edu", "ejc369@nyu.edu"]
 for i in range(0, len(to_contacts)):
     msg = MIMEMultipart()       # create a message
@@ -98,6 +93,6 @@ for i in range(0, len(to_contacts)):
 
     s.send_message(msg)
     del msg
-s.quit()
 
-message += "Note: Removed cards in Wish List and Done List"
+# closing SMTP connection
+s.quit()

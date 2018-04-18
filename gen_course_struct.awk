@@ -18,7 +18,8 @@ BEGIN {
     print title
     print $2
     new_file = $2
-    sub(/html/, "ptml", new_file)  # change the extension
+    new_file = sub(/html/, "ptml", new_file)  # change the extension
+    print new_file
     new_file = "html_src/" new_file
     if (system( "[ -f " new_file " ] ") == 0)
         print new_file " already exists."
