@@ -10,11 +10,35 @@ GLYPHICON = 4
 
 class CourseItem:
     def __init__(self, flds):
+        # make sure indent level is present and has a valid value
+        if flds[INDENT_LEVEL] is None:
+            flds = ["" if fld is None else fld for fld in flds]
+            raise InputError(SEP.join(flds), "Indent level is required.")
+        else:
+            try:
+                ind_level = int(flds[INDENT_LEVEL]) # if flds[INDENT_LEVEL] is not a number, say 'a' or '!', this will raise a ValueError
+                if ind_level < 0:
+                    raise ValueError
+            except ValueError:
+                flds = ["" if fld is None else fld for fld in flds]
+                raise InputError(SEP.join(flds),
+                                 "Indent level is " + flds[INDENT_LEVEL] +
+                                 "; it must be a non-negative integer.")
+        # make sure title is present
+        if flds[TITLE] is None:
+            raise InputError(flds, "Title is required.")
         self.ind_level = int(flds[INDENT_LEVEL])
         self.title = flds[TITLE]
         self.url = flds[URL]
         self.short_title = flds[SHORT_TITLE]
         self.glyphicon = flds[GLYPHICON]
+
+    # convert the object into a string separated by SEP
+    def to_string(self):
+        flds = [str(self.ind_level), self.title, self.url,
+                self.short_title, self.glyphicon]
+        flds = ["" if fld is None else fld for fld in flds]
+        return SEP.join(flds)
 
     # for debug
     def print_item(self):
@@ -55,18 +79,6 @@ should have between %d and %d fields \
 separated by %s."
                                  % (num_flds, MIN_FLDS, MAX_FLDS, SEP))
             else:
-                # make sure indent level is present and has a valid value
-                if flds[INDENT_LEVEL] is None:
-                    raise InputError(line, "Indent level is required.")
-                else:
-                    ind_level = int(flds[INDENT_LEVEL])
-                    if ind_level < 0:
-                        raise InputError(line,
-                                         "Indent level is " + str(ind_level) +
-                                         "; it must be a non-negative integer.")
-                # make sure title is present
-                if flds[TITLE] is None:
-                    raise InputError(line, "Title is required.")
                 # create a CourseItem object
                 course_items.append(CourseItem(flds))
     return course_items

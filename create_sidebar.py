@@ -20,16 +20,25 @@ def create_nested_list(items):
     start_ind_level = items[0].ind_level
     if start_ind_level == 0:
         print("ERROR: Bad input at %s. Indent level should be at least 1 in contents."
-              % items[0])
+              % items[0].to_string())
         sys.exit(EMPTY_LIST)
     start_index = 0
     curr_index = 0
     level = []
-    while curr_index < len(items) - 1:
+    while curr_index < len(items):
+        # make sure items of THIS level has the same indent level as the starting one
+        if items[curr_index].ind_level != start_ind_level:
+            print("ERROR: Bad input at %s. Indent level does not match context." % items[curr_index].to_string())
+            sys.exit(INDENT_MISMATCH)
         if items[curr_index].url is None:
+            # handles empty menu here
+            if curr_index + 1 == len(items) or items[curr_index + 1].ind_level == start_ind_level:
+                print("ERROR: Empty menu found at %s." % items[curr_index].to_string())
+                sys.exit()
             curr_index += 1
-            if int(items[curr_index].ind_level) != start_ind_level + 1:
-                print("ERROR: Indent level does not match context.")
+            # make sure the item of NEXT level has the expected indent level
+            if items[curr_index].ind_level != start_ind_level + 1:
+                print("ERROR: Bad input at %s. Indent level does not match context." % items[curr_index].to_string())
                 sys.exit(INDENT_MISMATCH)
             while (curr_index < len(items) and
                    items[curr_index].ind_level > start_ind_level):
@@ -44,30 +53,32 @@ def create_nested_list(items):
         start_index = curr_index
     return level
 
-def create_submenu(level_list, context_empty_spaces, submenu_id, submenu_counter, f):
-    # if submenu_id is None, create a uncollapsable menu
+def create_submenu(level_list, context_empty_spaces, submenu_id, f):
+    # if submenu_id is None, create an uncollapsable menu
     # else, create a collapsable menu
+    submenu_counter = 0
     if submenu_id is not None:
         f.write(create_line_with_spaces(context_empty_spaces,
                 "<ul class=\"collapse list-unstyled\" id=\"Submenu%d\">\n"
                 % submenu_id))
     else:
+        submenu_id = 0
         f.write(create_line_with_spaces(context_empty_spaces,
                 "<ul class=\"list-unstyled components\">\n"))
     for level in level_list:
         f.write(create_line_with_spaces(context_empty_spaces + 4, "<li>\n"))
         if isinstance(level[1], list):
+            submenu_counter += 1
             f.write(create_line_with_spaces(context_empty_spaces + 8,
                     "<a href=\"#Submenu%d\" data-toggle=\"collapse\"  \
-aria-expanded=\"false\">\n" % submenu_counter))
+aria-expanded=\"false\">\n" % (submenu_id + submenu_counter)))
             if level[2] is not None:
                 f.write(create_line_with_spaces(context_empty_spaces + 12,
                         "<i class=\"glyphicon %s\"></i>\n" % level[2]))
             f.write(create_line_with_spaces(context_empty_spaces + 12, level[0] + "\n"))
             f.write(create_line_with_spaces(context_empty_spaces + 8, "</a>\n"))
-            submenu_counter += 1
-            create_submenu(level[1], context_empty_spaces + 8,
-                           submenu_counter - 1, submenu_counter, f)
+            submenu_counter += create_submenu(level[1], context_empty_spaces + 8,
+                           submenu_id + submenu_counter, f)
         else:
             f.write(create_line_with_spaces(context_empty_spaces + 8,
                                             "<a href=\"%s\">\n" % level[1]))
@@ -76,9 +87,9 @@ aria-expanded=\"false\">\n" % submenu_counter))
                         "<i class=\"glyphicon %s\"></i>\n" % level[2]))
             f.write(create_line_with_spaces(context_empty_spaces + 12, level[0] + "\n"))
             f.write(create_line_with_spaces(context_empty_spaces + 8, "</a>\n"))
-
         f.write(create_line_with_spaces(context_empty_spaces + 4, "</li>\n"))
     f.write(create_line_with_spaces(context_empty_spaces, "</ul>\n"))
+    return submenu_counter
 
 if len(sys.argv) < 2:
     print("ERROR: Please specify input file name and output file name.")
@@ -95,17 +106,30 @@ except InputError as ie:
 for course_item in course_items:
     course_item.print_item()
 
+if len(course_items) == 0:
+    print("WARNING: Empty input file.")
+    sys.exit()
+
 title_item = course_items[TITLE]
 # title is required
-if int(title_item.ind_level) != 0:
+if title_item.ind_level != 0:
     print("ERROR: Title indent level is: " + str(title_item.ind_level))
     sys.exit()
 elif title_item.short_title is None:
     print("ERROR: Short title is required for navbar title.")
     sys.exit()
 
-# create a nested list with contents
-nested = create_nested_list(course_items[1:])
+if len(course_items) > 1:
+    # make sure content indent level start with 1
+    if course_items[TITLE + 1].ind_level != 1:
+        print("ERROR: Bad input at %s. Content indent level should start with 1." % course_items[TITLE + 1].to_string())
+        sys.exit()
+
+    # create a nested list with contents
+    nested = create_nested_list(course_items[1:])
+else:
+    # if there is only one title line in the input file, just write the title
+    nested = []
 
 # write generated sidebar
 with open(output_fname, 'w+') as f:
@@ -121,7 +145,6 @@ with open(output_fname, 'w+') as f:
     # write contents
     context_empty_spaces = 4
     submenu_id = None
-    submenu_counter = 0
-    create_submenu(nested, context_empty_spaces, submenu_id, submenu_counter, f)
+    create_submenu(nested, context_empty_spaces, submenu_id, f)
 
     f.write("</nav>\n")
