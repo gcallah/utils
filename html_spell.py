@@ -9,28 +9,33 @@ import string
 import re
 import os.path
 
-ARG_ERROR = 1
-SPELL_ERROR = 2
+try:
+    from typing import List,Set
+except ImportError:
+    print("WARNING: Typing module is not found! Kindly install the latest version of python!")
+
+ARG_ERROR = 1 # type: int
+SPELL_ERROR = 2 # type: int
 
 
 class OurHTMLParser(HTMLParser):
-    def __init__(self):
+    def __init__(self): # type: () -> None
         self.is_in_script_tag = False
         super(OurHTMLParser, self).__init__(convert_charrefs=False)
 
-    def handle_data(self, data):
-        web_page_words = data.split()
+    def handle_data(self, data): # type: (str) -> None
+        web_page_words = data.split() # type: List[str]
 
         for web_page_word in web_page_words:
             # strip other punctuations
-            word = web_page_word.strip(string.punctuation).strip()
+            word = web_page_word.strip(string.punctuation).strip() # type :str
             if not is_word(web_page_word):
                 continue
             if len(web_page_word) == 1:
                 continue
-            lower_word = word.lower()
+            lower_word = word.lower() # type: (str)
             if lower_word not in d:
-                valid = False
+                valid = False # type: bool
                 while not valid:
                     response = input("Do you want to add %s to dictionary?("
                                      "yes/no/skip)\n" % word)
@@ -44,7 +49,7 @@ class OurHTMLParser(HTMLParser):
                         valid = True
                     # 'no' if it is really a typo
                     elif response.lower() == 'no':
-                        global saw_error
+                        global saw_error # type :bool
                         valid = True
                         saw_error = True
                         print("ERROR: " + word + line_msg())
@@ -71,11 +76,11 @@ if not os.path.isfile(sys.argv[3]):
 file_nm = sys.argv[1]
 main_dict = sys.argv[2]
 custom_dict = sys.argv[3]
-line_no = 0
-saw_error = False
-d = set()
-added_words = set()
-code_tag_on = False
+line_no = 0 # type :int
+saw_error = False # type: bool
+d = set() #type: Set[str]
+added_words = set() #type: Set[str]
+code_tag_on = False #type:bool
 parser = OurHTMLParser()
 
 
@@ -95,7 +100,7 @@ def is_word(s, search=re.compile(r'[^a-zA-Z-\']').search):
     return not bool(search(s))
 
 
-def line_msg():
+def line_msg():# type: () -> str
     return " at line number " + str(line_no)
 
 
