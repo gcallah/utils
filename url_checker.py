@@ -11,32 +11,37 @@ from urllib.parse import urlparse, urljoin
 import re
 import argparse
 
-ARG_ERROR = 1
-PARSE_ERROR = 2
-MAX_LINE = 80
+try:
+    from typing import List, Set
+except ImportError:
+    print("WARNING: Cannot find any module named 'Typing'! Kindly install the latest version of python!")
+
+ARG_ERROR = 1 # type: int
+PARSE_ERROR = 2 # type: int
+MAX_LINE = 80 # type: int
 
 # for some reason, the following header seems to work best:
 #  meaning fewer false URL erros
 HEADER_TXT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) \
             AppleWebKit/537.36 (KHTML, like Gecko) \
-            Chrome/50.0.2661.102 Safari/537.36'
+            Chrome/50.0.2661.102 Safari/537.36' # type :str
 
-tag_stack = []
-line_no = 0
-saw_error = False
-url_error = False
+tag_stack = [] # type: List[str]
+line_no = 0 # type: int
+saw_error = False # type: bool
+url_error = False # type: bool
 
 void_tags = {"area", "base", "br", "col", "hr", "img", "input", "link",
-             "meta", "param"}
+             "meta", "param"} # type :Set[str]
 
 
-def line_msg():
+def line_msg():# type: () -> str
     return " at line number " + str(line_no)
 
 class OurHTMLParser(HTMLParser):
-    def __init__(self):
+    def __init__(self):# type: () -> None
         self.is_in_script_tag = False
-        self.links = []
+        self.links = [] # type: List[str]
         super(OurHTMLParser, self).__init__(convert_charrefs=False)
 
     def handle_starttag(self, tag, attrs):
@@ -49,7 +54,7 @@ class OurHTMLParser(HTMLParser):
             if 'src' in attr:
                 self.links.append(attr['src'])
 
-    def is_accessible(self, link):
+    def is_accessible(self, link):# type: (str) -> bool
         '''
         Here we check if the web page is accessible.
         '''
@@ -63,7 +68,7 @@ class OurHTMLParser(HTMLParser):
                 pass
         return False
 
-    def check_urls_accessibility(self, links, relative_link_header):
+    def check_urls_accessibility(self, links, relative_link_header):# type: (List[str], str) -> None
         print("Checking accessibility of urls...")
         for link in parser.links:
             '''
@@ -81,7 +86,7 @@ class OurHTMLParser(HTMLParser):
     def print_warning_msg(self, link, line):
         if url_error:
             print("ERROR: url not accessible") + line
-            saw_error = True
+            saw_error = True # type:bool
         else:
             print("WARNING: url not accessible" + line
                     + "; " + link)
