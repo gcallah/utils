@@ -1,9 +1,12 @@
 #!/usr/bin/env python3 
 
 import sys
+import csv
 from subprocess import call
-from typing import List
-
+try:
+    from typing import List
+except ImportError:
+    print("WARNING: Typing module is not find")
 HTML_PG = 0 # type: int
 TITLE = 1 # type: int
 PAGE_SCRIPT = "../utils/create_page.py"   # type: str

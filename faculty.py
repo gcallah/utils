@@ -2,7 +2,10 @@
 # program to process SJC CVS file for faculty.
 
 import csv
-from typing import List
+try:
+    from typing import List
+except ImportError:
+    print("WARNING: Typing module is not find")
 
 NAME = 0 # type: int
 CAMPUS = 1 # type: int
