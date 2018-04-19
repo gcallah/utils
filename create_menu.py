@@ -1,7 +1,7 @@
 #!/usr/bin/env python3 
 
 import sys
-from pylib.parse_course import *
+from pylib.parse_course import parse_course
 
 try:
     from typing import List,Set, Any
@@ -35,17 +35,20 @@ def create_nested_list(items):
     while curr_index < len(items):
         # make sure items of THIS level has the same indent level as the starting one
         if items[curr_index].ind_level != start_ind_level:
-            print("ERROR: Bad input at %s. Indent level does not match context." % items[curr_index].to_string())
+            print("ERROR: Bad input at %s. Indent level does not match context."
+                  % items[curr_index].to_string())
             sys.exit(INDENT_MISMATCH)
         if items[curr_index].url is None:
             # handles empty menu here
-            if curr_index + 1 == len(items) or items[curr_index + 1].ind_level == start_ind_level:
+            if (curr_index + 1 == len(items)
+                or items[curr_index + 1].ind_level == start_ind_level):
                 print("ERROR: Empty menu found at %s." % items[curr_index].to_string())
                 sys.exit()
             curr_index += 1
             # make sure the item of NEXT level has the expected indent level
             if items[curr_index].ind_level != start_ind_level + 1:
-                print("ERROR: Bad input at %s. Indent level does not match context." % items[curr_index].to_string())
+                print("ERROR: Bad input at %s. Indent level does not match context."
+                      % items[curr_index].to_string())
                 sys.exit(INDENT_MISMATCH)
             while (curr_index < len(items) and
                    items[curr_index].ind_level > start_ind_level):
@@ -76,7 +79,8 @@ def create_submenu(level_list, context_empty_spaces:int, submenu_id:int, f:Any)-
         f.write(create_line_with_spaces(context_empty_spaces,
                 "<ul class=\"list-unstyled components\">\n"))
     for level in level_list:
-        f.write(create_line_with_spaces(context_empty_spaces + 4, "<li>\n"))
+        f.write(create_line_with_spaces(context_empty_spaces + 4,
+                                        "<li>\n"))
         if isinstance(level[1], list):
             submenu_counter += 1
             f.write(create_line_with_spaces(context_empty_spaces + 8,
@@ -85,8 +89,10 @@ aria-expanded=\"false\">\n" % (submenu_id + submenu_counter)))
             if level[2] is not None:
                 f.write(create_line_with_spaces(context_empty_spaces + 12,
                         "<i class=\"glyphicon %s\"></i>\n" % level[2]))
-            f.write(create_line_with_spaces(context_empty_spaces + 12, level[0] + "\n"))
-            f.write(create_line_with_spaces(context_empty_spaces + 8, "</a>\n"))
+            f.write(create_line_with_spaces(context_empty_spaces + 12,
+                                            level[0] + "\n"))
+            f.write(create_line_with_spaces(context_empty_spaces + 8,
+                                            "</a>\n"))
             submenu_counter += create_submenu(level[1], context_empty_spaces + 8,
                            submenu_id + submenu_counter, f)
         else:
@@ -95,9 +101,12 @@ aria-expanded=\"false\">\n" % (submenu_id + submenu_counter)))
             if level[2] is not None:
                 f.write(create_line_with_spaces(context_empty_spaces + 12,
                         "<i class=\"glyphicon %s\"></i>\n" % level[2]))
-            f.write(create_line_with_spaces(context_empty_spaces + 12, level[0] + "\n"))
-            f.write(create_line_with_spaces(context_empty_spaces + 8, "</a>\n"))
-        f.write(create_line_with_spaces(context_empty_spaces + 4, "</li>\n"))
+            f.write(create_line_with_spaces(context_empty_spaces + 12,
+                                            level[0] + "\n"))
+            f.write(create_line_with_spaces(context_empty_spaces + 8,
+                                            "</a>\n"))
+        f.write(create_line_with_spaces(context_empty_spaces + 4,
+                                        "</li>\n"))
     f.write(create_line_with_spaces(context_empty_spaces, "</ul>\n"))
     return submenu_counter
 
