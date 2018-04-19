@@ -8,13 +8,14 @@ from html.parser import HTMLParser
 import string
 import re
 import os.path
+import argparse
 
 try:
     from typing import List, Set
 except ImportError:
     print(
         "WARNING: Typing module is not found! Kindly install the latest "
-        "version of python!") 
+        "version of python!")
 
 ARG_ERROR = 1  # type: int
 SPELL_ERROR = 2  # type: int
@@ -24,8 +25,11 @@ def is_word(s, search=re.compile(r'[^a-zA-Z-\']').search):
     return not bool(search(s))
 
 
-def line_msg():  # type: () -> str
-    return " at line number " + str(line_no)
+def check_file(*files):
+    for file in files:
+        if not os.path.isfile(file):
+            print(file + " is not a file")
+            exit(ARG_ERROR)
 
 
 class OurHTMLParser(HTMLParser):
@@ -67,25 +71,28 @@ class OurHTMLParser(HTMLParser):
                         print("Invalid response, Please try again!")
 
 
-if len(sys.argv) != 4:
-    print("USAGE: html_spell.py fileToProcess mainDictionary customDictionary")
-    exit(ARG_ERROR)
+exit_error = False
+file_nm = None
+main_dict = None
+custom_dict = None
 
-if not os.path.isfile(sys.argv[1]):
-    print(sys.argv[1] + "is not a file")
-    exit(ARG_ERROR)
+if __name__ == '__main__':
+    arg_parser = argparse.ArgumentParser()
+    arg_parser.add_argument("file_nm", help="html file to be parsed")
+    arg_parser.add_argument("main_dict", help="main dictionary file")
+    arg_parser.add_argument("custom_dict", help="custom dictionary file")
+    arg_parser.add_argument("-e", help="enable exit error", action="store_true")
+    args = arg_parser.parse_args()
+    exit_error = args.e
+    file_nm = args.file_nm
+    main_dict = args.main_dict
+    custom_dict = args.custom_dict
 
-if not os.path.isfile(sys.argv[2]):
-    print(sys.argv[2] + "is not a file")
-    exit(ARG_ERROR)
+# if len(sys.argv) != 4:
+#    print("USAGE: html_spell.py fileToProcess mainDictionary customDictionary")
+#    exit(ARG_ERROR)
 
-if not os.path.isfile(sys.argv[3]):
-    print(sys.argv[3] + "is not a file")
-    exit(ARG_ERROR)
-
-file_nm = sys.argv[1]
-main_dict = sys.argv[2]
-custom_dict = sys.argv[3]
+check_file(file_nm, main_dict, custom_dict)
 line_no = 0  # type :int
 saw_error = False  # type: bool
 d = set()  # type: Set[str]
@@ -93,17 +100,21 @@ added_words = set()  # type: Set[str]
 code_tag_on = False  # type:bool
 parser = OurHTMLParser()
 
-# Loading words from main Dictionary into the python set data structure
 
+def line_msg():  # type: () -> str
+    return " at line number " + str(line_no)
+
+
+# Loading words from main Dictionary into the python set data structure
 with open(main_dict, 'r') as f:
     for line in f:
         d.add(line.split()[0].lower())
+
 
 # Loading words from custom Dictionary into the python set data structure
 with open(custom_dict, 'r') as f:
     for line in f:
         d.add(line.split()[0].lower())
-
 
 with open(file_nm, "r", ) as f:
     for line in f:
@@ -122,7 +133,7 @@ with open(custom_dict, 'a+') as f:
     f.writelines(i + '\n' for i in added_words)
     added_words.clear()
 
-if saw_error:
+if saw_error and exit_error:
     exit(SPELL_ERROR)
 else:
     exit(0)
