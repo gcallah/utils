@@ -15,6 +15,10 @@ EMPTY_LIST = 1 # type: int
 INDENT_MISMATCH = 2 # type: int
 BAD_ARGS = 3 # type: int
 
+INDENT1 = 4
+INDENT2 = INDENT1 + INDENT1
+INDENT3 = INDENT2 + INDENT1
+
 def create_line_with_spaces(n:int, str:str) -> str:
     return ' ' * n + str
 
@@ -79,33 +83,33 @@ def create_submenu(level_list, context_empty_spaces:int, submenu_id:int, f:Any)-
         f.write(create_line_with_spaces(context_empty_spaces,
                 "<ul class=\"list-unstyled components\">\n"))
     for level in level_list:
-        f.write(create_line_with_spaces(context_empty_spaces + 4,
+        f.write(create_line_with_spaces(context_empty_spaces + INDENT1,
                                         "<li>\n"))
         if isinstance(level[1], list):
             submenu_counter += 1
-            f.write(create_line_with_spaces(context_empty_spaces + 8,
+            f.write(create_line_with_spaces(context_empty_spaces + INDENT2,
                     "<a href=\"#Submenu%d\" data-toggle=\"collapse\"  \
 aria-expanded=\"false\">\n" % (submenu_id + submenu_counter)))
             if level[2] is not None:
-                f.write(create_line_with_spaces(context_empty_spaces + 12,
+                f.write(create_line_with_spaces(context_empty_spaces + INDENT3,
                         "<i class=\"glyphicon %s\"></i>\n" % level[2]))
-            f.write(create_line_with_spaces(context_empty_spaces + 12,
+            f.write(create_line_with_spaces(context_empty_spaces + INDENT3,
                                             level[0] + "\n"))
-            f.write(create_line_with_spaces(context_empty_spaces + 8,
+            f.write(create_line_with_spaces(context_empty_spaces + INDENT2,
                                             "</a>\n"))
-            submenu_counter += create_submenu(level[1], context_empty_spaces + 8,
+            submenu_counter += create_submenu(level[1], context_empty_spaces + INDENT2,
                            submenu_id + submenu_counter, f)
         else:
-            f.write(create_line_with_spaces(context_empty_spaces + 8,
+            f.write(create_line_with_spaces(context_empty_spaces + INDENT2,
                                             "<a href=\"%s\">\n" % level[1]))
             if level[2] is not None:
-                f.write(create_line_with_spaces(context_empty_spaces + 12,
+                f.write(create_line_with_spaces(context_empty_spaces + INDENT3,
                         "<i class=\"glyphicon %s\"></i>\n" % level[2]))
-            f.write(create_line_with_spaces(context_empty_spaces + 12,
+            f.write(create_line_with_spaces(context_empty_spaces + INDENT3,
                                             level[0] + "\n"))
-            f.write(create_line_with_spaces(context_empty_spaces + 8,
+            f.write(create_line_with_spaces(context_empty_spaces + INDENT2,
                                             "</a>\n"))
-        f.write(create_line_with_spaces(context_empty_spaces + 4,
+        f.write(create_line_with_spaces(context_empty_spaces + INDENT1,
                                         "</li>\n"))
     f.write(create_line_with_spaces(context_empty_spaces, "</ul>\n"))
     return submenu_counter
@@ -162,7 +166,7 @@ with open(output_fname, 'w+') as f:
             % (title_item.title, title_item.short_title))
 
     # write contents
-    context_empty_spaces = 4 # type: int
+    context_empty_spaces = INDENT1 # type: int
     submenu_id = None # type: int
     create_submenu(nested, context_empty_spaces, submenu_id, f)
 
