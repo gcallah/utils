@@ -32,6 +32,13 @@ except:
     exit(OPEN_ERROR)
 
 for course_module in pages:
-    if course_module.url is not None:
-        pass
+    html_file = course_module.url
+    if html_file is not None:
+        ptml_file = html_file.replace(HTML_EXT, PTML_EXT)
+        ptml_file = PTML_DIR +  "/" + ptml_file
+        print("Going to create " + ptml_file)
+        call(PAGE_SCRIPT + " \"" + course_module.title +
+             "\" <" + page_templ +
+             " >" + ptml_file,
+             shell=True)
 
