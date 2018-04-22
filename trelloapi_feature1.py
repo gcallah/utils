@@ -23,16 +23,25 @@ time_now = datetime.datetime.utcnow()
 # setting a days of inactivity limit
 days_of_inactivity_limit = 14 # type: int #default value: 14 days
 
-# trying to read all the boards where I am a member
-url_member = "https://api.trello.com/1/members/dsd2981" # type :str
+# initializing key and token api for trelloapi to function
 querystring = {"key":"b282952c1211b7eb3c16b7c3adfbbf7f","token":"12f1ebbfd62746257dbfb66c07ce42d1240d0a0cf0d1959b5706f411edd6315d"}
-response_member = requests.request("GET", url_member, params=querystring)
 
-# converting the html object to a json object for easy convenience of handling the object
-data_member = json.loads(response_member.text)
+# Board Ids and their names
+# '5a5017502c3092150d1e26e1': Workflow Management
+# '5a5040eef206a59341eacd54': Testing
+# '5a503f72e8f6616d36627f5e': Coding
+# '5a70c638108a389f8ab0df60': Build
+# '5a5346bedc0d13bc7f6c6510': Cloud
+# '5a534507c990c6fd56225bb7': Deployment
+# '5a85afe2db1a07af8f284db5': DevOPS Security
+# '5a5344efc1d9a27718e6d066': Monitoring
+# '5a526708bb22ff0c72baadc8': Security
+# '5a53452c4d4dae41b7d936f8': User Interface
 
-# removing the first 2 boards as they are my personal boards
-board_ids = data_member['idBoards'][2:] # type: List[str]
+board_ids = ['5a5017502c3092150d1e26e1', '5a5040eef206a59341eacd54', '5a503f72e8f6616d36627f5e',
+             '5a70c638108a389f8ab0df60', '5a5346bedc0d13bc7f6c6510', '5a534507c990c6fd56225bb7',
+             '5a85afe2db1a07af8f284db5', '5a5344efc1d9a27718e6d066', '5a526708bb22ff0c72baadc8',
+             '5a53452c4d4dae41b7d936f8']
 
 # storing email body in message string
 message = "The following cards have not been moved from past 14 days \n \n" # type: str
