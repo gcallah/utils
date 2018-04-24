@@ -45,6 +45,8 @@ board_ids = ['5a5017502c3092150d1e26e1', '5a5040eef206a59341eacd54', '5a503f72e8
              '5a53452c4d4dae41b7d936f8']
 
 message = "The following cards have been pushed in testing phase just an hour ago! \n"
+# This flag is used to send a mail only if there is any notifications.
+flag_to_send_mail = False # type :boolean
 for i in range(0, len(board_ids)):
 
     #retrieving the name of the board using board id
@@ -75,33 +77,38 @@ for i in range(0, len(board_ids)):
 
         # finding whether card previous activity was more than or equal to seconds_of_inactivity_limit
         # and card is present in Testing list
-        if(time_difference.seconds <= seconds_of_inactivity_limit and card_list_name in ('Testing', 'testing')):
+        if(time_difference.days < 1 and time_difference.seconds <= seconds_of_inactivity_limit and card_list_name in ('Testing', 'testing')):
+            flag_to_send_mail = True
             message += data_board_cards[i]['name'] + " " + data_board_cards[i]['shortUrl'] +"\n" # type :str
     message += "\n" # type :str
 
-# set up the SMTP server
-s = smtplib.SMTP(host='smtp.gmail.com', port=587)
-s.starttls()
+def send_mail():
+    # set up the SMTP server
+    s = smtplib.SMTP(host='smtp.gmail.com', port=587)
+    s.starttls()
 
-# reading login credentials from a EMAIL_INFO.txt file
-# Format of EMAIL_INFO.txt file: <email_id> <password>
-text_file = open("EMAIL_INFO.txt","r")
-lines = text_file.read().split(' ') # type :str
-s.login(user=lines[0], password=lines[1])
+    # reading login credentials from a EMAIL_INFO.txt file
+    # Format of EMAIL_INFO.txt file: <email_id> <password>
+    text_file = open("EMAIL_INFO.txt","r")
+    lines = text_file.read().split(' ') # type :str
+    s.login(user=lines[0], password=lines[1])
 
-to_contacts = ["dsd298@nyu.edu", "ejc369@nyu.edu"] # type :List[str]
-for i in range(0, len(to_contacts)):
-    msg = MIMEMultipart()       # create a message
-    # message = "this is a test"
-    msg['From'] = "devopsnyu@gmail.com" # type :List[str]
-    msg['To'] = to_contacts[i] # type :List[str]
-    msg['Subject'] = "Card Inactivity Information E-Mail" # type :List[str]
+    to_contacts = ["dsd298@nyu.edu", "ejc369@nyu.edu"] # type :List[str]
+    for i in range(0, len(to_contacts)):
+        msg = MIMEMultipart()       # create a message
+        # message = "this is a test"
+        msg['From'] = "devopsnyu@gmail.com" # type :List[str]
+        msg['To'] = to_contacts[i] # type :List[str]
+        msg['Subject'] = "Card Inactivity Information E-Mail" # type :List[str]
 
-    # add in the message body
-    msg.attach(MIMEText(message, 'plain'))
+        # add in the message body
+        msg.attach(MIMEText(message, 'plain'))
 
-    s.send_message(msg)
-    del msg
+        s.send_message(msg)
+        del msg
 
-# closing SMTP connection
-s.quit()
+    # closing SMTP connection
+    s.quit()
+
+if(flag_to_send_mail):
+    send_mail()
