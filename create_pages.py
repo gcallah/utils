@@ -5,7 +5,7 @@ from subprocess import call
 from pylib.parse_course import parse_course, CourseItem
 from pathlib import Path
 try:
-    from typing import List
+    from typing import List,Any
 except ImportError:
     print("WARNING: Typing module is not find")
 
@@ -22,8 +22,8 @@ if len(sys.argv) < 3:
     print("Must supply a file of pages to create and a page template.")
     exit(1)
 
-pages = []
-pages_file = sys.argv[1]
+pages = [] # type: List[Any]
+pages_file = sys.argv[1] # type: str
 page_templ = sys.argv[2]  # type: str
 if len(sys.argv) > 3:
     ptml_dir = sys.argv[3]
