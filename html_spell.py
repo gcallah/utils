@@ -73,8 +73,8 @@ class OurHTMLParser(HTMLParser):
                         print("Invalid response, Please try again!")
 
 
-exit_error = False
-strict_mode = False
+exit_error = False # type: bool
+strict_mode = False # type: bool
 file_nm = None
 main_dict = None
 custom_dict = None
