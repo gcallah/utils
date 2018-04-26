@@ -12,7 +12,7 @@ import re
 import argparse
 
 try:
-    from typing import List,Set
+    from typing import List,Set,Dict
 except ImportError:
     print("WARNING: Typing module is not find")
 
@@ -24,12 +24,12 @@ tag_stack = [] # type: List[str]
 line_no = 0 # type: int
 saw_error = False # type: bool
 tag_error = False # type: bool
-tag_check = False
+tag_check = False # type: bool
 
 void_tags = {"area", "base", "br", "col", "hr", "img", "input", "link",
              "meta", "param"} # type: Set[str]
 
-tags_priority = {"h1" : 4, "h2" : 3, "h3" : 2, "p" : 0} # type: Dictionary[str : int]
+tags_priority = {"h1" : 4, "h2" : 3, "h3" : 2, "p" : 0} # type: Dict[str , int]
 
 def line_msg(): # type: () -> str
     return " at line number " + str(line_no)
