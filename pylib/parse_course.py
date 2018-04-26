@@ -1,15 +1,20 @@
 
-MIN_FLDS = 2
-MAX_FLDS = 5
-SEP = '^'
-INDENT_LEVEL = 0
-TITLE = 1
-URL = 2
-SHORT_TITLE = 3
-GLYPHICON = 4
+MIN_FLDS = 2 # type: int
+MAX_FLDS = 5 # type: int
+SEP = '^' # type: str
+INDENT_LEVEL = 0 # type: int
+TITLE = 1 # type: int
+URL = 2 # type: int
+SHORT_TITLE = 3 # type: int
+GLYPHICON = 4 # type: int
+
+try:
+    from typing import List,Any
+except ImportError:
+    print("WARNING!")
 
 class CourseItem:
-    def __init__(self, flds):
+    def __init__(self, flds:List[str])->None:
         # make sure indent level is present and has a valid value
         if flds[INDENT_LEVEL] is None:
             flds = ["" if fld is None else fld for fld in flds]
@@ -34,30 +39,30 @@ class CourseItem:
         self.glyphicon = flds[GLYPHICON]
 
     # convert the object into a string separated by SEP
-    def to_string(self):
+    def to_string(self)->object:
         flds = [str(self.ind_level), self.title, self.url,
                 self.short_title, self.glyphicon]
         flds = ["" if fld is None else fld for fld in flds]
         return SEP.join(flds)
 
     # for debug
-    def print_item(self):
+    def print_item(self)->None:
         print_list = [self.ind_level, self.title, self.url,
                       self.short_title, self.glyphicon]
         print(print_list)
 
 class InputError(Exception):
-    def __init__(self, value, message):
+    def __init__(self, value:str, message:str)->None:
         self.value = value
         self.message = message
 
 def parse_course(file):
     with open(file) as f:
-        lines = f.readlines()
+        lines = f.readlines() # type: List[str]
         lines = [line.rstrip('\n') for line in lines]
         lines = [line.rstrip('\r') for line in lines] # for windows machines
 
-        course_items = []
+        course_items = [] # type: List[Any]
         for line in lines:
             # skip empty lines
             if not line.strip():
