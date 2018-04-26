@@ -3,7 +3,12 @@
 # Writes to stdout.
 
 import sys
-from typing import TextIO,List
+
+try:
+    from typing import TextIO,List
+except ImportError:
+    print("WARNING!")
+
 if len(sys.argv) < 2:
     print("Must supply an HTML file.")
     exit(1)
