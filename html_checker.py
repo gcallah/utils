@@ -23,9 +23,13 @@ MAX_LINE = 80 # type: int
 tag_stack = [] # type: List[str]
 line_no = 0 # type: int
 saw_error = False # type: bool
+tag_error = False # type: bool
+tag_check = False
 
 void_tags = {"area", "base", "br", "col", "hr", "img", "input", "link",
              "meta", "param"} # type: Set[str]
+
+tags_priority = {"h1" : 4, "h2" : 3, "h3" : 2, "p" : 0} # type: Dictionary[str : int]
 
 def line_msg(): # type: () -> str
     return " at line number " + str(line_no)
@@ -40,7 +44,24 @@ class OurHTMLParser(HTMLParser):
             self.is_in_script_tag = True
 
         if tag not in void_tags:
+            if (len(tag_stack) > 0):
+                err_tag = self.check_tag_priority(tag_stack, tag)
+                # if (tag_error and not saw_error):
+                if (tag_check and tag_error):
+                    print("ERROR: tag priority mismatch, detected "
+                            + tag + " tag within " + 
+                            err_tag + " tag " + line_msg())
+
             tag_stack.append(tag)
+
+    def check_tag_priority(self, pre_tag_stack, this_tag): # type: (List[str], str) -> str
+        global tag_error 
+        for pre_tag in reversed(pre_tag_stack):
+            if (pre_tag in tags_priority and this_tag in tags_priority):
+                if(tags_priority[this_tag] >= tags_priority[pre_tag]):
+                    tag_error = True
+                    return pre_tag
+        return this_tag
 
     def handle_endtag(self, close_tag):# type: (str) -> None
         global saw_error # type :bool
@@ -78,11 +99,13 @@ class OurHTMLParser(HTMLParser):
 if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument("html_filename")
-    
+    arg_parser.add_argument("-t", action = "store_true")
+
     args = arg_parser.parse_args()
     
     parser = OurHTMLParser()
     file_nm = args.html_filename
+    tag_check = args.t
 
     file = open(file_nm, "r")
     for line in file:
