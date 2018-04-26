@@ -2,6 +2,7 @@
 
 import sys
 from pylib.parse_course import parse_course
+
 try:
     from typing import List,Set, Any
 except ImportError:
@@ -14,9 +15,9 @@ EMPTY_LIST = 1 # type: int
 INDENT_MISMATCH = 2 # type: int
 BAD_ARGS = 3 # type: int
 
-INDENT1 = 4
-INDENT2 = INDENT1 + INDENT1
-INDENT3 = INDENT2 + INDENT1
+INDENT1 = 4 # type: int
+INDENT2 = INDENT1 + INDENT1 # type: int
+INDENT3 = INDENT2 + INDENT1 # type: int
 
 def create_line_with_spaces(n:int, str:str) -> str:
     return ' ' * n + str
