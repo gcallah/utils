@@ -2,7 +2,6 @@
 
 import sys
 from pylib.parse_course import parse_course
-
 try:
     from typing import List,Set, Any
 except ImportError:
@@ -145,7 +144,7 @@ if len(course_items) > 1:
         sys.exit()
 
     # create a nested list with contents
-    nested = create_nested_list(course_items[1:])
+    nested = create_nested_list(course_items[1:]) # type: List[object]
 else:
     # if there is only one title line in the input file, just write the title
     nested = []
