@@ -47,6 +47,8 @@ class OurHTMLParser(HTMLParser):
                 continue
             if len(web_page_word) == 1:
                 continue
+            if not strict_mode and word[0].isupper():
+            	continue
             lower_word = word.lower()  # type: (str)
             if lower_word not in d:
                 valid = False  # type: bool
@@ -72,6 +74,7 @@ class OurHTMLParser(HTMLParser):
 
 
 exit_error = False
+strict_mode = False
 file_nm = None
 main_dict = None
 custom_dict = None
@@ -82,8 +85,10 @@ if __name__ == '__main__':
     arg_parser.add_argument("main_dict", help="main dictionary file")
     arg_parser.add_argument("custom_dict", help="custom dictionary file")
     arg_parser.add_argument("-e", help="enable exit error", action="store_true")
+    arg_parser.add_argument("-s", help="strict mode checks capitalized words", action="store_true")
     args = arg_parser.parse_args()
     exit_error = args.e
+    strict_mode = args.s
     file_nm = args.file_nm
     main_dict = args.main_dict
     custom_dict = args.custom_dict

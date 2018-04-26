@@ -14,7 +14,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 try:
-    from typing import List,Set
+    from typing import List, Set, Dict
 except ImportError:
     print("WARNING: Typing module is not found! Kindly install the latest version of python!")
 
@@ -24,18 +24,29 @@ time_now = datetime.datetime.utcnow()
 # setting a days of inactivity limit: 1 hour
 seconds_of_inactivity_limit = 3600 # type :int # default value: 1 hour = 3600 seconds
 
-# trying to read all the boards where I (Datta) am a member
-url_member = "https://api.trello.com/1/members/dsd2981" # type :str
-querystring = {"key":"b282952c1211b7eb3c16b7c3adfbbf7f","token":"12f1ebbfd62746257dbfb66c07ce42d1240d0a0cf0d1959b5706f411edd6315d"}
-response_member = requests.request("GET", url_member, params=querystring)
+# initializing key and token api for trelloapi to function
+querystring = {"key":"b282952c1211b7eb3c16b7c3adfbbf7f","token":"12f1ebbfd62746257dbfb66c07ce42d1240d0a0cf0d1959b5706f411edd6315d"} # type: Dict[str, str]
 
-# converting the html object to a json object for easy convenience of handling the object
-data_member = json.loads(response_member.text)
+# Board Ids and their names
+# '5a5017502c3092150d1e26e1': Workflow Management
+# '5a5040eef206a59341eacd54': Testing
+# '5a503f72e8f6616d36627f5e': Coding
+# '5a70c638108a389f8ab0df60': Build
+# '5a5346bedc0d13bc7f6c6510': Cloud
+# '5a534507c990c6fd56225bb7': Deployment
+# '5a85afe2db1a07af8f284db5': DevOPS Security
+# '5a5344efc1d9a27718e6d066': Monitoring
+# '5a526708bb22ff0c72baadc8': Security
+# '5a53452c4d4dae41b7d936f8': User Interface
 
-# removing the first 2 boards as they are my personal boards
-board_ids = data_member['idBoards'][2:] # type :List[str]
+board_ids = ['5a5017502c3092150d1e26e1', '5a5040eef206a59341eacd54', '5a503f72e8f6616d36627f5e',
+             '5a70c638108a389f8ab0df60', '5a5346bedc0d13bc7f6c6510', '5a534507c990c6fd56225bb7',
+             '5a85afe2db1a07af8f284db5', '5a5344efc1d9a27718e6d066', '5a526708bb22ff0c72baadc8',
+             '5a53452c4d4dae41b7d936f8'] # type: List[str]
 
-message = "The following cards have been pushed in testing phase just an hour ago! \n"
+message = "The following cards have been pushed in testing phase just an hour ago! \n" # type :str
+# This flag is used to send a mail only if there is any notifications.
+flag_to_send_mail = False # type :bool
 for i in range(0, len(board_ids)):
 
     #retrieving the name of the board using board id
@@ -66,33 +77,38 @@ for i in range(0, len(board_ids)):
 
         # finding whether card previous activity was more than or equal to seconds_of_inactivity_limit
         # and card is present in Testing list
-        if(time_difference.seconds <= seconds_of_inactivity_limit and card_list_name in ('Testing', 'testing')):
+        if(time_difference.days < 1 and time_difference.seconds <= seconds_of_inactivity_limit and card_list_name in ('Testing', 'testing')):
+            flag_to_send_mail = True
             message += data_board_cards[i]['name'] + " " + data_board_cards[i]['shortUrl'] +"\n" # type :str
     message += "\n" # type :str
 
-# set up the SMTP server
-s = smtplib.SMTP(host='smtp.gmail.com', port=587)
-s.starttls()
+def send_mail():
+    # set up the SMTP server
+    s = smtplib.SMTP(host='smtp.gmail.com', port=587)
+    s.starttls()
 
-# reading login credentials from a EMAIL_INFO.txt file
-# Format of EMAIL_INFO.txt file: <email_id> <password>
-text_file = open("EMAIL_INFO.txt","r")
-lines = text_file.read().split(' ') # type :str
-s.login(user=lines[0], password=lines[1])
+    # reading login credentials from a EMAIL_INFO.txt file
+    # Format of EMAIL_INFO.txt file: <email_id> <password>
+    text_file = open("EMAIL_INFO.txt","r")
+    lines = text_file.read().split(' ') # type :str
+    s.login(user=lines[0], password=lines[1])
 
-to_contacts = ["dsd298@nyu.edu"] # type :List[str]
-for i in range(0, len(to_contacts)):
-    msg = MIMEMultipart()       # create a message
-    # message = "this is a test"
-    msg['From'] = "devopsnyu@gmail.com" # type :List[str]
-    msg['To'] = to_contacts[i] # type :List[str]
-    msg['Subject'] = "Card Inactivity Information E-Mail" # type :List[str]
+    to_contacts = ["dsd298@nyu.edu", "ejc369@nyu.edu"] # type :List[str]
+    for i in range(0, len(to_contacts)):
+        msg = MIMEMultipart()       # create a message
+        # message = "this is a test"
+        msg['From'] = "devopsnyu@gmail.com" # type :List[str]
+        msg['To'] = to_contacts[i] # type :List[str]
+        msg['Subject'] = "Card Inactivity Information E-Mail" # type :List[str]
 
-    # add in the message body
-    msg.attach(MIMEText(message, 'plain'))
+        # add in the message body
+        msg.attach(MIMEText(message, 'plain'))
 
-    s.send_message(msg)
-    del msg
+        s.send_message(msg)
+        del msg
 
-# closing SMTP connection
-s.quit()
+    # closing SMTP connection
+    s.quit()
+
+if(flag_to_send_mail):
+    send_mail()
