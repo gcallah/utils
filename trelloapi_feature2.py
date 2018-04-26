@@ -14,7 +14,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 try:
-    from typing import List,Set
+    from typing import List, Set, Dict
 except ImportError:
     print("WARNING: Typing module is not found! Kindly install the latest version of python!")
 
@@ -25,7 +25,7 @@ time_now = datetime.datetime.utcnow()
 seconds_of_inactivity_limit = 3600 # type :int # default value: 1 hour = 3600 seconds
 
 # initializing key and token api for trelloapi to function
-querystring = {"key":"b282952c1211b7eb3c16b7c3adfbbf7f","token":"12f1ebbfd62746257dbfb66c07ce42d1240d0a0cf0d1959b5706f411edd6315d"}
+querystring = {"key":"b282952c1211b7eb3c16b7c3adfbbf7f","token":"12f1ebbfd62746257dbfb66c07ce42d1240d0a0cf0d1959b5706f411edd6315d"} # type: Dict[str, str]
 
 # Board Ids and their names
 # '5a5017502c3092150d1e26e1': Workflow Management
@@ -42,11 +42,11 @@ querystring = {"key":"b282952c1211b7eb3c16b7c3adfbbf7f","token":"12f1ebbfd627462
 board_ids = ['5a5017502c3092150d1e26e1', '5a5040eef206a59341eacd54', '5a503f72e8f6616d36627f5e',
              '5a70c638108a389f8ab0df60', '5a5346bedc0d13bc7f6c6510', '5a534507c990c6fd56225bb7',
              '5a85afe2db1a07af8f284db5', '5a5344efc1d9a27718e6d066', '5a526708bb22ff0c72baadc8',
-             '5a53452c4d4dae41b7d936f8']
+             '5a53452c4d4dae41b7d936f8'] # type: List[str]
 
-message = "The following cards have been pushed in testing phase just an hour ago! \n"
+message = "The following cards have been pushed in testing phase just an hour ago! \n" # type :str
 # This flag is used to send a mail only if there is any notifications.
-flag_to_send_mail = False # type :boolean
+flag_to_send_mail = False # type :bool
 for i in range(0, len(board_ids)):
 
     #retrieving the name of the board using board id
