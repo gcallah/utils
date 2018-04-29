@@ -3,11 +3,12 @@ Script to check spellings of words in the web page. Also allows the users
 to add words to the dictionary.
 """
 
-import sys
+import json
+import os
+import requests
 from html.parser import HTMLParser
 import string
 import re
-import os.path
 import argparse
 
 try:
@@ -20,6 +21,11 @@ except ImportError:
 ARG_ERROR = 1  # type: int
 SPELL_ERROR = 2  # type: int
 
+#Application keys for Oxford dictionary API
+app_id = '4dcc2c67'
+app_key = 'c7d48867f7506e51e70507d85bc9cbe6'
+language = 'en'
+
 
 def is_word(s, search=re.compile(r'[^a-zA-Z-\']').search):
     return not bool(search(s))
@@ -31,11 +37,25 @@ def check_file(*files):
             print(file + " is not a file")
             exit(ARG_ERROR)
 
+def convertPythonDictToSet(dictionaryInPythonDictObject):
+    dictionarySet = set()
+
+    for word, count in dictionaryInPythonDictObject.items():
+        dictionarySet.add(word)
+
+    return dictionarySet
 
 class OurHTMLParser(HTMLParser):
     def __init__(self):  # type: () -> None
         self.is_in_script_tag = False
         super(OurHTMLParser, self).__init__(convert_charrefs=False)
+
+    def isWordInOxfordDictionary(self,lower_word):
+        url = 'https://od-api.oxforddictionaries.com/api/v1/inflections/' + language + '/' + lower_word
+        r = requests.get(url, headers={'app_id': app_id, 'app_key': app_key})
+        # print(r.status_code)
+        # print(r.text)
+        return r.status_code
 
     def handle_data(self, data):  # type: (str) -> None
         web_page_words = data.split()  # type: List[str]
@@ -43,34 +63,39 @@ class OurHTMLParser(HTMLParser):
         for web_page_word in web_page_words:
             # strip other punctuations
             word = web_page_word.strip(string.punctuation).strip()  # type :str
-            if not is_word(web_page_word):
+            if word is "":
                 continue
-            if len(web_page_word) == 1:
+            if not is_word(word):
+                continue
+            if len(word) == 1:
                 continue
             if not strict_mode and word[0].isupper():
-            	continue
+                continue
+
             lower_word = word.lower()  # type: (str)
+
             if lower_word not in d:
-                valid = False  # type: bool
-                while not valid:
-                    response = input("Do you want to add %s to dictionary?("
-                                     "yes/no/skip)\n" % word)
-                    # 'yes' to improve dictionary
-                    if response.lower() == 'yes':
-                        added_words.add(lower_word)
-                        d.add(lower_word)
-                        valid = True
-                    # 'skip' unique strings (checksum/names) but not errors
-                    elif response.lower() == 'skip':
-                        valid = True
-                    # 'no' if it is really a typo
-                    elif response.lower() == 'no':
-                        global saw_error  # type :bool
-                        valid = True
-                        saw_error = True
-                        print("ERROR: " + word + line_msg())
-                    else:
-                        print("Invalid response, Please try again!")
+                if self.isWordInOxfordDictionary(lower_word) != 200: # If word doesn't exist in oxford dictionary too
+                    valid = False  # type: bool
+                    while not valid:
+                        response = input("Do you want to add %s to dictionary?("
+                                         "yes/no/skip)\n" % word)
+                        # 'yes' to improve dictionary
+                        if response.lower() == 'yes':
+                            added_words.add(lower_word)
+                            d.add(lower_word)
+                            valid = True
+                        # 'skip' unique strings (checksum/names) but not errors
+                        elif response.lower() == 'skip':
+                            valid = True
+                        # 'no' if it is really a typo
+                        elif response.lower() == 'no':
+                            global saw_error  # type :bool
+                            valid = True
+                            saw_error = True
+                            print("ERROR: " + word + line_msg())
+                        else:
+                            print("Invalid response, Please try again!")
 
 
 exit_error = False # type: bool
@@ -93,10 +118,6 @@ if __name__ == '__main__':
     main_dict = args.main_dict
     custom_dict = args.custom_dict
 
-# if len(sys.argv) != 4:
-#    print("USAGE: html_spell.py fileToProcess mainDictionary customDictionary")
-#    exit(ARG_ERROR)
-
 check_file(file_nm, main_dict, custom_dict)
 line_no = 0  # type :int
 saw_error = False  # type: bool
@@ -109,12 +130,11 @@ parser = OurHTMLParser()
 def line_msg():  # type: () -> str
     return " at line number " + str(line_no)
 
-
-# Loading words from main Dictionary into the python set data structure
+# Loading words from main Json Dictionary into the python set data structure
 with open(main_dict, 'r') as f:
-    for line in f:
-        d.add(line.split()[0].lower())
-
+    dictionaryInPythonDictObject = json.load(f)
+    d = convertPythonDictToSet(dictionaryInPythonDictObject)
+    #print(len(d))
 
 # Loading words from custom Dictionary into the python set data structure
 with open(custom_dict, 'r') as f:
@@ -142,4 +162,3 @@ if saw_error and exit_error:
     exit(SPELL_ERROR)
 else:
     exit(0)
-
