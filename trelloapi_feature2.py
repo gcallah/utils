@@ -22,7 +22,7 @@ except ImportError:
 time_now = datetime.datetime.utcnow()
 
 # setting a days of inactivity limit: 1 hour
-seconds_of_inactivity_limit = 3600 # type :int # default value: 1 hour = 3600 seconds
+seconds_of_inactivity_limit = 21600 # type :int # default value: 1 day = 21600 seconds
 
 # initializing key and token api for trelloapi to function
 querystring = {"key":"b282952c1211b7eb3c16b7c3adfbbf7f","token":"12f1ebbfd62746257dbfb66c07ce42d1240d0a0cf0d1959b5706f411edd6315d"} # type: Dict[str, str]
@@ -44,7 +44,7 @@ board_ids = ['5a5017502c3092150d1e26e1', '5a5040eef206a59341eacd54', '5a503f72e8
              '5a85afe2db1a07af8f284db5', '5a5344efc1d9a27718e6d066', '5a526708bb22ff0c72baadc8',
              '5a53452c4d4dae41b7d936f8'] # type: List[str]
 
-message = "The following cards have been pushed in testing phase just an hour ago! \n" # type :str
+message = "The following cards have been pushed in testing phase just a day ago! \n" # type :str
 # This flag is used to send a mail only if there is any notifications.
 flag_to_send_mail = False # type :bool
 for i in range(0, len(board_ids)):
