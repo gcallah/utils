@@ -4,7 +4,7 @@ import sys
 from pylib.parse_course import parse_course
 
 try:
-    from typing import List,Set, Any
+    from typing import List, Set, Any
 except ImportError:
     print("WARNING: Typing module is not find")
 
@@ -15,6 +15,8 @@ EMPTY_LIST = 1 # type: int
 INDENT_MISMATCH = 2 # type: int
 BAD_ARGS = 3 # type: int
 
+MAX_MENU_LEVEL = 3 # type: int
+
 INDENT1 = 4 # type: int
 INDENT2 = INDENT1 + INDENT1 # type: int
 INDENT3 = INDENT2 + INDENT1 # type: int
@@ -22,7 +24,6 @@ INDENT3 = INDENT2 + INDENT1 # type: int
 def create_line_with_spaces(n:int, str:str) -> str:
     return ' ' * n + str
 
-#What is the exact type for item?
 
 def create_nested_list(items):
     if len(items) == 0:
@@ -33,6 +34,7 @@ def create_nested_list(items):
         print("ERROR: Bad input at %s. Indent level should be at least 1 in contents."
               % items[0].to_string())
         sys.exit(EMPTY_LIST)
+
     start_index = 0 # type: int
     curr_index = 0 # type: int
     level = []
@@ -49,11 +51,14 @@ def create_nested_list(items):
                 print("ERROR: Empty menu found at %s." % items[curr_index].to_string())
                 sys.exit()
             curr_index += 1
+
             # make sure the item of NEXT level has the expected indent level
             if items[curr_index].ind_level != start_ind_level + 1:
                 print("ERROR: Bad input at %s. Indent level does not match context."
                       % items[curr_index].to_string())
                 sys.exit(INDENT_MISMATCH)
+
+            # collect all items at next group of sub-levels:
             while (curr_index < len(items) and
                    items[curr_index].ind_level > start_ind_level):
                 curr_index += 1
@@ -67,10 +72,10 @@ def create_nested_list(items):
         start_index = curr_index
     return level
 
-#Mypy find an error here, so I delete the mypy code for this to make the type dynamic.
-#But we still need to make sure what is the exact type for level_list
 
-def create_submenu(level_list, context_empty_spaces:int, submenu_id:int, f:Any)-> int:
+# Mypy find an error here, so I delete the mypy code for this to make the type dynamic.
+# But we still need to make sure what is the exact type for menu_list
+def create_submenu(menu_list, context_empty_spaces:int, submenu_id:int, f:Any)-> int:
     # if submenu_id is None, create an uncollapsable menu
     # else, create a collapsable menu
     submenu_counter = 0 # type: int
@@ -82,31 +87,31 @@ def create_submenu(level_list, context_empty_spaces:int, submenu_id:int, f:Any)-
         submenu_id = 0
         f.write(create_line_with_spaces(context_empty_spaces,
                 "<ul class=\"list-unstyled components\">\n"))
-    for level in level_list:
+    for menu_item in menu_list:
         f.write(create_line_with_spaces(context_empty_spaces + INDENT1,
                                         "<li>\n"))
-        if isinstance(level[1], list):
+        if isinstance(menu_item[1], list):
             submenu_counter += 1
             f.write(create_line_with_spaces(context_empty_spaces + INDENT2,
                     "<a href=\"#Submenu%d\" data-toggle=\"collapse\"  \
 aria-expanded=\"false\">\n" % (submenu_id + submenu_counter)))
-            if level[2] is not None:
+            if menu_item[2] is not None:
                 f.write(create_line_with_spaces(context_empty_spaces + INDENT3,
-                        "<i class=\"glyphicon %s\"></i>\n" % level[2]))
+                        "<i class=\"glyphicon %s\"></i>\n" % menu_item[2]))
             f.write(create_line_with_spaces(context_empty_spaces + INDENT3,
-                                            level[0] + "\n"))
+                                            menu_item[0] + "\n"))
             f.write(create_line_with_spaces(context_empty_spaces + INDENT2,
                                             "</a>\n"))
-            submenu_counter += create_submenu(level[1], context_empty_spaces + INDENT2,
+            submenu_counter += create_submenu(menu_item[1], context_empty_spaces + INDENT2,
                            submenu_id + submenu_counter, f)
         else:
             f.write(create_line_with_spaces(context_empty_spaces + INDENT2,
-                                            "<a href=\"%s\">\n" % level[1]))
-            if level[2] is not None:
+                                            "<a href=\"%s\">\n" % menu_item[1]))
+            if menu_item[2] is not None:
                 f.write(create_line_with_spaces(context_empty_spaces + INDENT3,
-                        "<i class=\"glyphicon %s\"></i>\n" % level[2]))
+                        "<i class=\"glyphicon %s\"></i>\n" % menu_item[2]))
             f.write(create_line_with_spaces(context_empty_spaces + INDENT3,
-                                            level[0] + "\n"))
+                                            menu_item[0] + "\n"))
             f.write(create_line_with_spaces(context_empty_spaces + INDENT2,
                                             "</a>\n"))
         f.write(create_line_with_spaces(context_empty_spaces + INDENT1,
@@ -117,6 +122,7 @@ aria-expanded=\"false\">\n" % (submenu_id + submenu_counter)))
 if len(sys.argv) < 2:
     print("ERROR: Please specify input file name and output file name.")
     sys.exit(BAD_ARGS)
+
 input_fname = sys.argv[INPUT]  # type: str
 output_fname = sys.argv[OUTPUT]  # type: str
 
@@ -145,7 +151,8 @@ elif title_item.short_title is None:
 if len(course_items) > 1:
     # make sure content indent level start with 1
     if course_items[TITLE + 1].ind_level != 1:
-        print("ERROR: Bad input at %s. Content indent level should start with 1." % course_items[TITLE + 1].to_string())
+        print("ERROR: Bad input at %s. Content indent level should start with 1."
+              % course_items[TITLE + 1].to_string())
         sys.exit()
 
     # create a nested list with contents
