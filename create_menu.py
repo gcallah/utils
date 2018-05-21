@@ -29,7 +29,7 @@ def get_pad(level):
 
 def link_to_url(topic, level):
     global tot_submenus
-    padding = get_pad(level)
+    padding = get_pad(level + 1)
     s = "%s<li>\n" % padding
     s += '%s<a href="%s">\n' % (padding, topic.url)
     s += "%s%s\n" % (padding, topic.title)
@@ -40,7 +40,7 @@ def link_to_url(topic, level):
 
 def link_to_submenu(topic, level):
     global tot_submenus
-    padding = get_pad(level)
+    padding = get_pad(level + 1)
     s = "%s<li>\n" % padding
     s += ('%s<a href="#Submenu%d" data-toggle="collapse" aria-expanded="false">\n'
           % (padding, tot_submenus))

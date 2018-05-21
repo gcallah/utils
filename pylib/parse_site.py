@@ -156,7 +156,8 @@ def parse_site(file):
 
 def test_parse_site(file):
     try:
-        topics = parse_site(file)
+        (title, topics) = parse_site(file)
+        print(title)
         for t in topics:
             print(t)
     except Exception as e:
