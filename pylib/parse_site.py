@@ -141,8 +141,10 @@ def parse_site(file):
                 stack.append(LevelState(prev_topic, curr_topic_list))
                 curr_topic_list = []
             elif t.level < curr_level:
+                pops = curr_level - t.level
                 # pop stack and connect list to popped item
-                curr_topic_list = restore_state(stack, curr_topic_list)
+                for i in range(0, pops):
+                    curr_topic_list = restore_state(stack, curr_topic_list)
         curr_level = t.level
         
         curr_topic_list.append(t)
