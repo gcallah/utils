@@ -15,9 +15,21 @@ GLYPHICON = 4 # type: int
 UNSET = -999999999  # topic level not yet set
 
 try:
-    from typing import List,Any
+    from typing import List, Any
 except ImportError:
-    print("WARNING!")
+    print("Warning: could not import List or Any")
+
+
+class IndentError(Exception):
+    def __init__(self, level, line):
+        self.msg = "Invalid jump to indent level %d at line %d" % (level, line)
+
+
+class InputError(Exception):
+    def __init__(self, value:str, msg:str)->None:
+        self.value = value
+        self.msg = msg
+
 
 class Topic:
     def __init__(self, flds:List[str])->None:
@@ -27,7 +39,8 @@ class Topic:
             raise InputError(SEP.join(flds), "Indent level is required.")
         else:
             try:
-                level = int(flds[LEVEL]) # if flds[LEVEL] is not a number, say 'a' or '!', this will raise a ValueError
+# if flds[LEVEL] is not a number, say 'a' or '!', this will raise a ValueError
+                level = int(flds[LEVEL])
                 if level < 0:
                     raise ValueError
             except ValueError:
@@ -49,7 +62,7 @@ class Topic:
     def set_subtopics(self, sub):
         self.subtopics = sub
 
-    def __str__(self)->object:
+    def to_string_just_me(self)->str:
         s = self.str_indent
         s += str(self.level)
         s += "; " + self.title
@@ -59,17 +72,16 @@ class Topic:
             s += "; " + self.short_title
         if self.glyphicon is not None:
             s += "; " + self.glyphicon
+        return s
+
+    def __str__(self)->str:
+        s = self.to_string_just_me()
         s += "\n"
         if self.subtopics is not None:
             for t in self.subtopics:
                 s += str(t)
         return s
 
-
-class InputError(Exception):
-    def __init__(self, value:str, message:str)->None:
-        self.value = value
-        self.message = message
 
 class LevelState():
     def __init__(self, topic, topic_list):
@@ -85,6 +97,7 @@ def restore_state(stack, curr_tlist):
 
 
 def parse_site(file):
+    title = None
     curr_level = UNSET
     with open(file) as f:
         lines = f.readlines() # type: List[str]
@@ -95,7 +108,10 @@ def parse_site(file):
     stack = []
     curr_topic_list = [] # type: List[Any]
     prev_topic = None
+    line_no = 0
     for line in lines:
+        line_no += 1
+
         # skip empty lines and comments
         if not line.strip():
             continue
@@ -111,10 +127,17 @@ def parse_site(file):
             flds.append(None)
 
         # create a Topic object
-        t = Topic(flds)
+        if title is None:
+            title = Topic(flds)
+            continue
+        else:
+            t = Topic(flds)
         # and get it at the right level of nesting:
         if curr_level != UNSET:
             if t.level > curr_level:
+                if t.level > curr_level + 1:
+                    # can't skip indent levels going out:
+                    raise IndentError(t.level, line_no)
                 stack.append(LevelState(prev_topic, curr_topic_list))
                 curr_topic_list = []
             elif t.level < curr_level:
@@ -128,10 +151,13 @@ def parse_site(file):
     while len(stack) > 0:
         curr_topic_list = restore_state(stack, curr_topic_list)
 
-    return curr_topic_list
+    return (title, curr_topic_list)
 
 
 def test_parse_site(file):
-    topics = parse_site(file)
-    for t in topics:
-        print(t)
+    try:
+        topics = parse_site(file)
+        for t in topics:
+            print(t)
+    except Exception as e:
+        print(e.msg)
