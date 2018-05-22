@@ -65,18 +65,21 @@ def process_menu(topics, level):
         if topic.url is not None:
             s += link_to_url(topic, level)
         else:
-            s += link_to_submenu(topic, level)
-            s += process_menu(topic.subtopics, level + 1)
+            if level < max_menu_level:
+                s += link_to_submenu(topic, level)
+                s += process_menu(topic.subtopics, level + 1)
     s += "%s</ul>\n" % padding
     return s
         
 
-if len(sys.argv) < 2:
+if len(sys.argv) < 3:
     print("ERROR: Please specify input file name and output file name.")
     sys.exit(BAD_ARGS)
 
 # this should be settable via command-line arg in future:
 max_menu_level = MAX_MENU_LEVEL
+if len(sys.argv) > 3:
+    max_menu_level = sys.argv[3]
 
 input_fname = sys.argv[INPUT]  # type: str
 output_fname = sys.argv[OUTPUT]  # type: str

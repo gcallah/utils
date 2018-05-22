@@ -3,6 +3,7 @@
 1^Course Topics^
 2^Introductory Material^
 3^The Basics^basics.html^
+4^Introduction
 3^Abstraction Mechanisms^abstraction_mech.html^
 3^Containers and Algorithms^containers_algo.html^
 3^Concurrency and Utilities^concurrency_utils.html^
