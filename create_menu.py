@@ -27,23 +27,15 @@ def get_pad(level):
     return INDENT * level
 
 
-def link_to_url(topic, level):
+def create_link(topic, level, is_url):
     global tot_submenus
     padding = get_pad(level + 1)
     s = "%s<li>\n" % padding
-    s += '%s<a href="%s">\n' % (padding, topic.url)
-    s += "%s%s\n" % (padding, topic.title)
-    s += "%s</a>\n" % padding
-    s += "%s</li>\n" % padding
-    return s
-
-
-def link_to_submenu(topic, level):
-    global tot_submenus
-    padding = get_pad(level + 1)
-    s = "%s<li>\n" % padding
-    s += ('%s<a href="#Submenu%d" data-toggle="collapse" aria-expanded="false">\n'
-          % (padding, tot_submenus))
+    if is_url:
+        s += '%s<a href="%s">\n' % (padding, topic.url)
+    else:
+        s += ('%s<a href="#Submenu%d" data-toggle="collapse" aria-expanded="false">\n'
+              % (padding, tot_submenus))
     s += "%s%s\n" % (padding, topic.title)
     s += "%s</a>\n" % padding
     s += "%s</li>\n" % padding
@@ -63,10 +55,10 @@ def process_menu(topics, level):
 
     for topic in topics:
         if topic.url is not None:
-            s += link_to_url(topic, level)
+            s += create_link(topic, level, True)
         else:
             if level < max_menu_level:
-                s += link_to_submenu(topic, level)
+                s += create_link(topic, level, False)
                 s += process_menu(topic.subtopics, level + 1)
     s += "%s</ul>\n" % padding
     return s
