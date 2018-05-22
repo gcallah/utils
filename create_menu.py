@@ -57,7 +57,7 @@ def process_menu(topics, level):
         if topic.url is not None:
             s += create_link(topic, level, True)
         else:
-            if level < max_menu_level:
+            if level < max_menu_level and topic.subtopics is not None:
                 s += create_link(topic, level, False)
                 s += process_menu(topic.subtopics, level + 1)
     s += "%s</ul>\n" % padding

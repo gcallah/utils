@@ -2,10 +2,10 @@
 
 import sys
 from subprocess import call
-from pylib.parse_course import parse_course, CourseItem
+from pylib.parse_site import parse_site, InputError, IndentError, Topic
 from pathlib import Path
 try:
-    from typing import List,Any
+    from typing import List, Any
 except ImportError:
     print("WARNING: Typing module is not find")
 
@@ -18,32 +18,40 @@ HTML_EXT = "html"  # type: str
 PTML_EXT = "ptml"  # type: str
 ptml_dir = "html_src"  # type: str
 
+
+def process_level(topics, level):
+    for topic in topics:
+        if topic.url is not None:
+            ptml_file = topic.url.replace(HTML_EXT, PTML_EXT)
+            ptml_file = ptml_dir +  "/" + ptml_file
+            my_file = Path(ptml_file)
+            if not my_file.is_file():  # don't overwrwite existing files!
+                print("\nGoing to create " + ptml_file)
+                call(PAGE_SCRIPT + " \"" + topic.title +
+                     "\" <" + page_templ +
+                     " >" + ptml_file,
+                     shell=True)
+        if topic.subtopics is not None:
+            process_level(topic.subtopics, level + 1)
+
+
 if len(sys.argv) < 3:
-    print("Must supply a file of pages to create and a page template.")
+    print("Must supply a file of topics to create and a page template.")
     exit(1)
 
-pages = [] # type: List[Any]
-pages_file = sys.argv[1] # type: str
+topics = [] # type: List[Any]
+topics_file = sys.argv[1] # type: str
 page_templ = sys.argv[2]  # type: str
 if len(sys.argv) > 3:
     ptml_dir = sys.argv[3]
 
+title = None
+topics = None
 try:
-    pages = parse_course(pages_file)
+    (title, topics) = parse_site(topics_file)
 except:
-    print("ERROR: Failed to open " + pages_file)
+    print("ERROR: Failed to open " + topics_file)
     exit(OPEN_ERROR)
 
-for course_module in pages:
-    html_file = course_module.url
-    if html_file is not None:
-        ptml_file = html_file.replace(HTML_EXT, PTML_EXT)
-        ptml_file = ptml_dir +  "/" + ptml_file
-        my_file = Path(ptml_file)
-        if not my_file.is_file():  # don't overwrwite existing files!
-            print("Going to create " + ptml_file)
-            call(PAGE_SCRIPT + " \"" + course_module.title +
-                 "\" <" + page_templ +
-                 " >" + ptml_file,
-                 shell=True)
+process_level(topics, 1)
 
