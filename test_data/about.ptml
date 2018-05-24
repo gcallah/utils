@@ -3,7 +3,7 @@
     <head>
 <!--include head.txt -->
         <title>
-            Test Page
+            About
         </title>
 <!--include googleAnalyticsScript.txt -->
     </head>
@@ -13,7 +13,7 @@
 <!--include navbar.txt -->
             <div id="content">
                 <h1>
-                    Test Page
+                    About
                 </h1>
 
             </div>

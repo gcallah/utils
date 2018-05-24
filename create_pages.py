@@ -1,18 +1,17 @@
 #!/usr/bin/env python3 
 
 import sys
-from subprocess import call
-from pylib.parse_site import parse_site, InputError, IndentError, Topic
 from pathlib import Path
 try:
     from typing import List, Any
 except ImportError:
     print("WARNING: Typing module is not find")
+from pylib.parse_site import parse_site, InputError, IndentError, Topic
+from pylib.create_page import create_page
 
 HTML_PG = 0  # type: int
 TITLE = 1  # type: int
 OPEN_ERROR = 1  # type: int
-PAGE_SCRIPT = "../utils/create_page.py"   # type: str
 
 HTML_EXT = "html"  # type: str
 PTML_EXT = "ptml"  # type: str
@@ -27,10 +26,9 @@ def process_level(topics, level):
             my_file = Path(ptml_file)
             if not my_file.is_file():  # don't overwrwite existing files!
                 print("\nGoing to create " + ptml_file)
-                call(PAGE_SCRIPT + " \"" + topic.title +
-                     "\" <" + page_templ +
-                     " >" + ptml_file,
-                     shell=True)
+                with open(page_templ, 'r') as inf, \
+                      open(ptml_file, 'w') as outf:
+                    create_page(inf, outf, topic.title)
         if topic.subtopics is not None:
             process_level(topic.subtopics, level + 1)
 
