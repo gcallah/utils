@@ -28,7 +28,7 @@ def process_level(topics, level):
                 print("\nGoing to create " + ptml_file)
                 with open(page_templ, 'r') as inf, \
                       open(ptml_file, 'w') as outf:
-                    create_page(inf, outf, topic.title)
+                    create_page(inf, outf, topic.title, topic.subtopics)
         if topic.subtopics is not None:
             process_level(topic.subtopics, level + 1)
 

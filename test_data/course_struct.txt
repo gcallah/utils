@@ -4,51 +4,53 @@
 2^Introductory Material^
 3^The Basics^basics.html^
 4^Introduction
-3^Abstraction Mechanisms^abstraction_mech.html^
-3^Containers and Algorithms^containers_algo.html^
-3^Concurrency and Utilities^concurrency_utils.html^
-2^Basic Facilities^
-3^Types and Declarations^types.html^
-3^Pointers, Arrays, and References^ptr_arr_ref.html^
-3^Structures, Unions, and Enumerations^struct.html^
-3^Statements^statements.html^
-3^Expressions^expressions.html^
-3^Select Operations^operations.html^
-3^Functions^functions.html^
-3^Exception Handling^exception.html^
-3^Namespaces^namespaces.html^
-3^Source Files and Programs^source.html^
-2^Abstraction Mechanisms^
-3^Classes^classes.html^
-3^Construction, Cleanup, Copy, and Move^construction.html^
-3^Overloading^overloading.html^
-3^Special Operators^special_ops.html^
-3^Derived Classes^derived_classes.html^
-3^Class Hierarchies^class_hier.html^
-3^Run-Time Type Information^rtype_info.html^
-3^Templates^templates.html^
-3^Generic Programming^generic.html^
-3^Specialization^specialization.html^
-3^Instantiation^instantiation.html^
-3^Templates and Hierarchies^temp_and_hier.html^
-3^Metaprogramming^metaprogramming.html^
-3^A Matrix Design^matrix.html^
-2^The Standard Library^
-3^Standard Library Summary^stl_summary.html^
-3^STL Containers^stl_containers.html^
-3^STL Algorithms^stl_algorithms.html^
-3^STL Iterators^stl_iterators.html^
-3^Memory and Resources^memory.html^
-3^Utilities^utilities.html^
-3^Strings^strings.html^
-3^Regular Expressions^regexp.html^
-3^I/O Streams^io.html^
-3^Locales^locales.html^
-3^Numerics^numerics.html^
-3^Concurrency^concurrency.html^
-3^Threads and Tasks^threads.html^
-3^The C Standard Library^stdlib.html^
-3^Compatibility^compatibility.html^
-1^Other Material^^
-2^Course Syllabus^syllabus.html^
-1^About^about.html^
+5^Introduction sublevel
+4^Just what is this C++ I keep hearing about?
+#3^Abstraction Mechanisms^abstraction_mech.html^
+#3^Containers and Algorithms^containers_algo.html^
+#3^Concurrency and Utilities^concurrency_utils.html^
+#2^Basic Facilities^
+#3^Types and Declarations^types.html^
+#3^Pointers, Arrays, and References^ptr_arr_ref.html^
+#3^Structures, Unions, and Enumerations^struct.html^
+#3^Statements^statements.html^
+#3^Expressions^expressions.html^
+#3^Select Operations^operations.html^
+#3^Functions^functions.html^
+#3^Exception Handling^exception.html^
+#3^Namespaces^namespaces.html^
+#3^Source Files and Programs^source.html^
+#2^Abstraction Mechanisms^
+#3^Classes^classes.html^
+#3^Construction, Cleanup, Copy, and Move^construction.html^
+#3^Overloading^overloading.html^
+#3^Special Operators^special_ops.html^
+#3^Derived Classes^derived_classes.html^
+#3^Class Hierarchies^class_hier.html^
+#3^Run-Time Type Information^rtype_info.html^
+#3^Templates^templates.html^
+#3^Generic Programming^generic.html^
+#3^Specialization^specialization.html^
+#3^Instantiation^instantiation.html^
+#3^Templates and Hierarchies^temp_and_hier.html^
+#3^Metaprogramming^metaprogramming.html^
+#3^A Matrix Design^matrix.html^
+#2^The Standard Library^
+#3^Standard Library Summary^stl_summary.html^
+#3^STL Containers^stl_containers.html^
+#3^STL Algorithms^stl_algorithms.html^
+#3^STL Iterators^stl_iterators.html^
+#3^Memory and Resources^memory.html^
+#3^Utilities^utilities.html^
+#3^Strings^strings.html^
+#3^Regular Expressions^regexp.html^
+#3^I/O Streams^io.html^
+#3^Locales^locales.html^
+#3^Numerics^numerics.html^
+#3^Concurrency^concurrency.html^
+#3^Threads and Tasks^threads.html^
+#3^The C Standard Library^stdlib.html^
+#3^Compatibility^compatibility.html^
+#1^Other Material^^
+#2^Course Syllabus^syllabus.html^
+#1^About^about.html^
