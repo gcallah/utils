@@ -24,11 +24,16 @@ class IndentError(Exception):
     def __init__(self, level, line):
         self.msg = "Invalid jump to indent level %d at line %d" % (level, line)
 
+    def __str__(self):
+        return self.msg
 
 class InputError(Exception):
     def __init__(self, value:str, msg:str)->None:
         self.value = value
         self.msg = msg
+
+    def __str__(self):
+        return self.msg
 
 
 class Topic:
@@ -63,6 +68,7 @@ class Topic:
         self.subtopics = sub
 
     def to_string_just_me(self)->str:
+    # when we don't want to recursively print the subtopics!
         s = self.str_indent
         s += str(self.level)
         s += "; " + self.title
@@ -163,4 +169,4 @@ def test_parse_site(file):
         for t in topics:
             print(t)
     except Exception as e:
-        print(e.msg)
+        print(e)

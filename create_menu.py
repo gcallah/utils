@@ -15,12 +15,9 @@ EMPTY_LIST = 1 # type: int
 INDENT_MISMATCH = 2 # type: int
 BAD_ARGS = 3 # type: int
 
-MAX_MENU_LEVEL = 3 # type: int
-
 INDENT = "    " # type: str
 
-
-tot_submenus = 0
+tot_submenus = 0 # type: int
 
 
 def get_pad(level):
@@ -57,7 +54,7 @@ def process_menu(topics, level):
         if topic.url is not None:
             s += create_link(topic, level, True)
         else:
-            if level < max_menu_level and topic.subtopics is not None:
+            if topic.subtopics is not None:
                 s += create_link(topic, level, False)
                 s += process_menu(topic.subtopics, level + 1)
     s += "%s</ul>\n" % padding
@@ -67,11 +64,6 @@ def process_menu(topics, level):
 if len(sys.argv) < 3:
     print("ERROR: Please specify input file name and output file name.")
     sys.exit(BAD_ARGS)
-
-# this should be settable via command-line arg in future:
-max_menu_level = MAX_MENU_LEVEL
-if len(sys.argv) > 3:
-    max_menu_level = sys.argv[3]
 
 input_fname = sys.argv[INPUT]  # type: str
 output_fname = sys.argv[OUTPUT]  # type: str
