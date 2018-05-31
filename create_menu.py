@@ -33,6 +33,8 @@ def create_link(topic, level, is_url):
     else:
         s += ('%s<a href="#Submenu%d" data-toggle="collapse" aria-expanded="false">\n'
               % (padding, tot_submenus))
+    if topic.glyphicon:
+        s += '%s<i class="glyphicon %s"></i>\n' % (padding, topic.glyphicon)
     s += "%s%s\n" % (padding, topic.title)
     s += "%s</a>\n" % padding
     s += "%s</li>\n" % padding
