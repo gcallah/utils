@@ -1,10 +1,11 @@
 from pylib.html_tags import details
+
 indent1 = "            " # type: str
 indent2 = "                    " # type: str
 
 def output_subtopics(outf, subtopics, level):
     for topic in subtopics:
-        s = details(topic.title, level=level)
+        s = details(topic.title, level=level, inc_par=True, inc_fig=True)
         outf.write(s)
         if topic.subtopics is not None:
             output_subtopics(outf, topic.subtopics, level + 1)

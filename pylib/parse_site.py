@@ -1,7 +1,7 @@
 
 MAX_FLDS = 5 # type: int
 
-SEP = '^' # type: str
+SEP = '\t' # type: str
 COMMENT = "#"
 
 INDENT1 = "    "
