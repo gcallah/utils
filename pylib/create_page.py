@@ -5,8 +5,8 @@ indent2 = "                    " # type: str
 
 def create_subtopics(outf, subtopics, level):
     s = ""
-    inner = ""
     for topic in subtopics:
+        inner = ""
         if topic.subtopics is not None:
             inner += create_subtopics(outf, topic.subtopics, level + 1)
         s += details(topic.title, level=level, inc_par=True, inc_fig=True,
