@@ -23,7 +23,8 @@ def figure(src="", caption=None, indent=INDENT4):
     s += indent + '</figure>\n'
     return s
 
-def details(sumtext, level=1, indent=INDENT4, inc_par=False, inc_fig=False):
+def details(sumtext, level=1, indent=INDENT4, inc_par=False, inc_fig=False,
+           inner_details=None):
     indent += INDENT1 * (level - 1)
     s = indent + '<details>\n'
     s += indent + INDENT1 + '<summary class="sum' + str(level) + '">\n'
@@ -33,6 +34,8 @@ def details(sumtext, level=1, indent=INDENT4, inc_par=False, inc_fig=False):
         s += figure()
     if inc_par:
         s += par()
+    if inner_details is not None:
+        s += inner_details
     s += indent + '</details>\n'
     return s
 
