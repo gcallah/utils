@@ -1,6 +1,6 @@
 """
-Script to check spellings of words in the web page. Also allows the users
-to add words to the dictionary.
+Script to check spellings of words in a web page. Also allows the users
+to add words to a custom dictionary.
 """
 
 import json
@@ -21,7 +21,7 @@ except ImportError:
 ARG_ERROR = 1  # type: int
 SPELL_ERROR = 2  # type: int
 
-#Application keys for Oxford dictionary API
+# Application keys for Oxford dictionary API
 app_id = '4dcc2c67'
 app_key = 'c7d48867f7506e51e70507d85bc9cbe6'
 language = 'en'
@@ -51,10 +51,9 @@ class OurHTMLParser(HTMLParser):
         super(OurHTMLParser, self).__init__(convert_charrefs=False)
 
     def isWordInOxfordDictionary(self,lower_word):
-        url = 'https://od-api.oxforddictionaries.com/api/v1/inflections/' + language + '/' + lower_word
+        url = ('https://od-api.oxforddictionaries.com/api/v1/inflections/'
+               + language + '/' + lower_word)
         r = requests.get(url, headers={'app_id': app_id, 'app_key': app_key})
-        # print(r.status_code)
-        # print(r.text)
         return r.status_code
 
     def handle_data(self, data):  # type: (str) -> None
@@ -75,7 +74,8 @@ class OurHTMLParser(HTMLParser):
             lower_word = word.lower()  # type: (str)
 
             if lower_word not in d:
-                if self.isWordInOxfordDictionary(lower_word) != 200: # If word doesn't exist in oxford dictionary too
+                if self.isWordInOxfordDictionary(lower_word) != 200:
+# If word doesn't exist in oxford dictionary too
                     valid = False  # type: bool
                     while not valid:
                         response = input("Do you want to add %s to dictionary?("
@@ -110,7 +110,8 @@ if __name__ == '__main__':
     arg_parser.add_argument("main_dict", help="main dictionary file")
     arg_parser.add_argument("custom_dict", help="custom dictionary file")
     arg_parser.add_argument("-e", help="enable exit error", action="store_true")
-    arg_parser.add_argument("-s", help="strict mode checks capitalized words", action="store_true")
+    arg_parser.add_argument("-s", help="strict mode checks capitalized words",
+                            action="store_true")
     args = arg_parser.parse_args()
     exit_error = args.e
     strict_mode = args.s

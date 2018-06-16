@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 try:
     from typing import Dict, Any, List
 except ImportError:
-    print("WARNING: Typing module is not find")
+    print("WARNING: Typing module is not found")
 
 user_agent = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.7) Gecko/2009021910 Firefox/3.0.7' # type: str
 headers = {'User-Agent': user_agent, }  # type: Dict[str, object]
