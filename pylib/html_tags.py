@@ -27,13 +27,14 @@ def details(sumtext, level=1, indent=INDENT4, inc_par=False, inc_fig=False,
            inner_details=None):
     indent += INDENT1 * (level - 1)
     s = indent + '<details>\n'
-    s += indent + INDENT1 + '<summary class="sum' + str(level) + '">\n'
-    s += indent + INDENT1 + sumtext + "\n"
-    s += indent + INDENT1 + '</summary>\n'
+    inner_indent = indent + INDENT1   # add one level indentation
+    s += inner_indent + '<summary class="sum' + str(level) + '">\n'
+    s += inner_indent + sumtext + "\n"
+    s += inner_indent + '</summary>\n'
     if inc_fig:
-        s += figure()
+        s += figure(indent=inner_indent)
     if inc_par:
-        s += par()
+        s += par(indent=inner_indent)
     if inner_details is not None:
         s += inner_details
     s += indent + '</details>\n'
