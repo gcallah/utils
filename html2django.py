@@ -38,7 +38,7 @@ pos2 = 0 # type: int
 for i in range(len(input)):
     if "<h1>" in input[i] or "<p>" in input[i] or "<h2>" in input[i] \
         or "<h3>" in input[i] or "<h4>" in input[i] or "<h5>" in input[i]\
-            or "<figure>" in input[i]:#or "<img" in input[i]:
+            or "<figure>" in input[i]:  # or "<img" in input[i]:
         pos2 = i
         break
 
