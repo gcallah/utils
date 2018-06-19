@@ -1,3 +1,5 @@
+#!/usr/bin/env python3 
+
 # This file converts between our html format and django template files.
 # Pass the file to convert on the command line.
 # Writes to stdout.
