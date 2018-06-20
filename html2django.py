@@ -22,8 +22,9 @@ input = f.readlines() # type: List[str]
 f.close()
 
 
-#  - we need to go until we start seeing text that wil appeR ON SCREEN
-#  - These tags could include: <hn> - where n can be 1 - 5 or <p> or <figure> or <img>
+#  - we need to go until we start seeing text that wil appear on screen
+#  - These tags could include: <hn> - where n can be 1 - 5 
+#  or <p> or <figure> or <img> or <div>
 pos1 = 0 # type: int
 for i in range(len(input)):
     if "<!DOCTYPE html>" in input[i]:
@@ -33,7 +34,7 @@ pos2 = 0 # type: int
 for i in range(len(input)):
     if "<h1" in input[i] or "<p" in input[i] or "<h2" in input[i] \
         or "<h3" in input[i] or "<h4" in input[i] or "<h5" in input[i]\
-            or "<figure" in input[i] or "<div" in input[i]:  # or "<img" in input[i]:
+            or "<figure" in input[i] or "<div" in input[i]:
         pos2 = i
         break
 
