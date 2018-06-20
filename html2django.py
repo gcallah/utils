@@ -28,9 +28,9 @@ f.close()
 # print '-'*60
 
 
-# remove list items from <!DOCTYPE html> to next 22 lines (inclusive)
-# [Prof] - we need to go until we start seeing text that wil appeR ON SCREEN
-# [Prof] - These tags could include: <hn> - where n can be 1 - 5 or <p> or <figure> or <img>
+
+#  - we need to go until we start seeing text that wil appeR ON SCREEN
+#  - These tags could include: <hn> - where n can be 1 - 5 or <p> or <figure> or <img>
 pos1 = 0 # type: int
 for i in range(len(input)):
     if "<!DOCTYPE html>" in input[i]:
@@ -38,9 +38,9 @@ for i in range(len(input)):
 
 pos2 = 0 # type: int
 for i in range(len(input)):
-    if "<h1>" in input[i] or "<p>" in input[i] or "<h2>" in input[i] \
-        or "<h3>" in input[i] or "<h4>" in input[i] or "<h5>" in input[i]\
-            or "<figure>" in input[i]:  # or "<img" in input[i]:
+    if "<h1" in input[i] or "<p" in input[i] or "<h2" in input[i] \
+        or "<h3" in input[i] or "<h4" in input[i] or "<h5" in input[i]\
+            or "<figure" in input[i] or "<div" in input[i]:  # or "<img" in input[i]:
         pos2 = i
         break
 
@@ -65,6 +65,7 @@ output.append("""<div class="module">""""\n")
 for i in range(len(input)):
     output.append(input[i])
 
+output.append("""</div>""""\n")
 output.append("""{% endblock content %}""")
 # mypy code find type error here: line is defined as int, but it need to be string in this expression
 for line in output:
