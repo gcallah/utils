@@ -34,9 +34,17 @@ if len(sys.argv) < 2:
 
 quiz_dir = sys.argv[1] # type: str
 
+sections = True
+if len(sys.argv) > 2:
+    if sys.argv[2] == "--nosections":
+        sections = False
+
 chap = ask_int("Enter chapter # for question: ") # type: str
-section = ask_int("Enter section # for question: ") # type: str
-file_nm = quiz_dir + "/quiz" + chap + "." + section + ".txt" # type: str
+sect_txt = ""
+if sections:
+    section = ask_int("Enter section # for question: ") # type: str
+    sect_txt = "." + section
+file_nm = quiz_dir + "/quiz" + chap + sect_txt + ".txt" # type: str
 f = open(file_nm, "a")  # type: TextIO
 
 while True:
