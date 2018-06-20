@@ -37,10 +37,11 @@ if len(sys.argv) > 3:
 
 with open(quiz_file, "r") as f_in:
     freader = csv.reader(f_in, delimiter=delimiter)
-    print(INDENT1 + '<details>')
-    print(INDENT2 + '<summary class="sum' + sum_level + '">')
-    print(INDENT3 + 'Test Yourself!')
-    print(INDENT2 + '</summary>')
+# OOP doesn't want details tag: maybe make this a CL option?
+#    print(INDENT1 + '<details>')
+#    print(INDENT2 + '<summary class="sum' + sum_level + '">')
+#    print(INDENT3 + 'Test Yourself!')
+#    print(INDENT2 + '</summary>')
     print(INDENT2 + '<ol class="nested">')
     
     i = 1 # type: int
@@ -77,4 +78,4 @@ with open(quiz_file, "r") as f_in:
     print(INDENT4 + answer_key)
     print(INDENT3 + '</p>')
     print(INDENT2 + '</details>')
-    print(INDENT1 + '</details>')
+#    print(INDENT1 + '</details>')
