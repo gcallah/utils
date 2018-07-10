@@ -56,7 +56,7 @@ blockquote {
 
 ol, ul, dl, li {
     margin: 1em 1.5em .4em 1.5em;
-    font-size: 1em;
+    font-size: 1.2em;
 }
 
 ul.centered {
@@ -94,7 +94,7 @@ dt {
 }
 
 h1,h2,h3,h4,h5 {
-    font-weight: bold;
+    font-weight: 500;
 }
 
 h1 {
@@ -123,22 +123,25 @@ h2 {
 }
 
 h2.subhead {
-    font-weight:
-    normal;
+    font-weight: normal;
 }
 
 h3 {
     font-size: 1.6em;
     margin: 1em 1.4em .6em 1.4em;
     color: #ecb;
-    font-weight: bold;
 }
 
 h4 {
     font-size: 1.5em;
     margin: .8em 1.6em .6em 1.6em;
-    color: #339;
-    font-weight: bold;
+    color: #b3f;
+}
+
+code {
+    font-family: monospace;
+    background: inherit;
+    color: #4df;
 }
 
 summary.sum1 {
