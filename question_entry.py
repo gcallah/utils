@@ -34,6 +34,7 @@ if len(sys.argv) < 2:
 
 quiz_dir = sys.argv[1] # type: str
 
+# some projects just want one quiz per chapter:
 sections = True
 if len(sys.argv) > 2:
     if sys.argv[2] == "--nosections":
