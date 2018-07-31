@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="style.css" rel="stylesheet" type="text/css"/>
+        <title>
+            Upgrade Python
+        </title>
+    </head>
+
+    <body>
+        <h1>
+        	Upgrade Python
+        </h1>
+        <h2>
+            Steps
+        </h2>
+        <ol>
+        	<li>Open a bash console</li>
+        	<li>Remove Django: rm -rf virtualenvs/django2/ (or 1.9 depending on the version that you have)</li>
+			<li>mkvirtualenv django2 --python=/usr/bin/python3.6</li>
+			<li> workon django2</li>
+			<li>pip install django</li>
+			<li>pip install django-extensions</li>
+			<li>Go back to web tab</li>
+			<li>Choose the right server if your website is working on more than one</li>
+			<li>Update server to the correct python and django version</li>
+		</ol>
+</body>
+</html>
