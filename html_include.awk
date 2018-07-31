@@ -16,12 +16,15 @@ BEGIN {
 /<!-- *include/ {
     file = $2
 
+    # file has a forward slash in it, leave it alone:
+    if(!match($2, /\//)) {
     # if file starts with 'quiz' use quiz_path not template_path
-    if (quiz_path != "" && match($2, /quiz/)) {
-        file = quiz_path "/" $2
-    }
-    else if (template_path != "") {
-        file = template_path "/" $2
+        if (quiz_path != "" && match($2, /quiz/)) {
+            file = quiz_path "/" $2
+        }
+        else if (template_path != "") {
+            file = template_path "/" $2
+        }
     }
     i = 0
     while((getline < file ) > 0 ) {

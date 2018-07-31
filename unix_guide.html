@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link href="style.css" rel="stylesheet" type="text/css"/>
+        <title>
+            Short and Sweet Guide to the UNIX Command Line
+        </title>
+    </head>
+
+    <body>
+        <h1>
+            Short and Sweet Guide to the UNIX Command Line
+        </h1>
+
+
+        <p>
+            This is intended as a very minimal guide to getting around the UNIX
+            command line with minimum pain.
+            <br>
+            Here are the commands we feel will be most useful to you in our
+            classes and projects:
+        </p>
+
+        <ul>
+            <li>
+                <code>ls</code>: lists files in the
+                current directory (folder)
+            </li>
+
+            <li>
+                <code>ls -a</code>: list all files, including hidden
+                ones
+            </li>
+
+            <li>
+                <code>pwd</code>: print working
+                directory (tells you where you are!)
+            </li>
+
+            <li>
+                <code>cd [dirname]</code>: change directory to [dirname]
+            </li>
+
+            <li>
+                <code>cp [file1] [file2]</code>: copies [file1] to [file2]
+            </li>
+
+            <li>
+                <code>mv [file1] [file2]</code>: move [file1] to [file2] (file1
+                will be gone!)
+            </li>
+
+            <li>
+                <code>rm [file]</code>: remove [file]
+            </li>
+        </ul>
+
+        <h4>
+            Some <code>git</code> specific commands:
+        </h4>
+
+        <ul>
+            <li>
+                <code>git init</code>: create a new <code>git</code> 
+                repository (repo)
+            </li>
+
+            <li>
+                <code>git add [files...]</code>: adds a list of files to the
+                repo you are currently in -- will fail if you are not in a repo
+                folder!
+            </li>
+
+            <li>
+                <code>git commit -a -m "Your message here."</code>: commits all
+                changed files to the current repo.
+            </li>
+
+            <li>
+                <code>git push origin master</code>: pushes your changes to the 
+                "origin" repo: in our case, that is GitHub
+            </li>
+
+            <li>
+                <code>git pull origin master</code>: pull changes from the
+                origin repo (in our case GitHub) to the machine you
+                are on
+            </li>
+        </ul>
+
+    </body>
+</html>
