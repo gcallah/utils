@@ -1,0 +1,2 @@
+DRY  Don't Repeat Yourself! A crucial principle for good software engineering.
+repository  the data store of a version control system
