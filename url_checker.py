@@ -44,7 +44,11 @@ class OurHTMLParser(HTMLParser):
         self.links = [] # type: List[str]
         super(OurHTMLParser, self).__init__(convert_charrefs=False)
 
+
     def handle_starttag(self, tag, attrs):
+        '''
+        NOTE(adam) This function is not used, and what type 'attrs' is.
+        '''
         if tag == "a":
             attr = dict(attrs)
             if 'href' in attr:
@@ -54,42 +58,52 @@ class OurHTMLParser(HTMLParser):
             if 'src' in attr:
                 self.links.append(attr['src'])
 
+
     def is_accessible(self, link):# type: (str) -> bool
         '''
-        Here we check if the web page is accessible.
+        Makes three attempts to access a link with request.urlopen.
+        Returns a boolean.  True if ≥ 1 request fails to raise an exception, otherwise false.
         '''
         mock_header = {'User-Agent': HEADER_TXT}
-        for i in range(3):
+        for _ in range(3):
             try:
-                request = req.Request(link, headers = mock_header)
-                response = req.urlopen(request)
+                req.urlopen(
+                    req.Request(
+                        url=link, 
+                        headers=mock_header))
                 return True
-            except:
+            except:  
+                # NOTE(adam) It isn't clear what conditions (404, timeout, non-https rejected, etc.) raise
                 pass
         return False
 
+
     def check_urls_accessibility(self, links, relative_link_header):# type: (List[str], str) -> None
         print("Checking accessibility of urls...")
-        for link in parser.links:
+        for link in self.links:
             '''
             If it is a relative link, we will add a header 
             link to verify its accessbility again
             '''
-            if not self.is_accessible(link):  
-                if link.startswith('http') or link.startswith('https'):
+            if link.startswith('http') or link.startswith('https'):
+                # direct link
+                if not self.is_accessible(link):
                     self.print_warning_msg(link, line_msg())
-                else:
-                    link = urljoin(relative_link_header, link)
-                    if not self.is_accessible(link):
-                        self.print_warning_msg(link, line_msg())
-    
+            else:
+                # we assume that links lacking http(s) as a prefix are relative links
+                # TODO(adam) need a better way to differentiate relative vs absolute links.
+                link = urljoin(relative_link_header, link)
+                if not self.is_accessible(link):
+                    self.print_warning_msg(link, line_msg())
+
+
     def print_warning_msg(self, link, line):
         if url_error:
             print("ERROR: url not accessible") + line
-            saw_error = True # type:bool
         else:
             print("WARNING: url not accessible" + line
                     + "; " + link)
+
 
 if __name__ == '__main__':
     # if you want invalid url to throw errors invoke program with -e flag
