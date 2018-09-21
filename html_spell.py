@@ -23,6 +23,8 @@ SPELL_ERROR = 2  # type: int
 
 # Application keys for Oxford dictionary API
 app_id = '4dcc2c67'
+# Should we be storing API keys in a public repo? 
+# We might want to investigate https://www.vaultproject.io/
 app_key = 'c7d48867f7506e51e70507d85bc9cbe6'
 language = 'en'
 
@@ -37,13 +39,6 @@ def check_file(*files):
             print(file + " is not a file")
             exit(ARG_ERROR)
 
-def convertPythonDictToSet(dictionaryInPythonDictObject):
-    dictionarySet = set()
-
-    for word, count in dictionaryInPythonDictObject.items():
-        dictionarySet.add(word)
-
-    return dictionarySet
 
 class OurHTMLParser(HTMLParser):
     def __init__(self):  # type: () -> None
@@ -75,7 +70,7 @@ class OurHTMLParser(HTMLParser):
 
             if lower_word not in d:
                 if self.isWordInOxfordDictionary(lower_word) != 200:
-# If word doesn't exist in oxford dictionary too
+                    # If word doesn't exist in oxford dictionary too
                     valid = False  # type: bool
                     while not valid:
                         response = input("Do you want to add %s to dictionary?("
@@ -133,14 +128,11 @@ def line_msg():  # type: () -> str
 
 # Loading words from main Json Dictionary into the python set data structure
 with open(main_dict, 'r') as f:
-    dictionaryInPythonDictObject = json.load(f)
-    d = convertPythonDictToSet(dictionaryInPythonDictObject)
-    #print(len(d))
+    d = set(json.load(f).keys())
 
 # Loading words from custom Dictionary into the python set data structure
 with open(custom_dict, 'r') as f:
-    for line in f:
-        d.add(line.split()[0].lower())
+    d.add(line.split()[0].lower() for line in f)
 
 with open(file_nm, "r", ) as f:
     for line in f:
