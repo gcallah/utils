@@ -40,6 +40,9 @@ class OurHTMLParser(HTMLParser):
         super(OurHTMLParser, self).__init__(convert_charrefs=False)
     
     def handle_starttag(self, tag, attrs): # type: (str, object) -> None
+        '''
+        NOTE(adam) This function is used in neither utils nor devops.  'attrs' is an unused variable.
+        '''
         if tag == "script":
             self.is_in_script_tag = True
 
