@@ -19,5 +19,7 @@ if __name__ == '__main__':
     args = arg_parser.parse_args()
     file_name = args.file_name
 
-    check_file(file_name)
+check_file(file_name)
+
+
 
