@@ -18,7 +18,7 @@ sys.path.append(BASE_DIR)
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mysite.settings')
 django.setup()
-from devops.models import Question
+from devops.models import Question, Quiz
 
 def read_records(mod_nm):
     recs = None
