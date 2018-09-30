@@ -3,8 +3,6 @@ Glossary Page Builder: Takes a text file list of key subject terms and their def
 and builds the glossary list as an HTML file. Has internal tags the key terms will be linked to.
 '''
 
-# filter by username, send in assignment to nyuclasses
-
 import os
 import string
 import re
@@ -12,7 +10,6 @@ import argparse
 
 ARG_ERROR = 1  # type: int
 exit_error = False # type: bool
-strict_mode = False # type: bool
 file_nm = None
 
 INDENT1 = "        " # type: str
@@ -39,9 +36,9 @@ with open(txt_file, 'r') as f:
     try:
         #place terms/defs in dictionary
         for line in f:
-            term = line.strip().split("  ")
+            term = line.strip().split("\t") #tab delimited
             d[term[0]] = term[1]
-    except IndexError:
+    except IndexError: 
         print("Are you sure every term has its own definition?")
 
 #create glossary file by using dictionary
