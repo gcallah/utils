@@ -1,5 +1,5 @@
 '''
-Glossary Builder: Takes a text file list of key subject terms and their definitions (tab-delimited) 
+Glossary Page Builder: Takes a text file list of key subject terms and their definitions (tab-delimited) 
 and builds the glossary list as an HTML file. Has internal tags the key terms will be linked to.
 '''
 
@@ -27,21 +27,15 @@ def check_file(*files): #check if file exists
 
 if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument("file_nm", help="html file to be parsed")
-    arg_parser.add_argument("-e", help="enable exit error", action="store_true")
-    arg_parser.add_argument("-s", help="strict mode checks capitalized words",
-                            action="store_true")
+    arg_parser.add_argument("txt_file", help="text file to be parsed")
     args = arg_parser.parse_args()
-    exit_error = args.e
-    strict_mode = args.s
-    file_nm = args.file_nm
+    txt_file = args.txt_file
+    
 
-check_file(file_nm)
-saw_error = False  # type: bool
+check_file(txt_file)
 d = dict()  # type: Dict[str]
-code_tag_on = False  # type:bool
 
-with open('/test_data/glossbuilder-definitions-test.txt', 'r') as f:
+with open(txt_file, 'r') as f:
     try:
         #place terms/defs in dictionary
         for line in f:
@@ -54,7 +48,7 @@ with open('/test_data/glossbuilder-definitions-test.txt', 'r') as f:
 with open('glossary.html', 'a+') as f:
     f.write('<ul class="nested">') #open ul
     for key in d:
-        f.writelines(INDENT1+'<li>'+'\n'+INDENT2+'<a name='+key+'>'+'<span class="hilight">'+key+'</span>:'+'\n'+INDENT2+'</a>'+'/n'+INDENT2+d[key]+'\n'+'</li>')
+        f.writelines(INDENT1+'<li>'+INDENT2+'<a name='+key+'>'+'<span class="hilight">'+key+'</span>:'+'\n'+INDENT2+'</a>'+INDENT2+d[key]+'\n'+'</li>')
     f.write('</ul>') #close ul
     d.clear()
 
