@@ -36,16 +36,21 @@ def extract_questions(path_nm):
     AnswerC = list()
     AnswerD = list()
     AnswerE = list()
+
+    # counters for respective lists
     q_num, cor_ans, A, B, C, D, E = 0, 0, 0, 0, 0, 0, 0
+
+    # opening the file
     with open(path_nm) as input_file:
         for line in input_file:
             line = line.rstrip()
             if line:
+                # checking for question
                 if line[1] == ')' or line[2] == ')':
                     Text.append(line[3:].lstrip())
                     q_num += 1
                     continue
-
+                # checking for correct answer
                 if line[0] == '*':
                     Correct.append(line[1])
                     cor_ans += 1
@@ -91,7 +96,10 @@ def extract_questions(path_nm):
             else:
                 continue
 
+    # recs will be the final list of commands for insertion
     recs = list()
+
+    # looping to create a list of commands with model 'Question'
     for i, j, k, l, m, n, o in zip_longest(range(q_num), range(cor_ans), range(A), range(B), range(C), range(D), range(E)):
         recs.append(Question(text = Text[i] if i != None else None, correct = Correct[j] if j != None else None,
         answerA = AnswerA[k] if k != None else None, answerB = AnswerB[l] if l != None else None,
@@ -110,6 +118,8 @@ def main():
         # path_nm = 'data/DevOpsFinalQuiz.txt'
 
     recs = extract_questions(path_nm)
+
+    # inserting all the question and answer options in the database at once
     Question.objects.bulk_create(recs)
 
 if __name__ == '__main__':
