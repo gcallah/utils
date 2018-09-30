@@ -15,11 +15,13 @@ def check_file(*files): #check if file exists
 if __name__ == '__main__':
 
     arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument("file_name")
+    arg_parser.add_argument("text_file")
+    arg_parser.add_argument("html_file")
     args = arg_parser.parse_args()
-    file_name = args.file_name
+    text_file = args.text_file
+    html_file = args.html_file
 
-check_file(file_name)
+check_file(text_file,html_file)
 
-
+text_path, html_path = (os.path.abspath(text_file)), (os.path.abspath(html_file))
 
