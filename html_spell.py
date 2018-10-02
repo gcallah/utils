@@ -5,6 +5,7 @@ to add words to a custom dictionary.
 
 import json
 import os
+import subprocess
 import requests
 from html.parser import HTMLParser
 import string
@@ -86,6 +87,12 @@ class OurHTMLParser(HTMLParser):
                         # 'no' if it is really a typo
                         elif response.lower() == 'no':
                             global saw_error  # type :bool
+                            secondResp = input("Would you like to edit the file to fix it? (yes/no)\n")
+                            if secondResp.lower() == 'yes':
+                                subprocess.call(['vimdiff', '-c', '/{}'.format(lower_word), file_nm])
+                                # Need to restart this process here
+                            else:
+                                pass
                             valid = True
                             saw_error = True
                             print("ERROR: " + word + line_msg())
