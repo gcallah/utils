@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 '''
 Glossary Page Builder: Takes a text file list of key subject terms and their definitions (tab-delimited) 
 and builds the glossary list as an HTML file. Has internal tags the key terms will be linked to.
@@ -42,17 +41,13 @@ with open(txt_file, 'r') as f:
     except IndexError: 
         print("Are you sure every term has its own definition?")
 
-# write to standard out:
-print('<ul class="nested">') #open ul
-for key in d:
-    print(INDENT1 + '<li>')
-    print(INDENT2 + '<a name=' + key + '>')
-    print(INDENT2 +'<span class="hilight">' + key + '</span>:')
-    print(INDENT2 + '</a>')
-    print(INDENT2 + d[key])
-    print(INDENT1 + '</li>')
-print('</ul>') #close ul
-d.clear()
+#create glossary file by using dictionary
+with open('glossary.html', 'a+') as f:
+    f.write('<ul class="nested">') #open ul
+    for key in d:
+        f.writelines(INDENT1+'<li>'+INDENT2+'<a name='+key+'>'+'<span class="hilight">'+key+'</span>:'+'\n'+INDENT2+'</a>'+INDENT2+d[key]+'\n'+'</li>')
+    f.write('</ul>') #close ul
+    d.clear()
 
 if exit_error:
     exit(ARG_ERROR)
