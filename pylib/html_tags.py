@@ -40,3 +40,19 @@ def details(sumtext, level=1, indent=INDENT4, inc_par=False, inc_fig=False,
     s += indent + '</details>\n'
     return s
 
+def ulist(css_class=None, l=None, indent=INDENT4, level=1):
+    indent += INDENT1 * (level - 1)
+    inner_indent = indent + INDENT1   # add one level indentation
+    s = indent + "<ul"
+    if css_class is not None:
+        s += "class=\"" + css_class + "\""
+    s += ">\n"
+    for item in l:
+        s += inner_indent
+        s += "<li>\n"
+        s += inner_indent
+        s += item + "\n"
+        s += inner_indent
+        s += "</li>\n"
+    s += indent + "</ul>\n"
+    return s
