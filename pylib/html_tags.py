@@ -78,3 +78,13 @@ def image(indent=INDENT4, src="", alt="", other_attr=""):
     s = indent + "<img src=" + src + "alt=" + alt + other_attr + ">\n"
     return s
 
+def head(indent=INDENT4, title="", cssFile=None): # generate meta head
+    s = "<head>\n"
+    s += INDENT1 + "<title>\n\n"
+    s += INDENT2 + title + "\n"
+    s += INDENT1 + "</title>\n"
+    if cssFile is not None:
+        s += "<link rel='stylesheet' type='text/css' href="+cssFile+">\n"
+    s += "</head>\n"
+    return s
+
