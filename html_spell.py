@@ -97,7 +97,7 @@ class OurHTMLParser(HTMLParser):
                 return None
             elif response.lower() == 'edit' or response.lower() == 'e' or response == '3':
                 # This opens up vim, at the first instance of the troublesome word, with all instances highlighted.
-                subprocess.call(['vimdiff', '+{}'.format(line_num), '-c', '/ {} '.format(word), file_nm])
+                subprocess.call(['vimdiff', '+{}'.format(line_num), '-c', '/ {}'.format(word), file_nm])
                 raise FileChangedException
             elif response.lower() == 'close' or response.lower() == 'c' or response == '4':
                 exit(0)
