@@ -1,3 +1,11 @@
-Course
-system
-pre-html
+Everyone knows that DRY stuff is lighter and easier to maintain
+When it comes to programming, DRY
+DRY?
+DRY coding approach saves you time and space
+You may need DRY to think a DRY lot when you’re implementing DRY!! code
+The above looks too wet and can be made dry in many ways
+DRY
+
+
+
+

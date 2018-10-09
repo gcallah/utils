@@ -40,8 +40,70 @@ def check_file(*files):
             print(file + " is not a file")
             exit(ARG_ERROR)
 
+def spellCheckFile(spellChecker, fn):
+    """
+    Description:
+        Parses the file with name fn, using the passed-in spellChecker.
+    Returns:
+        None if the file was spell-checked without any hiccups
+    Raises:
+        If an irrecoverable error was encountered
+    """
+    code_tag_on = False  # type:bool
+    line_num = 0
+    try:
+        spellChecker.reset()
+        with open(fn, "r", ) as f:
+            for line in f:
+                if "<code>" in line:
+                    code_tag_on = True
+                if "</code>" in line:
+                    code_tag_on = False
+                    continue
+
+                if not code_tag_on:
+                    spellChecker.feed(line)
+                line_num += 1
+    except FileChangedException:
+        return spellCheckFile(spellChecker, fn)
+
+class FileChangedException(Exception):
+    pass
 
 class OurHTMLParser(HTMLParser):
+    def handle_bad_word(self, word):
+        """
+        Description:
+            A REPL loop allowing the user to handle their misspelt word.
+        Returns:
+            Nothing normally
+        Raises:
+            FileChangedException if the edit option was chosen
+        """
+        validResponse = False  # type: bool
+        while not validResponse:
+            response = input(
+                "How would you like to handle the bad word {}?\n".format(word) +
+                "1. Add as valid word to dictionary (1/a/add)\n" +
+                "2. Skip error, because words is a unique string (2/s/skip)\n" +
+                "3. Edit file, to fix the word (3/e/edit)\n"+ 
+                "4. Close the spell-checker for this file (4/c/close)\n" +
+                ">>")
+            if response.lower() == 'add' or response.lower() == 'a' or response == '1':
+                added_words.add(word)
+                d.add(word)
+                return None
+            elif response.lower() == 'skip' or response.lower() == 's' or response == '2':
+                return None
+            elif response.lower() == 'edit' or response.lower() == 'e' or response == '3':
+                # This opens up vim, at the first instance of the troublesome word, with all instances highlighted.
+                subprocess.call(['vimdiff', '+{}'.format(line_num), '-c', '/ {}'.format(word), file_nm])
+                raise FileChangedException
+            elif response.lower() == 'close' or response.lower() == 'c' or response == '4':
+                exit(0)
+            else:
+                print("Invalid response, Please try again!")
+
     def __init__(self):  # type: () -> None
         self.is_in_script_tag = False
         super(OurHTMLParser, self).__init__(convert_charrefs=False)
@@ -52,54 +114,46 @@ class OurHTMLParser(HTMLParser):
         r = requests.get(url, headers={'app_id': app_id, 'app_key': app_key})
         return r.status_code
 
+    def checkWord(self, word):
+        if '\'s' in word:
+            word = word[:word.index('\'')]
+        if word is "":
+            return
+        if not is_word(word):
+            return
+        if len(word) == 1:
+            return
+        if not strict_mode and word[0].isupper():
+            return
+
+        lower_word = word.lower()  # type: (str)
+
+        if lower_word not in d and self.isWordInOxfordDictionary(lower_word) != 200:
+            self.handle_bad_word(lower_word)  # raises if edit is chosen
+
     def handle_data(self, data):  # type: (str) -> None
+        """
+        Description:
+            This is the core function of the parser, called on a line-by-line basis in parser.feed().
+            We check if any of the words in the line are not in the oxford dictionary, or our local dictionary.
+        Exceptions:
+            Raises a FileChangedException if the file is edited in handle_bad_word, 
+              so that the main execution thread can restart the file parsing process.
+        """
         web_page_words = data.split()  # type: List[str]
 
+        if web_page_words and web_page_words[0] == "{%" and web_page_words[len(web_page_words)-1] == "%}":
+            return
+
         for web_page_word in web_page_words:
-            # strip other punctuations
-            word = web_page_word.strip(string.punctuation).strip()  # type :str
-            if word is "":
-                continue
-            if not is_word(word):
-                continue
-            if len(word) == 1:
-                continue
-            if not strict_mode and word[0].isupper():
-                continue
+            word = web_page_word.strip(string.punctuation).strip() # strip other punctuations
+            if "-" in web_page_word:
+                for word in web_page_word.split("-"):
+                    self.checkWord(word)
+            else:
+                self.checkWord(word)
 
-            lower_word = word.lower()  # type: (str)
-
-            if lower_word not in d:
-                if self.isWordInOxfordDictionary(lower_word) != 200:
-                    # If word doesn't exist in oxford dictionary too
-                    valid = False  # type: bool
-                    while not valid:
-                        response = input("Do you want to add %s to dictionary?("
-                                         "yes/no/skip)\n" % word)
-                        # 'yes' to improve dictionary
-                        if response.lower() == 'yes':
-                            added_words.add(lower_word)
-                            d.add(lower_word)
-                            valid = True
-                        # 'skip' unique strings (checksum/names) but not errors
-                        elif response.lower() == 'skip':
-                            valid = True
-                        # 'no' if it is really a typo
-                        elif response.lower() == 'no':
-                            global saw_error  # type :bool
-                            secondResp = input("Would you like to edit the file to fix it? (yes/no)\n")
-                            if secondResp.lower() == 'yes':
-                                subprocess.call(['vimdiff', '-c', '/{}'.format(lower_word), file_nm])
-                                # Need to restart this process here
-                            else:
-                                pass
-                            valid = True
-                            saw_error = True
-                            print("ERROR: " + word + line_msg())
-                        else:
-                            print("Invalid response, Please try again!")
-
-
+line_num = 0
 exit_error = False # type: bool
 strict_mode = False # type: bool
 file_nm = None
@@ -122,16 +176,10 @@ if __name__ == '__main__':
     custom_dict = args.custom_dict
 
 check_file(file_nm, main_dict, custom_dict)
-line_no = 0  # type :int
 saw_error = False  # type: bool
 d = set()  # type: Set[str]
 added_words = set()  # type: Set[str]
-code_tag_on = False  # type:bool
 parser = OurHTMLParser()
-
-
-def line_msg():  # type: () -> str
-    return " at line number " + str(line_no)
 
 # Loading words from main Json Dictionary into the python set data structure
 with open(main_dict, 'r') as f:
@@ -141,18 +189,7 @@ with open(main_dict, 'r') as f:
 with open(custom_dict, 'r') as f:
     d.add(line.split()[0].lower() for line in f)
 
-with open(file_nm, "r", ) as f:
-    for line in f:
-        if "<code>" in line:
-            code_tag_on = True
-
-        if "</code>" in line:
-            code_tag_on = False
-            continue
-
-        if not code_tag_on:
-            parser.feed(line)
-        line_no += 1
+spellCheckFile(parser, file_nm)
 
 with open(custom_dict, 'a+') as f:
     f.writelines(i + '\n' for i in added_words)

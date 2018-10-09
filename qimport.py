@@ -74,6 +74,7 @@ def extract_questions(path_nm):
                     else:
                         AnswerE.append(line[4:])
                         E += 1
+
                 elif line[0] == 'a':
                     AnswerA.append(line[3:])
                     A += 1
@@ -108,6 +109,14 @@ def extract_questions(path_nm):
 
     return recs
 
+    def insert_records(recs):
+
+        if not recs:
+            print("No data to insert!")
+        else:
+            # statement that inserts records
+            Question.objects.bulk_create(recs)
+
 def main():
     path_nm = None
     if len(sys.argv) > 1:
@@ -117,10 +126,12 @@ def main():
         exit()
         # path_nm = 'data/DevOpsFinalQuiz.txt'
 
+    # creating a list of all the commands for the data to be inserted
     recs = extract_questions(path_nm)
 
     # inserting all the question and answer options in the database at once
-    Question.objects.bulk_create(recs)
+    insert_records(recs)
+
 
 if __name__ == '__main__':
     main()

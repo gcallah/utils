@@ -1,49 +1,106 @@
 import os
 import argparse
-import csv
-import shutil
 ARG_ERROR = 1  # type: int
-file_name = None
 
+"""
+Note: code will index any word containing keyword as substring.
+eg: DRY
 
-def check_file(*files): #check if file exists
+will index: DRYwasher, DRY?, DRY!!, DRY., DRY
+
+for testing run:
+python3 create_gloss_links.py "DRY" --lf test_data/gloss_links_test1.txt test_data/gloss_links_test2.txt
+
+output:
+
+DRY occurs in: 
+    test_data/gloss_links_test1.txt: that DRY stuff
+    test_data/gloss_links_test1.txt: programming, DRY
+    test_data/gloss_links_test1.txt: DRY?
+    test_data/gloss_links_test1.txt: DRY coding
+    test_data/gloss_links_test1.txt: need DRY to
+    test_data/gloss_links_test1.txt: a DRY lot
+    test_data/gloss_links_test1.txt: implementing DRY!! code
+    test_data/gloss_links_test1.txt: DRY
+DRY occurs in: 
+    test_data/gloss_links_test2.txt: programming, DRY
+    test_data/gloss_links_test2.txt: need DRY to
+    test_data/gloss_links_test2.txt: a DRY lot
+    test_data/gloss_links_test2.txt: implementing DRY!! code
+    test_data/gloss_links_test2.txt: DRY coding
+    test_data/gloss_links_test2.txt: DRY
+    test_data/gloss_links_test2.txt: DRY?
+    test_data/gloss_links_test2.txt: that DRY stuff
+
+"""
+
+#check if file exists
+def check_file(files):
     for file in files:
         if not os.path.isfile(file):
             print(file + " is not a file")
             exit(ARG_ERROR)
 
-
 if __name__ == '__main__':
 
     arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument("text_file")
-    arg_parser.add_argument("html_file")
+    arg_parser.add_argument("key")
+    #arg_parser.add_argument("list_files")
+    arg_parser.add_argument(
+        "--lf", #you need to add "--lf" flag in command line
+        nargs="*",
+        type=str,
+        default=[],
+    )
     args = arg_parser.parse_args()
-    text_file = args.text_file
-    html_file = args.html_file
+    keyword = args.key
+    list_files = args.lf
 
-check_file(text_file,html_file)
+# print(list_files)
+# list_files = list_files.strip('[]').split(',')
 
-text_path, html_path = (os.path.abspath(text_file)), (os.path.abspath(html_file))
-glossary = []
+check_file(list_files)
 
-with open(text_path) as txt:
-    try:
+index_dict = {}
+
+for file in list_files:
+    with open(file, 'r') as txt:
+
         for line in txt:
-            glossary.append(line)
 
-    except IndexError:
-        print("something went wrong")
+            # splits into a list
+            if keyword in line:
+                line = line.strip().split(" ")
+                context = None
+                index_list = []
 
+                #iterate over list to handle edge case when keyword ends with punctuation
+                for index, word in enumerate(line):
+                    if keyword in word:
+                        index_list.append(index)
 
-with open(html_path) as f, open("new_html_path", 'w') as fout:
-    rdr = csv.reader(f)
-    wrt = csv.writer(fout)
+                for index in index_list: #if keyword appears more than once in a line
+                    key_index = index
 
-    for line in rdr:
-        if line[0] in glossary:
-            line[1] = str(int(line[1]) - 20)
-        wrt.writerow(line)
+                    if 0 < key_index < len(line) - 1:
 
-shutil.copyfile("new_html_path", html_path)
-os.remove("new_html_path")
+                        context = line[key_index-1] + " " + line[key_index] + " " + line[key_index+1]
+
+                    elif key_index == 0:
+                        if len(line) > 1:
+                            context = line[key_index] + " " + line[key_index+1]
+                        else:
+                            context = line[key_index]
+
+                    elif key_index == len(line) - 1:
+                        context = line[key_index - 1] + " " + line[key_index]
+
+                    if file not in index_dict:
+                        index_dict[file] = []
+
+                    index_dict[file].append(context)
+
+for key, value in index_dict.items():
+    print(keyword + " occurs in: ")
+    for each_context in value:
+        print("    " + key + ": " + each_context)
