@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python
 '''
 Glossary Page Builder: Takes a text file list of key subject terms and their definitions (tab-delimited) 
 and builds the glossary list as an HTML file. Has internal tags the key terms will be linked to.

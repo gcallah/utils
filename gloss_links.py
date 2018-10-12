@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import os
 import argparse
 ARG_ERROR = 1  # type: int
@@ -34,13 +35,6 @@ DRY occurs in:
 
 """
 
-#check if file exists
-def check_file(files):
-    for file in files:
-        if not os.path.isfile(file):
-            print(file + " is not a file")
-            exit(ARG_ERROR)
-
 if __name__ == '__main__':
 
     arg_parser = argparse.ArgumentParser()
@@ -59,46 +53,51 @@ if __name__ == '__main__':
 # print(list_files)
 # list_files = list_files.strip('[]').split(',')
 
-check_file(list_files)
-
 index_dict = {}
 
 for file in list_files:
-    with open(file, 'r') as txt:
+    try:
+        with open(file, 'r') as txt:
+            for line in txt:
+    
+                # splits into a list
+                if keyword in line:
+                    line = line.strip().split(" ")
+                    context = None
+                    index_list = []
+    
+                    #iterate over list to handle edge case when keyword ends with punctuation
+                    for index, word in enumerate(line):
+                        if keyword in word:
+                            index_list.append(index)
+    
+                    for index in index_list:
+                        #if keyword appears more than once in a line
+                        key_index = index
+    
+                        if 0 < key_index < len(line) - 1:
+    
+                            context = (line[key_index-1] + " " +
+                                       line[key_index] + " " +
+                                       line[key_index+1])
+    
+                        elif key_index == 0:
+                            if len(line) > 1:
+                                context = line[key_index] + " " + line[key_index+1]
+                            else:
+                                context = line[key_index]
+    
+                        elif key_index == len(line) - 1:
+                            context = line[key_index - 1] + " " + line[key_index]
+    
+                        if file not in index_dict:
+                            index_dict[file] = []
 
-        for line in txt:
+                        index_dict[file].append(context)
 
-            # splits into a list
-            if keyword in line:
-                line = line.strip().split(" ")
-                context = None
-                index_list = []
-
-                #iterate over list to handle edge case when keyword ends with punctuation
-                for index, word in enumerate(line):
-                    if keyword in word:
-                        index_list.append(index)
-
-                for index in index_list: #if keyword appears more than once in a line
-                    key_index = index
-
-                    if 0 < key_index < len(line) - 1:
-
-                        context = line[key_index-1] + " " + line[key_index] + " " + line[key_index+1]
-
-                    elif key_index == 0:
-                        if len(line) > 1:
-                            context = line[key_index] + " " + line[key_index+1]
-                        else:
-                            context = line[key_index]
-
-                    elif key_index == len(line) - 1:
-                        context = line[key_index - 1] + " " + line[key_index]
-
-                    if file not in index_dict:
-                        index_dict[file] = []
-
-                    index_dict[file].append(context)
+    except IOError as ioe:
+        print("Error opening the file:", ioe)
+        exit(1)
 
 for key, value in index_dict.items():
     print(keyword + " occurs in: ")
