@@ -28,7 +28,8 @@ def get_pad(level):
 def create_link(topic, level, is_url):
     global tot_submenus
     padding = get_pad(level + 1)
-    sidebar_links(padding=padding,topic=topic,tot_submenus=tot_submenus, is_url=is_url)
+    return sidebar_links(padding=padding, topic=topic,
+                  tot_submenus=tot_submenus, is_url=is_url)
 
 
 def process_menu(topics, level):
@@ -85,7 +86,8 @@ elif title.short_title is None:
     print("ERROR: Short title is required for navbar title.")
     sys.exit()
 
-s = sidebar(title=title.title, short_title=title.short_title, menu_txt=process_menu(course_items, 1))
+s = sidebar(title=title.title, short_title=title.short_title,
+            menu_txt=process_menu(course_items, 1))
 
 # write generated sidebar
 with open(output_fname, 'w+') as f:

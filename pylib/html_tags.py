@@ -84,13 +84,17 @@ def head(indent=INDENT4, title="", cssFile=None): # generate meta head
     s += "</head>\n"
     return s
 
-def sidebar_links(padding=INDENT1, topic=None, tot_submenus=0, is_url=False):
+
+collapse_link = 'data-toggle="collapse" aria-expanded="false"'
+
+def sidebar_links(padding=INDENT1, topic=None, tot_submenus=0,
+                  is_url=False):
     s = "%s<li>\n" % padding
     if is_url:
         s += '%s<a href="%s">\n' % (padding, topic.url)
     else:
-        s += ('%s<a href="#Submenu%d" data-toggle="collapse" aria-expanded="false">\n'
-              % (padding, tot_submenus))
+        s += ('%s<a href="#Submenu%d" %s >\n'
+              % (padding, tot_submenus, collapse_link))
     if topic.glyphicon:
         s += '%s<i class="glyphicon %s"></i>\n' % (padding, topic.glyphicon)
     s += "%s%s\n" % (padding, topic.title)
