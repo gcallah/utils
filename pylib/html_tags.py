@@ -84,3 +84,14 @@ def head(indent=INDENT4, title="", cssFile=None): # generate meta head
     s += "</head>\n"
     return s
 
+def sidebar(title="", short_title="", menu_txt=""): # for create_menu.py
+    s = "<!-- Sidebar Holder -->\n"
+    s += '<nav id=\"sidebar\">\n'
+    s += '<div id=\"sidebarCollapse\">\n'
+    s += '<div class=\"sidebar-header\">\n'
+    s += '<h1>\n'+title+'\n'+'</h1>\n'
+    s += '<strong>'+short_title+'</strong>\n'
+    s += '</div>\n</div>\n'
+    s += menu_txt
+    s += "</nav>\n" 
+    return s 

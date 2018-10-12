@@ -2,6 +2,7 @@
 
 import sys
 from pylib.parse_site import parse_site, InputError, IndentError, Topic
+from pylib.html_tags import sidebar
 
 try:
     from typing import List, Set, Any
@@ -95,19 +96,8 @@ elif title.short_title is None:
     print("ERROR: Short title is required for navbar title.")
     sys.exit()
 
+s = sidebar(title.title, title.short_title, process_menu(course_items, 1))
+
 # write generated sidebar
 with open(output_fname, 'w+') as f:
-    # write opening tags:
-    f.write("<!-- Sidebar Holder -->\n<nav id=\"sidebar\">\n\
-        <div id=\"sidebarCollapse\">\n        \
-<div class=\"sidebar-header\">\n            \
-<h1>\n            %s\n            </h1>\n            \
-<strong>%s</strong>\n        \
-</div>\n    </div>\n"
-            % (title.title, title.short_title))
-
-    # write contents
-    menu_txt = process_menu(course_items, 1)
-    f.write(menu_txt)
-
-    f.write("</nav>\n")
+    f.write(s)
