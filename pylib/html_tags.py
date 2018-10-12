@@ -84,6 +84,20 @@ def head(indent=INDENT4, title="", cssFile=None): # generate meta head
     s += "</head>\n"
     return s
 
+def sidebar_links(padding=INDENT1, topic=None, tot_submenus=0, is_url=False):
+    s = "%s<li>\n" % padding
+    if is_url:
+        s += '%s<a href="%s">\n' % (padding, topic.url)
+    else:
+        s += ('%s<a href="#Submenu%d" data-toggle="collapse" aria-expanded="false">\n'
+              % (padding, tot_submenus))
+    if topic.glyphicon:
+        s += '%s<i class="glyphicon %s"></i>\n' % (padding, topic.glyphicon)
+    s += "%s%s\n" % (padding, topic.title)
+    s += "%s</a>\n" % padding
+    s += "%s</li>\n" % padding
+    return s
+
 def sidebar(title="", short_title="", menu_txt=""): # for create_menu.py
     s = "<!-- Sidebar Holder -->\n"
     s += '<nav id=\"sidebar\">\n'
@@ -95,3 +109,4 @@ def sidebar(title="", short_title="", menu_txt=""): # for create_menu.py
     s += menu_txt
     s += "</nav>\n" 
     return s 
+
