@@ -52,14 +52,13 @@ def process_menu(topics, level):
                 s += process_menu(topic.subtopics, level + 1)
     s += "%s</ul>\n" % padding
     return s
-        
 
-if len(sys.argv) < 3:
-    print("ERROR: Please specify input file name and output file name.")
+
+if len(sys.argv) < 2:
+    print("ERROR: Please specify input file name.")
     sys.exit(BAD_ARGS)
 
 input_fname = sys.argv[INPUT]  # type: str
-output_fname = sys.argv[OUTPUT]  # type: str
 
 title = None
 course_items = None
@@ -90,5 +89,4 @@ s = sidebar(title=title.title, short_title=title.short_title,
             menu_txt=process_menu(course_items, 1))
 
 # write generated sidebar
-with open(output_fname, 'w+') as f:
-    f.write(s)
+print(s, end="")
