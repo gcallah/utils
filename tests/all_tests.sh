@@ -3,13 +3,16 @@
 # exit on any error with that error status:
 set -e
 
-run_diff_test() {
-    echo "Running ./$1.py $2 < $TEST_DATA/$1_inp.txt > $TEST_DATA/$1_tmp.txt"
-    ./"$1.py" "$2" < $TEST_DATA/$1_inp.txt > $TEST_DATA/$1_tmp.txt
-    echo "Running diff between $TEST_DATA/$1_out.txt and $TEST_DATA/$1_tmp.txt."
+diff_output() {
     diff $TEST_DATA/$1_out.txt $TEST_DATA/$1_tmp.txt
     echo "$1 passed."
     rm $TEST_DATA/$1_tmp.txt
+}
+
+run_diff_test() {
+    echo "Running ./$1.py $2 < $TEST_DATA/$1_inp.txt > $TEST_DATA/$1_tmp.txt"
+    ./"$1.py" "$2" < $TEST_DATA/$1_inp.txt > $TEST_DATA/$1_tmp.txt
+    diff_output $1
 }
 
 export title="Test page"
