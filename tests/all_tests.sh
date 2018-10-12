@@ -9,20 +9,26 @@ diff_output() {
     rm $TEST_DATA/$1_tmp.txt
 }
 
-run_diff_test() {
+run_diff_test_std() {
     echo "Running ./$1.py $2 < $TEST_DATA/$1_inp.txt > $TEST_DATA/$1_tmp.txt"
     ./"$1.py" "$2" < $TEST_DATA/$1_inp.txt > $TEST_DATA/$1_tmp.txt
     diff_output $1
 }
 
+run_diff_test_file() {
+    echo "Running ./$1.py $2 $TEST_DATA/$1_inp.txt > $TEST_DATA/$1_tmp.txt"
+    ./"$1.py" $TEST_DATA/$1_inp.txt > $TEST_DATA/$1_tmp.txt
+    diff_output $1
+}
+
 export title="Test page"
-run_diff_test create_page "$title"
+run_diff_test_std create_page "$title"
+run_diff_test_file create_gloss
 
-
-./create_gloss.py $TEST_DATA/create_gloss_inp.txt > $TEST_DATA/create_gloss_tmp.txt
-diff $TEST_DATA/create_gloss_out.txt $TEST_DATA/create_gloss_tmp.txt
-echo "Create gloss test passed."
-rm $TEST_DATA/create_gloss_tmp.txt
+#./create_gloss.py $TEST_DATA/create_gloss_inp.txt > $TEST_DATA/create_gloss_tmp.txt
+#diff $TEST_DATA/create_gloss_out.txt $TEST_DATA/create_gloss_tmp.txt
+#echo "Create gloss test passed."
+#rm $TEST_DATA/create_gloss_tmp.txt
 
 ./create_menu.py $TEST_DATA/create_menu_inp.txt $TEST_DATA/create_menu_tmp.txt
 diff $TEST_DATA/create_menu_out.txt $TEST_DATA/create_menu_tmp.txt
