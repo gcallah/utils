@@ -1,3 +1,4 @@
+#!/bin/sh
 TARG_DIR=html_src
 FILES=*.html
 for f in $FILES
