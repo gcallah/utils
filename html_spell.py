@@ -1,6 +1,23 @@
 """
-Script to check spellings of words in a web page. Also allows the users
-to add words to a custom dictionary.
+CLI Tool to check word spelling in an file.
+
+Uses multiple sources of truth for spelling, checked in the following order:
+  1. ./data/Dictionary.json, unioned with ./data/English.txt
+  2. the oxford dictionary api
+
+If a user decides that a word, not found in either source, ought not to count as a misspelling,
+  they have the opportunity to add said word to the dictionary located in ./data/English.txt.
+
+The tool was written to anticipate the following situations, and produce appropriate outcomes:
+  * Hyphenated compound words, of the grammar "{word}-{hyphenated-compound-word}"
+    --> Detection: hyphens exist in the string
+    --> Solution: string split on hyphens, each segment is spellchecked separately
+  * Possessives, of the grammar "{word}'s" 
+    --> Detection: last two characters of string are "'s"
+    --> Solution: string split on hyphen, word prior is checked.
+  * Single-character words
+    --> Detection: length is one.
+    --> Solution: everything passes.
 """
 
 import json
@@ -24,26 +41,31 @@ SPELL_ERROR = 2  # type: int
 
 # Application keys for Oxford dictionary API
 app_id = '4dcc2c67'
-# Should we be storing API keys in a public repo? 
+# Should we be storing API keys in a public repo?
 # We might want to investigate https://www.vaultproject.io/
 app_key = 'c7d48867f7506e51e70507d85bc9cbe6'
 language = 'en'
+
+
+class FileChangedException(Exception):
+    pass
 
 
 def is_word(s, search=re.compile(r'[^a-zA-Z-\']').search):
     return not bool(search(s))
 
 
-def check_file(*files):
-    for file in files:
-        if not os.path.isfile(file):
-            print(file + " is not a file")
+def check_files_exist(*files):
+    for file_name in files:
+        if not os.path.isfile(file_name):
+            print(file_name + " is not a file")
             exit(ARG_ERROR)
 
-def spellCheckFile(spellChecker, fn):
+
+def spellCheckFile(spell_checker, file_name):
     """
     Description:
-        Parses the file with name fn, using the passed-in spellChecker.
+        Parses the file with name file, using the passed-in spell_checker.
     Returns:
         None if the file was spell-checked without any hiccups
     Raises:
@@ -52,8 +74,8 @@ def spellCheckFile(spellChecker, fn):
     code_tag_on = False  # type:bool
     line_num = 0
     try:
-        spellChecker.reset()
-        with open(fn, "r", ) as f:
+        spell_checker.reset()
+        with open(file_name, "r", ) as f:
             for line in f:
                 if "<code>" in line:
                     code_tag_on = True
@@ -62,15 +84,17 @@ def spellCheckFile(spellChecker, fn):
                     continue
 
                 if not code_tag_on:
-                    spellChecker.feed(line)
+                    spell_checker.feed(line)
                 line_num += 1
     except FileChangedException:
-        return spellCheckFile(spellChecker, fn)
+        return spellCheckFile(spell_checker, file_name)
 
-class FileChangedException(Exception):
-    pass
 
-class OurHTMLParser(HTMLParser):
+class HTMLSpellChecker(HTMLParser):
+    def __init__(self):  # type: () -> None
+        self.is_in_script_tag = False
+        super(HTMLSpellChecker, self).__init__(convert_charrefs=False)
+
     def handle_bad_word(self, word):
         """
         Description:
@@ -86,49 +110,49 @@ class OurHTMLParser(HTMLParser):
                 "How would you like to handle the bad word {}?\n".format(word) +
                 "1. Add as valid word to dictionary (1/a/add)\n" +
                 "2. Skip error, because words is a unique string (2/s/skip)\n" +
-                "3. Edit file, to fix the word (3/e/edit)\n"+ 
+                "3. Edit file, to fix the word (3/e/edit)\n" +
                 "4. Close the spell-checker for this file (4/c/close)\n" +
                 ">>")
             if response.lower() == 'add' or response.lower() == 'a' or response == '1':
                 added_words.add(word)
-                d.add(word)
+                word_set.add(word)
                 return None
             elif response.lower() == 'skip' or response.lower() == 's' or response == '2':
                 return None
             elif response.lower() == 'edit' or response.lower() == 'e' or response == '3':
                 # This opens up vim, at the first instance of the troublesome word, with all instances highlighted.
-                subprocess.call(['vimdiff', '+{}'.format(line_num), '-c', '/ {}'.format(word), file_nm])
+                subprocess.call(
+                    ['vimdiff', '+{}'.format(line_num), '-c', '/ {}'.format(word), file_name])
                 raise FileChangedException
             elif response.lower() == 'close' or response.lower() == 'c' or response == '4':
                 exit(0)
             else:
                 print("Invalid response, Please try again!")
 
-    def __init__(self):  # type: () -> None
-        self.is_in_script_tag = False
-        super(OurHTMLParser, self).__init__(convert_charrefs=False)
-
-    def isWordInOxfordDictionary(self,lower_word):
+    def isWordInOxfordDictionary(self, lower_word):
         url = ('https://od-api.oxforddictionaries.com/api/v1/inflections/'
                + language + '/' + lower_word)
         r = requests.get(url, headers={'app_id': app_id, 'app_key': app_key})
-        return r.status_code
+        return r.status_code == 200
+
+    def isPossessive(self, word):
+        return '\'s' == word[len(word)-2:]
 
     def checkWord(self, word):
-        if '\'s' in word:
-            word = word[:word.index('\'')]
         if word is "":
             return
-        if not is_word(word):
-            return
         if len(word) == 1:
+            return
+        if self.isPossessive(word):
+            return self.checkWord(word[:len(word)-2])
+        if not is_word(word):
             return
         if not strict_mode and word[0].isupper():
             return
 
         lower_word = word.lower()  # type: (str)
 
-        if lower_word not in d and self.isWordInOxfordDictionary(lower_word) != 200:
+        if lower_word not in word_set and not self.isWordInOxfordDictionary(lower_word):
             self.handle_bad_word(lower_word)  # raises if edit is chosen
 
     def handle_data(self, data):  # type: (str) -> None
@@ -146,56 +170,60 @@ class OurHTMLParser(HTMLParser):
             return
 
         for web_page_word in web_page_words:
-            word = web_page_word.strip(string.punctuation).strip() # strip other punctuations
+            # strip other punctuations
+            word = web_page_word.strip(string.punctuation).strip()
             if "-" in web_page_word:
                 for word in web_page_word.split("-"):
                     self.checkWord(word)
             else:
                 self.checkWord(word)
 
-line_num = 0
-exit_error = False # type: bool
-strict_mode = False # type: bool
-file_nm = None
+
+exit_error = False  # type: bool
+strict_mode = False  # type: bool
+file_name = None
 main_dict = None
 custom_dict = None
 
 if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument("file_nm", help="html file to be parsed")
+    arg_parser.add_argument("file_name", help="html file to be parsed")
     arg_parser.add_argument("main_dict", help="main dictionary file")
     arg_parser.add_argument("custom_dict", help="custom dictionary file")
-    arg_parser.add_argument("-e", help="enable exit error", action="store_true")
+    arg_parser.add_argument(
+        "-e", help="enable exit error", action="store_true")
     arg_parser.add_argument("-s", help="strict mode checks capitalized words",
                             action="store_true")
     args = arg_parser.parse_args()
     exit_error = args.e
     strict_mode = args.s
-    file_nm = args.file_nm
+    file_name = args.file_name
     main_dict = args.main_dict
     custom_dict = args.custom_dict
 
-check_file(file_nm, main_dict, custom_dict)
-saw_error = False  # type: bool
-d = set()  # type: Set[str]
 added_words = set()  # type: Set[str]
-parser = OurHTMLParser()
 
-# Loading words from main Json Dictionary into the python set data structure
+# Make sure all the files exist, before doing anything heavy
+check_files_exist(file_name, main_dict, custom_dict)
+
+# Load words from Dictionary files
+word_set = set()  # type: Set[str]
 with open(main_dict, 'r') as f:
-    d = set(json.load(f).keys())
-
-# Loading words from custom Dictionary into the python set data structure
+    word_set = set(json.load(f).keys())
 with open(custom_dict, 'r') as f:
-    d.add(line.split()[0].lower() for line in f)
+    for line in f:
+        word_set.add(line.split()[0].lower())
 
-spellCheckFile(parser, file_nm)
+# Execute the spellchecker
+parser = HTMLSpellChecker()
+line_num = 0
+spellCheckFile(parser, file_name)
 
 with open(custom_dict, 'a+') as f:
     f.writelines(i + '\n' for i in added_words)
     added_words.clear()
 
-if saw_error and exit_error:
+if exit_error:
     exit(SPELL_ERROR)
 else:
     exit(0)
