@@ -12,6 +12,10 @@ Functions:
 import os
 import sys
 import django
+from django.apps import AppConfig
+
+class QexportConfig(AppConfig):
+    name = 'qexport'
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
