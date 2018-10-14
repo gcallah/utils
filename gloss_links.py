@@ -10,40 +10,17 @@ eg: DRY
 will index: DRYwasher, DRY?, DRY!!, DRY., DRY
 
 for testing run:
-(python3 gloss_links.py test_data/gloss_key.txt  --lf 
-test_data/gloss_links_test1.txt 
-test_data/gloss_links_test2.txt)
+(python3 gloss_links.py test_data/gloss_key.txt test_data/test_data --lf  
+test_data/gloss_links_test1.txt  test_data/gloss_links_test2.txt)
 
-output:
+output: 
 
-DRY occurs in:
-    test_data/gloss_links_test1.txt: that DRY stuff
-    test_data/gloss_links_test1.txt: programming, DRY
-    test_data/gloss_links_test1.txt: DRY?
-    test_data/gloss_links_test1.txt: DRY coding
-    test_data/gloss_links_test1.txt: need DRY to
-    test_data/gloss_links_test1.txt: a DRY lot
-    test_data/gloss_links_test1.txt: implementing DRY!! code
-    test_data/gloss_links_test1.txt: DRY
-DRY occurs in:
-    test_data/gloss_links_test2.txt: programming, DRY
-    test_data/gloss_links_test2.txt: need DRY to
-    test_data/gloss_links_test2.txt: a DRY lot
-    test_data/gloss_links_test2.txt: implementing DRY!! code
-    test_data/gloss_links_test2.txt: DRY coding
-    test_data/gloss_links_test2.txt: DRY
-    test_data/gloss_links_test2.txt: DRY?
-    test_data/gloss_links_test2.txt: that DRY stuff
+test_data/<output directory>.<keyword>.txt
+test_data/<output directory>.<keyword>.txt
 
-Django occurs in:
-    test_data/gloss_links_test1.txt: designed Django to
-    test_data/gloss_links_test1.txt: helps Django
-    test_data/gloss_links_test1.txt: Django is
-Django occurs in:
-    test_data/gloss_links_test2.txt: designed Django to
-    test_data/gloss_links_test2.txt: helps Django
-    test_data/gloss_links_test2.txt: Django is
-
+--to dicuss:
+* where should output file be?
+* where to include context in file links. 
 
 """
 
@@ -51,7 +28,7 @@ if __name__ == '__main__':
 
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument("gloss_key")
-    #arg_parser.add_argument("output")
+    arg_parser.add_argument("output")
     #arg_parser.add_argument("list_files")
     arg_parser.add_argument(
         "--lf", #you need to add "--lf" flag in command line
@@ -62,7 +39,7 @@ if __name__ == '__main__':
     args = arg_parser.parse_args()
     keyword = args.gloss_key
     list_files = args.lf
-    #output_file = args.output
+    output_file = args.output
 
 # print(list_files)
 # list_files = list_files.strip('[]').split(',')
@@ -74,6 +51,9 @@ with open(keyword,'r') as gloss:
     for key in gloss:
         key = key.strip()
         gloss_list.append(key)
+
+#this code is not so efficent now, CAN BE IMPROVED.
+#because Professor changed requirements lately. 
 
 for keyword in gloss_list:
     for file in list_files:
@@ -122,10 +102,12 @@ for keyword in gloss_list:
         except IOError as ioe:
             print("Error opening the file:", ioe)
             exit(1)
-
-    for key, value in index_dict.items():
-        print(keyword + " occurs in: ")
-        for each_context in value:
-            print("    " + key + ": " + each_context)
-    print("  ")
-    index_dict = {}
+    
+    output_name = output_file+"." + keyword + ".txt"
+    with open(output_name,'w') as f:
+        for key, value in index_dict.items():
+            f.write(keyword + " occurs in: \n")
+            for each_context in value:
+                f.write("    " + key + ": " + each_context +"\n")
+        f.write("  ")
+        index_dict = {}
