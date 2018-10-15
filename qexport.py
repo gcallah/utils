@@ -12,6 +12,10 @@ Functions:
 import os
 import sys
 import django
+from django.apps import AppConfig
+
+class QexportConfig(AppConfig):
+    name = 'qexport'
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
@@ -43,19 +47,19 @@ def write_records(recs):
         print()
 
         #list of answer options
-        k = [question["answerA"], question["answerB"], question["answerC"],
-        question["answerD"], question["answerE"]]
+        answers = ['answerA', 'answerB', 'answerC', 'answerD', 'answerE']
+        ans_options = [question[i] for i in answers]
 
         #separate list for answer option bullets
-        j = ["a.", "b.", "c.", "d.", "e."]
+        options = ["a.", "b.", "c.", "d.", "e."]
 
         # marking the correct answer by '*'
         correct = question["correct"].lower() + "."
-        j[j.index(correct)] = "*" + j[j.index(correct)]
-        for option in k:
+        options[options.index(correct)] = "*" + options[options.index(correct)]
+        for option in ans_options:
             if option:
-                # matching the index for 'j' & 'k' to get correct alphabet
-                print(j[k.index(option)] + " " + option)
+                # matching the index for 'options' & 'ans_options' to get correct alphabet
+                print(options[ans_options.index(option)] + " " + option)
             else:
                 break
         i += 1
