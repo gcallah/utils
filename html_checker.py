@@ -41,7 +41,8 @@ class OurHTMLParser(HTMLParser):
     
     def handle_starttag(self, tag, attrs): # type: (str, object) -> None
         '''
-        NOTE(adam) This function is used in neither utils nor devops.  'attrs' is an unused variable.
+        NOTE(adam) This function is used in neither utils nor devops.
+        'attrs' is an unused variable.
         '''
         if tag == "script":
             self.is_in_script_tag = True
@@ -57,7 +58,8 @@ class OurHTMLParser(HTMLParser):
 
             tag_stack.append(tag)
 
-    def check_tag_priority(self, pre_tag_stack, this_tag): # type: (List[str], str) -> str
+    def check_tag_priority(self, pre_tag_stack, this_tag):
+        # type: (List[str], str) -> str
         global tag_error 
         for pre_tag in reversed(pre_tag_stack):
             if (pre_tag in tags_priority and this_tag in tags_priority):
