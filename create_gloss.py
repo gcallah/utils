@@ -41,12 +41,13 @@ with open(txt_file, 'r') as f:
             term = line.strip().split("\t") #tab delimited
             d[term[0]] = term[1]
     except IndexError: 
-        print("Are you sure every term has its own definition?")
+        print("We need a better error message here, but it seems some line"
+              + " doesn't fit our format!")
 
 gloss_list = []
 for key in d:
     gloss_item = '<a name=' + key + '>'
-    gloss_item += '<span class="hilight">' + key + '</span>:'
+    gloss_item += '<span class="hilight">' + key + '</span>: '
     gloss_item += '</a>'
     gloss_item += d[key]
     gloss_list.append(gloss_item)
