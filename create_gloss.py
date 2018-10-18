@@ -9,6 +9,7 @@ import string
 import re
 import argparse
 from pylib.html_tags import ulist
+from collections import OrderedDict
 
 ARG_ERROR = 1  # type: int
 exit_error = False # type: bool
@@ -32,7 +33,7 @@ if __name__ == '__main__':
     
 
 check_file(txt_file)
-d = dict()  # type: Dict[str]
+d = OrderedDict()  # type: Dict[str]
 
 with open(txt_file, 'r') as f:
     line_no = 1

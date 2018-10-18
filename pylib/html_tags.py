@@ -43,7 +43,7 @@ def details(sumtext, level=1, indent=INDENT4, inc_par=False, inc_fig=False,
 def ulist(css_class=None, l=None, indent=INDENT4, level=1):
     return html_list(css_class=css_class, l=l,
                      indent=indent, level=level,
-                     list_type='ol')
+                     list_type='ul')
 
 def olist(css_class=None, l=None, indent=INDENT4, level=1):
     return html_list(css_class=css_class, l=l,
