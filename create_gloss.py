@@ -35,19 +35,21 @@ check_file(txt_file)
 d = dict()  # type: Dict[str]
 
 with open(txt_file, 'r') as f:
+    line_no = 1
     try:
         #place terms/defs in dictionary
         for line in f:
             term = line.strip().split("\t") #tab delimited
             d[term[0]] = term[1]
+            line_no += 1
     except IndexError: 
-        print("Are you sure every term has its own definition?")
+        print("Index error: check line " + str(line_no))
 
 gloss_list = []
 for key in d:
     gloss_item = '<a name=' + key + '>'
     gloss_item += '<span class="hilight">' + key + '</span>:'
-    gloss_item += '</a>'
+    gloss_item += '</a> '
     gloss_item += d[key]
     gloss_list.append(gloss_item)
 
