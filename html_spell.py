@@ -23,7 +23,7 @@ The tool was written to anticipate the following situations, and produce appropr
 import json
 import os
 import subprocess
-import requests
+import urllib.request
 from html.parser import HTMLParser
 import string
 import re
@@ -170,10 +170,12 @@ class HTMLSpellChecker(HTMLParser):
                 print("Invalid response, Please try again!")
 
     def isWordInOxfordDictionary(self, lower_word):
-        url = ('https://od-api.oxforddictionaries.com/api/v1/inflections/'
-               + language + '/' + lower_word)
-        r = requests.get(url, headers={'app_id': app_id, 'app_key': app_key})
-        return r.status_code == 200
+        return urllib.request.urlopen(
+            urllib.request.Request(
+                url='https://od-api.oxforddictionaries.com/api/v1/inflections/{}/{}'.format(
+                    language, lower_word),
+                headers={'app_id': app_id, 'app_key': app_key}
+            )).getcode() == 200
 
     def isPossessive(self, word):
         return '\'s' == word[len(word)-2:]
