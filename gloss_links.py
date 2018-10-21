@@ -144,5 +144,13 @@ rows_by_date = defaultdict(list)
 for row in rows:
     rows_by_date[row['date']].append(row)",
 
+# remove punctuation from the string
+no_punct = ""
+for char in my_str:
+   if char not in punctuations:
+       no_punct = no_punct + char
+
+# display the unpunctuated string
+print(no_punct)
 
 """
