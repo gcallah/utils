@@ -40,12 +40,16 @@ class OurHTMLParser(HTMLParser):
         super(OurHTMLParser, self).__init__(convert_charrefs=False)
     
     def handle_starttag(self, tag, attrs): # type: (str, object) -> None
-        '''
-        NOTE(adam) This function is used in neither utils nor devops.
-        'attrs' is an unused variable.
-        '''
+        global saw_error # type :bool
+
         if tag == "script":
             self.is_in_script_tag = True
+
+        if self.getpos()[0] == 1:
+            if (tag != "!DOCTYPE html" or tag != "!DOCTYPE html"):
+                print("CONVENTION ERROR: " +
+                    "Always declare the document type as the first line in your document" + line_msg())
+                saw_error = True
 
         if tag not in void_tags:
             if (len(tag_stack) > 0):
@@ -101,6 +105,7 @@ class OurHTMLParser(HTMLParser):
                   + line_msg())
             saw_error = True
 
+
 if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument("html_filename")
@@ -116,7 +121,9 @@ if __name__ == '__main__':
     for line in file:
         line_no += 1
         parser.feed(line)
-    
+        if parser.feed(line) != None:
+            print(parser.feed(line))
+
     if saw_error:
         exit(PARSE_ERROR)
     else:
