@@ -1,129 +1,74 @@
 """
-Script to check proper nesting and matching of html tags.
-Right now, this only cheecks tags that stand alone on a line.
-More checks will be added later.
+Script to check validity of a given URL.
+Returns request response back.
 """
 
 import sys
-import urllib.request as req
-from html.parser import HTMLParser
-from urllib.parse import urlparse, urljoin
+import os
+import string
 import re
 import argparse
-
-try:
-    from typing import List, Set
-except ImportError:
-    print("WARNING: Cannot find any module named 'Typing'! Kindly install the latest version of python!")
+import urllib.request as req
+from urllib.parse import urlparse, urljoin
 
 ARG_ERROR = 1 # type: int
 PARSE_ERROR = 2 # type: int
 MAX_LINE = 80 # type: int
 
-# for some reason, the following header seems to work best:
-#  meaning fewer false URL erros
-HEADER_TXT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) \
-            AppleWebKit/537.36 (KHTML, like Gecko) \
-            Chrome/50.0.2661.102 Safari/537.36' # type :str
-
-tag_stack = [] # type: List[str]
 line_no = 0 # type: int
 saw_error = False # type: bool
 url_error = False # type: bool
 
-void_tags = {"area", "base", "br", "col", "hr", "img", "input", "link",
-             "meta", "param"} # type :Set[str]
+def check_file(*files): #check if file exists
+    for file in files:
+        if not os.path.isfile(file):
+            print(file + " is not a file")
+            exit(ARG_ERROR)
 
-
-def line_msg():# type: () -> str
-    return " at line number " + str(line_no)
-
-class OurHTMLParser(HTMLParser):
-    def __init__(self):# type: () -> None
-        self.is_in_script_tag = False
-        self.links = [] # type: List[str]
-        super(OurHTMLParser, self).__init__(convert_charrefs=False)
-
-
-    def handle_starttag(self, tag, attrs):
-        '''
-        NOTE(adam) This function is not used, and what type 'attrs' is.
-        '''
-        if tag == "a":
-            attr = dict(attrs)
-            if 'href' in attr:
-                self.links.append(attr['href'])
-        if tag == "img":
-            attr = dict(attrs)
-            if 'src' in attr:
-                self.links.append(attr['src'])
-
-
-    def is_accessible(self, link):# type: (str) -> bool
-        '''
-        Makes three attempts to access a link with request.urlopen.
-        Returns a boolean.  True if ≥ 1 request fails to raise an exception, otherwise false.
-        '''
-        mock_header = {'User-Agent': HEADER_TXT}
-        for _ in range(3):
-            try:
-                req.urlopen(
-                    req.Request(
-                        url=link, 
-                        headers=mock_header))
-                return True
-            except:  
-                # NOTE(adam) It isn't clear what conditions (404, timeout, non-https rejected, etc.) raise
-                pass
-        return False
-
-
-    def check_urls_accessibility(self, links, relative_link_header):# type: (List[str], str) -> None
-        print("Checking accessibility of urls...")
-        for link in self.links:
-            '''
-            If it is a relative link, we will add a header 
-            link to verify its accessbility again
-            '''
-            if link.startswith('http') or link.startswith('https'):
-                # direct link
-                if not self.is_accessible(link):
-                    self.print_warning_msg(link, line_msg())
-            else:
-                # we assume that links lacking http(s) as a prefix are relative links
-                # TODO(adam) need a better way to differentiate relative vs absolute links.
-                link = urljoin(relative_link_header, link)
-                if not self.is_accessible(link):
-                    self.print_warning_msg(link, line_msg())
-
-
-    def print_warning_msg(self, link, line):
-        if url_error:
-            print("ERROR: url not accessible") + line
-        else:
-            print("WARNING: url not accessible" + line
-                    + "; " + link)
-
+def is_accessible(link): # type: (str) -> bool
+    try:
+        if link.startswith('http') or link.startswith('https'):     
+            connection = req.urlopen(link)
+            return connection.getcode()
+        elif link.startswith('/'): 
+            rel_link = "http://www.thedevopscourse.com" + link
+            connection = req.urlopen(rel_link)
+            return connection.getcode()
+        else: 
+            rel_link_two = "http://www.thedevopscourse.com/" + link
+            connection = req.urlopen(rel_link_two)
+            return connection.getcode()
+    except req.HTTPError as e:
+        return e.getcode()
+    except req.URLError as e:
+        return "Invalid URL. No response code because address doesn't exist."
+    
+def process_out_file(url_arr):
+    out_valid_urls = []
+    for url in url_arr:
+        out_valid_urls.append(str(is_accessible(url)))
+    return out_valid_urls
 
 if __name__ == '__main__':
-    # if you want invalid url to throw errors invoke program with -e flag
     arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument("html_filename")
-    arg_parser.add_argument("-e", action = "store_true")
-    arg_parser.add_argument('relative_link_header')
+    arg_parser.add_argument("url_inp_file", help="text url input file to be parsed")
+    arg_parser.add_argument("url_out_file", help="text url valid output file")
     args = arg_parser.parse_args()
-    url_error = args.e
-    relative_link_header = args.relative_link_header
+    url_inp_file = args.url_inp_file
+    url_out_file = args.url_out_file
 
-    parser = OurHTMLParser()
-    file_nm = args.html_filename
-
-    file = open(file_nm, "r")
-    for line in file:
-        line_no += 1
-        parser.feed(line)
-
-    parser.check_urls_accessibility(parser.links, relative_link_header)
+    check_file(url_inp_file)
+    url_list = []
+    # get all the url links
+    with open(url_inp_file,'r') as urls:
+        for link in urls:
+            link = link.strip()
+            url_list.append(link)
+    
+    out_list = process_out_file(url_list)
+    with open(url_out_file,'w') as out_f:
+        for valid_response in out_list:
+            out_f.write(valid_response+"\n")
 
     if saw_error:
         exit(PARSE_ERROR)

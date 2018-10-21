@@ -1,6 +1,6 @@
 """
 Script to check proper nesting and matching of html tags.
-Right now, this only cheecks tags that stand alone on a line.
+Right now, this only checks tags that stand alone on a line.
 More checks will be added later.
 """
 
