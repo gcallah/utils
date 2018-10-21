@@ -128,3 +128,21 @@ if __name__ == '__main__':
 
         output_context(outdir, keyword, contexts_per_file)
         contexts_per_file = {}  # blank to get ready for next keyword
+
+"""
+<-----Testing Optimization----->
+for lineno, line in enumerate(lines, 1): # start counting at 0
+    fields = line.split()
+    try:
+        count = int(fields[1])
+        ...
+    except ValueError as e:
+        print('Line {}: Parse error: {}'.format(lineno, e))
+
+from collections import defaultdict
+rows_by_date = defaultdict(list)
+for row in rows:
+    rows_by_date[row['date']].append(row)",
+
+
+"""
