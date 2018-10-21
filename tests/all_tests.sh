@@ -21,8 +21,15 @@ run_diff_test_file() {
     diff_output $1
 }
 
+run_quiz_test_work() {
+    echo "Running ./$1.py $2 > $TEST_DATA/$1_tmp.txt"
+    ./"$1.py" "$2" > $TEST_DATA/$1_tmp.txt
+    diff_output $1
+}
+
 export title="Test page"
+export title2="work"
 run_diff_test_std create_page "$title"
 run_diff_test_file create_gloss
 run_diff_test_file create_menu
-
+run_quiz_test_work qexport "$title2"

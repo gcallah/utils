@@ -9,6 +9,7 @@ import string
 import re
 import argparse
 from pylib.html_tags import ulist
+from collections import OrderedDict
 
 ARG_ERROR = 1  # type: int
 exit_error = False # type: bool
@@ -32,23 +33,24 @@ if __name__ == '__main__':
     
 
 check_file(txt_file)
-d = dict()  # type: Dict[str]
+d = OrderedDict()  # type: Dict[str]
 
 with open(txt_file, 'r') as f:
+    line_no = 1
     try:
         #place terms/defs in dictionary
         for line in f:
             term = line.strip().split("\t") #tab delimited
             d[term[0]] = term[1]
+            line_no += 1
     except IndexError: 
-        print("We need a better error message here, but it seems some line"
-              + " doesn't fit our format!")
+        print("Index error: check line " + str(line_no))
 
 gloss_list = []
 for key in d:
     gloss_item = '<a name=' + key + '>'
-    gloss_item += '<span class="hilight">' + key + '</span>: '
-    gloss_item += '</a>'
+    gloss_item += '<span class="hilight">' + key + '</span>:'
+    gloss_item += '</a> '
     gloss_item += d[key]
     gloss_list.append(gloss_item)
 
