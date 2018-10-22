@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Test Page
+        </title>
+    </head>
+
+    <body>
+        <div class="wrapper">
+            <div id="content">
+                <h1>
+                    Test Page
+
+
+                <p>
+                    Program is a command which tells the computer what to do.
+                    Programming is an activity of writing and testing such
+                    programs.  Computers are dumb, in the sense that they
+                    require instructions to complete a certain task that a
+                    human can do with common sense.  The language in which
+                    instructions are given is the programming language. C++ is
+                    our programming language.
+                </p>
+
+                <p>
+                    C++ is a compiled language which means that the code has to
+                    be translated to machine instructions before the program is
+                    run, by a compiler. (A language like Python translates to
+                    machine language as the program is run, without a separate
+                    compile step.) Source code is the code you write, for C++
+                    the suffix is .cpp. The machine code or object code, is .o
+                    (Unix) or .obj (Windows)
+              
+
+            </div>
+        </div>
+
+    </body>
+</html>
