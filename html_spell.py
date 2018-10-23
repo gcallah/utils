@@ -5,16 +5,18 @@ Uses multiple sources of truth for spelling, checked in the following order:
   1. ./data/Dictionary.json, unioned with ./data/English.txt
   2. the oxford dictionary api
 
-If a user decides that a word, not found in either source, ought not to count as a misspelling,
-  they have the opportunity to add said word to the dictionary located in ./data/English.txt.
+If a user decides that a word, not found in either source,
+  ought not to count as a misspelling, they have the opportunity
+  to add said word to the dictionary located in ./data/English.txt.
 
-The tool was written to anticipate the following situations, and produce appropriate outcomes:
-  * Hyphenated compound words, of the grammar "{word}-{hyphenated-compound-word}"
+The tool was written to anticipate the following situations,
+  and produce appropriate outcomes:
+  * Hyphenated compound words, like "{word}-{hyphenated-compound-word}"
     --> Detection: hyphens exist in the string
-    --> Solution: string split on hyphens, each segment is spellchecked separately
+    --> Solution: split on hyphens, each segment is spellchecked separately
   * Possessives, of the grammar "{word}'s"
     --> Detection: last two characters of string are "'s"
-    --> Solution: string split on hyphen, word prior is checked.
+    --> Solution: split on ', word prior is checked.
   * Single-character words
     --> Detection: length is one.
     --> Solution: everything passes.
@@ -45,6 +47,7 @@ app_id = '4dcc2c67'
 # We might want to investigate https://www.vaultproject.io/
 app_key = 'c7d48867f7506e51e70507d85bc9cbe6'
 language = 'en'
+OXFORD_URL = 'https://od-api.oxforddictionaries.com/api/v1/inflections/{}/{}'
 
 
 class FileChangedException(Exception):
@@ -95,10 +98,9 @@ def spellCheckFile(spell_checker, file_name):
                     spell_checker.feed(line)
                 line_num += 1
     except FileChangedException:
-        # If the file changed (because of an edit), redo spell check for the entire file
+        # Redo spell check for the entire file
         return spellCheckFile(spell_checker, file_name)
     except SpellingException:
-        # If the
         saveAddedWords()
         exit(SPELL_ERROR)
 
@@ -111,11 +113,13 @@ class HTMLSpellChecker(HTMLParser):
     def handle_data(self, html_line):  # type: (str) -> None
         """
         Description:
-            This is the core function of the parser, called on a line-by-line basis in parser.feed().
-            We check if any of the words in the line are not in the oxford dictionary, or our local dictionary.
+            This is the core function of the parser,
+              called on a line-by-line basis in parser.feed().
+            We check if any of the words in the line are not
+              in the oxford dictionary, or our local dictionary.
         Exceptions:
-            Raises a FileChangedException if the file is edited in handle_bad_word, 
-              so that the main execution thread can restart the file parsing process.
+            Raises a FileChangedException if the file is edited, so the
+              main execution thread can restart the file parsing process.
         """
         # Splits a line by space characters
         words = html_line.split()  # type: List[str]
@@ -147,24 +151,29 @@ class HTMLSpellChecker(HTMLParser):
         validResponse = False  # type: bool
         while not validResponse:
             response = input(
-                "How would you like to handle the bad word {}?\n".format(word) +
-                "1. Add as valid word to dictionary (1/a/add)\n" +
-                "2. Skip error, because words is a unique string (2/s/skip)\n" +
-                "3. Edit file, to fix the word (3/e/edit)\n" +
-                "4. Exit the spell-checker for this file.  Will result in a non-zero exit code. (4/c/close)\n" +
-                ">>")
-            if response.lower() == 'add' or response.lower() == 'a' or response == '1':
+                "How would you like to handle the bad word {}?\n".format(word)
+                + "1. Add as valid word to dictionary (1/a/add)\n"
+                + "2. Skip error, because word is a unique string (2/s/skip)\n"
+                + "3. Edit file, to fix the word (3/e/edit)\n"
+                + "4. Exit the spell-checker for this file."
+                + " Will result in a non-zero exit code. (4/c/close)\n"
+                + ">>")
+            response = response.lower()
+            if response == 'add' or response == 'a' or response == '1':
                 added_words.add(word)
                 word_set.add(word)
                 return None
-            elif response.lower() == 'skip' or response.lower() == 's' or response == '2':
+            elif response == 'skip' or response == 's' or response == '2':
                 return None
-            elif response.lower() == 'edit' or response.lower() == 'e' or response == '3':
-                # This opens up vim, at the first instance of the troublesome word, with all instances highlighted.
-                subprocess.call(
-                    ['vimdiff', '+{}'.format(line_num), '-c', '/ {}'.format(word), file_name])
+            elif response == 'edit' or response == 'e' or response == '3':
+                # This opens up vim with all instances of the word highlighted.
+                subprocess.call([
+                    'vimdiff',
+                    '+{}'.format(line_num),
+                    '-c', '/ {}'.format(word), file_name
+                ])
                 raise FileChangedException
-            elif response.lower() == 'close' or response.lower() == 'c' or response == '4':
+            elif response == 'close' or response == 'c' or response == '4':
                 raise SpellingException
             else:
                 print("Invalid response, Please try again!")
@@ -172,8 +181,7 @@ class HTMLSpellChecker(HTMLParser):
     def isWordInOxfordDictionary(self, lower_word):
         return urllib.request.urlopen(
             urllib.request.Request(
-                url='https://od-api.oxforddictionaries.com/api/v1/inflections/{}/{}'.format(
-                    language, lower_word),
+                url=OXFORD_URL.format(language, lower_word),
                 headers={'app_id': app_id, 'app_key': app_key}
             )).getcode() == 200
 
@@ -183,8 +191,9 @@ class HTMLSpellChecker(HTMLParser):
     def checkWord(self, word):
         """
         Description:
-            Checks whether is a string is a valid word or not.  See module-level string for details.
+            Checks whether is a string is a valid word or not.
             If a word is spelt incorrectly, calls handle_bad_word.
+            See module docstring to see what kinds of bad strings are caught.
         Returns:
             None
         Raises:
@@ -203,7 +212,8 @@ class HTMLSpellChecker(HTMLParser):
 
         lower_word = word.lower()  # type: (str)
 
-        if lower_word not in word_set and not self.isWordInOxfordDictionary(lower_word):
+        if (lower_word not in word_set
+                and not self.isWordInOxfordDictionary(lower_word)):
             self.handle_bad_word(lower_word)
 
 
