@@ -1,13 +1,11 @@
-#!/usr/bin/env python3 
+#!/usr/bin/python
+"""
+    Creates a menu from a tab-delimited text file.
+"""
 
 import sys
-from pylib.parse_site import parse_site, InputError, IndentError, Topic
+from pylib.parse_site import parse_site, InputError
 from pylib.html_tags import sidebar, sidebar_links
-
-try:
-    from typing import List, Set, Any
-except ImportError:
-    print("WARNING: Typing module is not find")
 
 TITLE = 0 # type: int
 INPUT = 1 # type: int
@@ -22,36 +20,45 @@ tot_submenus = 0 # type: int
 
 
 def get_pad(level):
+    """
+        Get padding amount.
+    """
     return INDENT * level
 
 
 def create_link(topic, level, is_url):
+    """
+        Creates a link in the sidebar.
+    """
     global tot_submenus
     padding = get_pad(level + 1)
     return sidebar_links(padding=padding, topic=topic,
-                  tot_submenus=tot_submenus, is_url=is_url)
+                         tot_submenus=tot_submenus, is_url=is_url)
 
 
 def process_menu(topics, level):
+    """
+        Processes a menu level.
+    """
     global tot_submenus
-    s = ""
+    menu_txt = ""
     padding = get_pad(level)
     if level == 1:
-        s += "%s<ul class=\"list-unstyled components\">\n" % padding
+        menu_txt += "%s<ul class=\"list-unstyled components\">\n" % padding
     else:
-        s += ("%s<ul class=\"collapse list-unstyled\" id=\"Submenu%d\">\n"
-              % (padding, tot_submenus))
+        menu_txt += ("%s<ul class=\"collapse list-unstyled\" id=\"Submenu%d\">\n"
+                     % (padding, tot_submenus))
         tot_submenus += 1
 
     for topic in topics:
         if topic.url is not None:
-            s += create_link(topic, level, True)
+            menu_txt += create_link(topic, level, True)
         else:
             if topic.subtopics is not None:
-                s += create_link(topic, level, False)
-                s += process_menu(topic.subtopics, level + 1)
-    s += "%s</ul>\n" % padding
-    return s
+                menu_txt += create_link(topic, level, False)
+                menu_txt += process_menu(topic.subtopics, level + 1)
+    menu_txt += "%s</ul>\n" % padding
+    return menu_txt
 
 
 if len(sys.argv) < 2:
@@ -73,7 +80,7 @@ except InputError as ie:
 # for course_item in course_items:
 #     print(course_item)
 
-if len(course_items) == 0:
+if not course_items:
     print("WARNING: Empty input file.")
     sys.exit()
 

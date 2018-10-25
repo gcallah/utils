@@ -1,4 +1,7 @@
-#!/usr/bin/env python3 
+#!/usr/bin/python
+"""
+Creates an html page from a template file.
+"""
 
 import sys
 from pylib.create_page import create_page

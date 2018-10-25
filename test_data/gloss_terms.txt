@@ -1,0 +1,2 @@
+Django  A web backend programmable in Python.
+DRY Don't repeat yourself: everything in the system should have a single source.

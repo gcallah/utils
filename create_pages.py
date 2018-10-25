@@ -1,4 +1,9 @@
-#!/usr/bin/env python3 
+#!/usr/bin/python
+"""
+This program takes a list of topics to create and a
+page template, and then creates a page for each topic,
+following the template.
+"""
 
 import sys
 from pathlib import Path
@@ -6,7 +11,7 @@ try:
     from typing import List, Any
 except ImportError:
     print("WARNING: Typing module is not find")
-from pylib.parse_site import parse_site, InputError, IndentError, Topic
+from pylib.parse_site import parse_site
 from pylib.create_page import create_page
 
 HTML_PG = 0  # type: int
@@ -18,8 +23,13 @@ PTML_EXT = "ptml"  # type: str
 ptml_dir = "html_src"  # type: str
 
 
-def process_level(topics, level):
-    for topic in topics:
+def process_level(topic_list, level):
+    """
+    This function processes a level of the topics list
+    and creates pages if they have a URL.
+    It calls itself to process lower levels.
+    """
+    for topic in topic_list:
         if topic.url is not None:
             ptml_file = topic.url.replace(HTML_EXT, PTML_EXT)
             ptml_file = ptml_dir +  "/" + ptml_file
@@ -30,7 +40,7 @@ def process_level(topics, level):
                       open(ptml_file, 'w') as outf:
                     create_page(inf, outf, topic.title, topic.subtopics)
         elif topic.subtopics is not None:
-            # if the topic had a url, we processed the subtopics in the if
+            # if the topic had a url, we processed the subtopics above
             process_level(topic.subtopics, level + 1)
 
 
@@ -48,9 +58,8 @@ title = None
 topics = None
 try:
     (title, topics) = parse_site(topics_file)
-except:
+except IOError:
     print("ERROR: Failed to open " + topics_file)
     exit(OPEN_ERROR)
 
 process_level(topics, 1)
-
