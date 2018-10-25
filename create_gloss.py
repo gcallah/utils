@@ -1,15 +1,14 @@
 #!/usr/bin/python
-'''
-Glossary Page Builder: Takes a text file list of key subject terms and their definitions (tab-delimited) 
-and builds the glossary list as an HTML file. Has internal tags the key terms will be linked to.
-'''
+"""
+Glossary Page Builder: Takes a text file list of key subject terms
+and their definitions (tab-delimited) and builds the glossary
+list as an HTML file. Has internal tags the key terms will be linked to.
+"""
 
 import os
-import string
-import re
 import argparse
-from pylib.html_tags import ulist
 from collections import OrderedDict
+from pylib.html_tags import ulist
 
 ARG_ERROR = 1  # type: int
 exit_error = False # type: bool
@@ -19,7 +18,11 @@ INDENT1 = "        " # type: str
 INDENT2 = INDENT1 + INDENT1 # type: str
 INDENT3 = INDENT2 + INDENT1 # type: str
 
-def check_file(*files): #check if file exists
+def check_file(*files):
+    """
+    check if file exists
+    Is this function needed at all?
+    """
     for file in files:
         if not os.path.isfile(file):
             print(file + " is not a file")
@@ -30,7 +33,7 @@ if __name__ == '__main__':
     arg_parser.add_argument("txt_file", help="text file to be parsed")
     args = arg_parser.parse_args()
     txt_file = args.txt_file
-    
+
 
 check_file(txt_file)
 d = OrderedDict()  # type: Dict[str]
@@ -43,7 +46,7 @@ with open(txt_file, 'r') as f:
             term = line.strip().split("\t") #tab delimited
             d[term[0]] = term[1]
             line_no += 1
-    except IndexError: 
+    except IndexError:
         print("Index error: check line " + str(line_no))
 
 gloss_list = []
