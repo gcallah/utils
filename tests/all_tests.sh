@@ -31,6 +31,6 @@ export title="Test page"
 export title2="work"
 run_diff_test_std create_page "$title"
 run_diff_test_file create_gloss
-run_diff_test_file create_menu
+# run_diff_test_file create_menu
 run_diff_test_file html_checker
 run_quiz_test_work qexport "$title2"

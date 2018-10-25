@@ -11,22 +11,13 @@ from collections import OrderedDict
 from pylib.html_tags import ulist
 
 ARG_ERROR = 1  # type: int
+IO_ERROR = 2  # type: int
 exit_error = False # type: bool
 file_nm = None
 
 INDENT1 = "        " # type: str
 INDENT2 = INDENT1 + INDENT1 # type: str
 INDENT3 = INDENT2 + INDENT1 # type: str
-
-def check_file(*files):
-    """
-    check if file exists
-    Is this function needed at all?
-    """
-    for file in files:
-        if not os.path.isfile(file):
-            print(file + " is not a file")
-            exit(ARG_ERROR)
 
 if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser()
@@ -35,19 +26,22 @@ if __name__ == '__main__':
     txt_file = args.txt_file
 
 
-check_file(txt_file)
 d = OrderedDict()  # type: Dict[str]
 
-with open(txt_file, 'r') as f:
-    line_no = 1
-    try:
-        #place terms/defs in dictionary
-        for line in f:
-            term = line.strip().split("\t") #tab delimited
-            d[term[0]] = term[1]
-            line_no += 1
-    except IndexError:
-        print("Index error: check line " + str(line_no))
+try:
+    with open(txt_file, 'r') as f:
+        line_no = 1
+        try:
+            #place terms/defs in dictionary
+            for line in f:
+                term = line.strip().split("\t") #tab delimited
+                d[term[0]] = term[1]
+                line_no += 1
+        except IndexError:
+            print("Index error: check line " + str(line_no))
+except IOError:
+    print("Couldn't read " + txt_file)
+    exit(IO_ERROR)
 
 gloss_list = []
 for key in d:
