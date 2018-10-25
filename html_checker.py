@@ -25,8 +25,6 @@ tag_check = False # type: bool
 void_tags = {"area", "base", "br", "col", "hr", "img", "input", "link",
              "meta", "param"} # type: Set[str]
 
-tags_priority = {"h1" : 4, "h2" : 3, "h3" : 2, "p" : 0} # type: Dict[str , int]
-
 def line_msg(): # type: () -> str
     """
     A little func to regularize reporting line #s for errors.
@@ -49,30 +47,9 @@ class OurHTMLParser(HTMLParser):
         """
         if tag == SCRIPT:
             self.is_in_script_tag = True
-
         if tag not in void_tags:
-            if tag_stack:
-                err_tag = self.check_tag_priority(tag_stack, tag)
-                # if (tag_error and not saw_error):
-                if (tag_check and tag_error):
-                    print("ERROR: tag priority mismatch, detected "
-                          + tag + " tag within "
-                          + err_tag + " tag " + line_msg())
-
             tag_stack.append(tag)
 
-    def check_tag_priority(self, pre_tag_stack,
-                           this_tag): # type: (List[str], str) -> str
-        """
-        What is this function going to do?
-        """
-        global tag_error
-        for pre_tag in reversed(pre_tag_stack):
-            if (pre_tag in tags_priority and this_tag in tags_priority):
-                if tags_priority[this_tag] >= tags_priority[pre_tag]:
-                    tag_error = True
-                    return pre_tag
-        return this_tag
 
     def handle_endtag(self, tag): # type: (str) -> None
         global saw_error # type :bool
