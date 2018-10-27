@@ -16,7 +16,7 @@ BAD_ARGS = 3 # type: int
 
 INDENT = "    " # type: str
 
-tot_submenus = 0 # type: int
+TOT_SUBMENUS = 0 # type: int
 
 
 def get_pad(level):
@@ -30,25 +30,25 @@ def create_link(topic, level, is_url):
     """
         Creates a link in the sidebar.
     """
-    global tot_submenus
+    global TOT_SUBMENUS
     padding = get_pad(level + 1)
     return sidebar_links(padding=padding, topic=topic,
-                         tot_submenus=tot_submenus, is_url=is_url)
+                         tot_submenus=TOT_SUBMENUS, is_url=is_url)
 
 
 def process_menu(topics, level):
     """
         Processes a menu level.
     """
-    global tot_submenus
+    global TOT_SUBMENUS
     menu_txt = ""
     padding = get_pad(level)
     if level == 1:
         menu_txt += "%s<ul class=\"list-unstyled components\">\n" % padding
     else:
         menu_txt += ("%s<ul class=\"collapse list-unstyled\" id=\"Submenu%d\">\n"
-                     % (padding, tot_submenus))
-        tot_submenus += 1
+                     % (padding, TOT_SUBMENUS))
+        TOT_SUBMENUS += 1
 
     for topic in topics:
         if topic.url is not None:
@@ -65,35 +65,35 @@ if len(sys.argv) < 2:
     print("ERROR: Please specify input file name.")
     sys.exit(BAD_ARGS)
 
-input_fname = sys.argv[INPUT]  # type: str
+INPUT_FNAME = sys.argv[INPUT]  # type: str
 
-title = None
-course_items = None
+TITLE = None
+COURSE_ITEMS = None
 
 try:
-    (title, course_items) = parse_site(input_fname)
-except InputError as ie:
-    print("ERROR: Input error at %s: %s" % (ie.value, ie.msg))
+    (TITLE, COURSE_ITEMS) = parse_site(INPUT_FNAME)
+except InputError as input_err:
+    print("ERROR: Input error at %s: %s" % (input_err.value, input_err.msg))
     sys.exit()
 
 # for debugging:
 # for course_item in course_items:
 #     print(course_item)
 
-if not course_items:
+if not COURSE_ITEMS:
     print("WARNING: Empty input file.")
     sys.exit()
 
 # title is required
-if title.level != 0:
-    print("ERROR: Title indent level is: " + str(title.level))
+if TITLE.level != 0:
+    print("ERROR: Title indent level is: " + str(TITLE.level))
     sys.exit()
-elif title.short_title is None:
+elif TITLE.short_title is None:
     print("ERROR: Short title is required for navbar title.")
     sys.exit()
 
-s = sidebar(title=title.title, short_title=title.short_title,
-            menu_txt=process_menu(course_items, 1))
+S = sidebar(title=TITLE.title, short_title=TITLE.short_title,
+            menu_txt=process_menu(COURSE_ITEMS, 1))
 
 # write generated sidebar
-print(s, end="")
+print(S, end="")
