@@ -7,10 +7,6 @@ following the template.
 
 import sys
 from pathlib import Path
-try:
-    from typing import List, Any
-except ImportError:
-    print("WARNING: Typing module is not find")
 from pylib.parse_site import parse_site
 from pylib.create_page import create_page
 
@@ -20,7 +16,7 @@ OPEN_ERROR = 1  # type: int
 
 HTML_EXT = "html"  # type: str
 PTML_EXT = "ptml"  # type: str
-ptml_dir = "html_src"  # type: str
+PTML_DIR = "html_src"  # type: str
 
 
 def process_level(topic_list, level):
@@ -32,11 +28,11 @@ def process_level(topic_list, level):
     for topic in topic_list:
         if topic.url is not None:
             ptml_file = topic.url.replace(HTML_EXT, PTML_EXT)
-            ptml_file = ptml_dir +  "/" + ptml_file
+            ptml_file = PTML_DIR +  "/" + ptml_file
             my_file = Path(ptml_file)
             if not my_file.is_file():  # don't overwrite existing files!
                 print("\nGoing to create " + ptml_file)
-                with open(page_templ, 'r') as inf, \
+                with open(PAGE_TEMPL, 'r') as inf, \
                       open(ptml_file, 'w') as outf:
                     create_page(inf, outf, topic.title, topic.subtopics)
         elif topic.subtopics is not None:
@@ -48,18 +44,18 @@ if len(sys.argv) < 3:
     print("Must supply a file of topics to create and a page template.")
     exit(1)
 
-topics = [] # type: List[Any]
-topics_file = sys.argv[1] # type: str
-page_templ = sys.argv[2]  # type: str
+TOPICS = [] # type: List[Any]
+TOPICS_FILE = sys.argv[1] # type: str
+PAGE_TEMPL = sys.argv[2]  # type: str
 if len(sys.argv) > 3:
-    ptml_dir = sys.argv[3]
+    PTML_DIR = sys.argv[3]
 
-title = None
-topics = None
+TITLE = None
+TOPICS = None
 try:
-    (title, topics) = parse_site(topics_file)
+    (TITLE, TOPICS) = parse_site(TOPICS_FILE)
 except IOError:
-    print("ERROR: Failed to open " + topics_file)
+    print("ERROR: Failed to open " + TOPICS_FILE)
     exit(OPEN_ERROR)
 
-process_level(topics, 1)
+process_level(TOPICS, 1)
