@@ -5,19 +5,18 @@ and their definitions (tab-delimited) and builds the glossary
 list as an HTML file. Has internal tags the key terms will be linked to.
 """
 
-import os
 import argparse
 from collections import OrderedDict
 from pylib.html_tags import ulist
 
 ARG_ERROR = 1  # type: int
 IO_ERROR = 2  # type: int
-exit_error = False # type: bool
+exit_error = False  # type: bool
 file_nm = None
 
-INDENT1 = "        " # type: str
-INDENT2 = INDENT1 + INDENT1 # type: str
-INDENT3 = INDENT2 + INDENT1 # type: str
+INDENT1 = "        "  # type: str
+INDENT2 = INDENT1 + INDENT1  # type: str
+INDENT3 = INDENT2 + INDENT1  # type: str
 
 if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser()
@@ -32,9 +31,9 @@ try:
     with open(txt_file, 'r') as f:
         line_no = 1
         try:
-            #place terms/defs in dictionary
+            # place terms/defs in dictionary
             for line in f:
-                term = line.strip().split("\t") #tab delimited
+                term = line.strip().split("\t")  # tab delimited
                 d[term[0]] = term[1]
                 line_no += 1
         except IndexError:
@@ -51,7 +50,7 @@ for key in d:
     gloss_item += d[key]
     gloss_list.append(gloss_item)
 
-s = ulist(css_class="nested", l=gloss_list)
+s = ulist(css_class="nested", l=gloss_list)  # noqa E741
 # write to standard out:
 print(s)
 

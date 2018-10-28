@@ -11,7 +11,7 @@ tests: FORCE
 pylint: $(patsubst %.py,%.pylint,$(PYTHONFILES))
 
 %.pylint:
-	pylint -rn $*.py
+	flake8 $*.py
 
 repo: $(INCS) $(HTMLFILES) tests pylint
 	-git commit -a 
