@@ -127,30 +127,4 @@ if __name__ == '__main__':
             process_file(file, contexts_per_file)
 
         output_context(outdir, keyword, contexts_per_file)
-        contexts_per_file = {}  # blank to get ready for next keyword
-
-"""
-<-----Testing Optimization----->
-for lineno, line in enumerate(lines, 1): # start counting at 0
-    fields = line.split()
-    try:
-        count = int(fields[1])
-        ...
-    except ValueError as e:
-        print('Line {}: Parse error: {}'.format(lineno, e))
-
-from collections import defaultdict
-rows_by_date = defaultdict(list)
-for row in rows:
-    rows_by_date[row['date']].append(row)",
-
-# remove punctuation from the string
-no_punct = ""
-for char in my_str:
-   if char not in punctuations:
-       no_punct = no_punct + char
-
-# display the unpunctuated string
-print(no_punct)
-
-"""
+        contexts_per_file = {}  # blank to get ready for next keyword 
