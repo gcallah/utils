@@ -10,8 +10,7 @@ eg: DRY
 will index: DRYwasher, DRY?, DRY!!, DRY., DRY
 
 for testing run:
-(python3 gloss_links.py test_data/gloss_key.txt test_data/test_data --lf  
-test_data/gloss_links_test1.txt  test_data/gloss_links_test2.txt)
+(python3 gloss_links.py test_data/gloss_key.txt test_data --lf test_data/gloss_links_inp1.txt  test_data/gloss_links_inp2.txt)
 
 output: 
 
@@ -128,3 +127,42 @@ if __name__ == '__main__':
 
         output_context(outdir, keyword, contexts_per_file)
         contexts_per_file = {}  # blank to get ready for next keyword 
+
+# ignore code below for now 
+def writeat(self,data,offset):
+
+    startByteIndex = 8 * (offset // 8)
+    endByteIndex = 8 * ((offset + len(data)) // 8)
+    block1StartIndex = offset - startByteIndex
+    block2StartIndex = (offset + len(data)) - endByteIndex
+
+    if startByteIndex < self.size and endByteIndex < self.size:
+          block1Data = self.readat(8, startByteIndex)
+          block2Data = self.readat(8, endByteIndex)
+          writeData = (block1Data[:block1StartIndex] 
+                        + data + block2Data[block2StartIndex:])
+
+          if(self.checkParity(writeData)):
+              self.file.writeat(data,offset)
+          else:
+              self.lock.release()
+
+    elif startByteIndex < self.size and endByteIndex > self.size:
+          block1Data = self.readat(8, startByteIndex)
+          writeData = block1Data[:block1StartIndex] + data
+          
+          if(self.checkParity(writeData)):
+              self.file.writeat(data,offset)
+              diff = (offset + len(data)) - self.size
+              self.size = self.size + diff
+
+    elif startByteIndex == self.size:
+        writeData = data
+        if(self.checkParity(writeData)):
+            self.file.writeat(data,offset)
+            self.size = self.size + len(data)
+
+def checkParity():
+    # to be implemented
+    return None
+
