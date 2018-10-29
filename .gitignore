@@ -2,3 +2,4 @@
 html_src/*
 **/.DS_Store
 .idea/*
+\.vscode/
