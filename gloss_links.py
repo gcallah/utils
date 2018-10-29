@@ -10,13 +10,15 @@ eg: DRY
 will index: DRYwasher, DRY?, DRY!!, DRY., DRY
 
 for testing run:
-(python3 gloss_links.py test_data/gloss_key.txt test_data --lf "test_data/gloss_links_inp1.txt" "test_data/gloss_links_inp2.txt")
+(python3 gloss_links.py test_data/gloss_key.txt test_data --lf "test_data/gloss_links_inp1.txt" 
+"test_data/gloss_links_inp2.txt")
 
 Each file is opened only once now.
 The data structure used in new version is a bit complicated:
 -> keyword_context is a dictionary where key is key/glossary from gloss_list and value is another dictionary
 -> in the nested dictionary key is name of files and value is list of context for that file. 
-{keyword: {filenm:[context,...,contxt],..., filenm:[context,...,contxt]},.....,keyword: {filenm:[context,contxt],..., filenm:[context,context]}}
+{keyword: {filenm:[context,...,contxt],..., filenm:[context,...,contxt]},.....,keyword: 
+        {filenm:[context,contxt],..., filenm:[context,context]}}
 
 """
 
