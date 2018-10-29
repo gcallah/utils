@@ -44,9 +44,10 @@ except IOError:
 
 gloss_list = []
 for key in d:
-    gloss_item = '<a name=' + key + '>'
-    gloss_item += '<span class="hilight">' + key + '</span>:'
-    gloss_item += '</a> '
+    # gloss_item = '<a name=' + key + '>'
+    gloss_item = '<span class="hilight" id="'
+    gloss_item += key + '">' + key + '</span>:'
+    # gloss_item += '</a> '
     gloss_item += d[key]
     gloss_list.append(gloss_item)
 
