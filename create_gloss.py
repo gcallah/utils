@@ -44,10 +44,9 @@ except IOError:
 
 gloss_list = []
 for key in d:
-    # gloss_item = '<a name=' + key + '>'
+    key_id = key   # for now: your new func goes here!
     gloss_item = '<span class="hilight" id="'
-    gloss_item += key + '">' + key + '</span>: '
-    # gloss_item += '</a> '
+    gloss_item += key_id + '">' + key + '</span>: '
     gloss_item += d[key]
     gloss_list.append(gloss_item)
 
