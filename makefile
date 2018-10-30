@@ -13,7 +13,7 @@ lint: $(patsubst %.py,%.pylint,$(PYTHONFILES))
 %.pylint:
 	flake8 $*.py
 
-repo: $(INCS) $(HTMLFILES) tests pylint
+repo: $(INCS) $(HTMLFILES) tests lint
 	-git commit -a 
 	git pull origin master
 	git push origin master
