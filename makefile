@@ -8,7 +8,7 @@ FORCE:
 tests: FORCE
 	$(TEST_DIR)/all_tests.sh
 
-pylint: $(patsubst %.py,%.pylint,$(PYTHONFILES))
+lint: $(patsubst %.py,%.pylint,$(PYTHONFILES))
 
 %.pylint:
 	flake8 $*.py
