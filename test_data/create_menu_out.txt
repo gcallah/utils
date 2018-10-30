@@ -1,36 +1,36 @@
 <!-- Sidebar Holder -->
 <nav id="sidebar">
-<div id="sidebarCollapse">
-<div class="sidebar-header">
-<h1>
-Object-Oriented Programming
-</h1>
-<strong>OOP</strong>
-</div>
-</div>
+    <div id="sidebarCollapse">
+        <div class="sidebar-header">
+            <h1>
+                Object-Oriented Programming
+            </h1>
+            <strong>OOP</strong>
+        </div>
+    </div>
     <ul class="list-unstyled components">
         <li>
-        <a href="index.html">
-        <i class="glyphicon glyphicon-home"></i>
-        Home
-        </a>
+            <a href="index.html">
+                <i class="glyphicon glyphicon-home"></i>
+                Home
+            </a>
         </li>
         <li>
-        <a href="#Submenu0" data-toggle="collapse" aria-expanded="false" >
-        Topics
-        </a>
+            <a href="#Submenu0" data-toggle="collapse" aria-expanded="false">
+                Topics
+            </a>
         </li>
         <ul class="collapse list-unstyled" id="Submenu0">
             <li>
-            <a href="#Submenu1" data-toggle="collapse" aria-expanded="false" >
-            Part I: The Basics
-            </a>
+                <a href="#Submenu1" data-toggle="collapse" aria-expanded="false">
+                    Part I: The Basics
+                </a>
             </li>
             <ul class="collapse list-unstyled" id="Submenu1">
                 <li>
-                <a href="hello.html">
-                "2. Hello, World!"
-                </a>
+                    <a href="hello.html">
+                        "2. Hello, World!"
+                    </a>
                 </li>
             </ul>
         </ul>
