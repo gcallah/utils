@@ -101,21 +101,29 @@ def extract_questions(path_nm):
     recs = list()
 
     # looping to create a list of commands with model 'Question'
-    for i, j, k, l, m, n, o in zip_longest(range(q_num), range(cor_ans), range(A), range(B), range(C), range(D), range(E)):
-        recs.append(Question(text = Text[i] if i != None else None, correct = Correct[j] if j != None else None,
-        answerA = AnswerA[k] if k != None else None, answerB = AnswerB[l] if l != None else None,
-        answerC = AnswerC[m] if m != None else None, answerD = AnswerD[n] if n != None else None,
-        answerE = AnswerE[o] if o != None else None, difficulty = 1, qtype = 'MCHOICE'))
+    for i, j, k, l, m, n, o in zip_longest(range(q_num), range(cor_ans),
+                                           range(A), range(B), range(C),
+                                           range(D), range(E)):
+        recs.append(Question(text=Text[i] if i else None,
+                             correct=Correct[j] if j else None,
+                             answerA=AnswerA[k] if k else None,
+                             answerB=AnswerB[l] if l else None,
+                             answerC=AnswerC[m] if m else None,
+                             answerD=AnswerD[n] if n else None,
+                             answerE=AnswerE[o] if o else None,
+                             difficulty=1, qtype='MCHOICE'))
 
     return recs
 
-    def insert_records(recs):
 
-        if not recs:
-            print("No data to insert!")
-        else:
-            # statement that inserts records
-            Question.objects.bulk_create(recs)
+def insert_records(recs):
+
+    if not recs:
+        print("No data to insert!")
+    else:
+        # statement that inserts records
+        Question.objects.bulk_create(recs)
+
 
 def main():
     path_nm = None
