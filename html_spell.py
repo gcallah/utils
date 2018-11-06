@@ -49,7 +49,6 @@ app_key = 'c7d48867f7506e51e70507d85bc9cbe6'
 language = 'en'
 OXFORD_URL = 'https://od-api.oxforddictionaries.com/api/v1/inflections/{}/{}'
 
-
 class FileChangedException(Exception):
     pass
 
@@ -83,11 +82,12 @@ def spellCheckFile(spell_checker, file_name):
         Nothing
     """
     code_tag_on = False  # type:bool
-    line_num = 0
     try:
         spell_checker.reset()
+        spell_checker.line_num = 0
         with open(file_name, "r", ) as f:
             for line in f:
+                spell_checker.line_num += 1
                 if "<code>" in line:
                     code_tag_on = True
                 if "</code>" in line:
@@ -96,7 +96,6 @@ def spellCheckFile(spell_checker, file_name):
 
                 if not code_tag_on:
                     spell_checker.feed(line)
-                line_num += 1
     except FileChangedException:
         # Redo spell check for the entire file
         return spellCheckFile(spell_checker, file_name)
@@ -108,6 +107,7 @@ def spellCheckFile(spell_checker, file_name):
 class HTMLSpellChecker(HTMLParser):
     def __init__(self):  # type: () -> None
         self.is_in_script_tag = False
+        self.line_num = 0
         super(HTMLSpellChecker, self).__init__(convert_charrefs=False)
 
     def handle_data(self, html_line):  # type: (str) -> None
@@ -171,8 +171,8 @@ class HTMLSpellChecker(HTMLParser):
                 # This opens up vim with all instances of the word highlighted.
                 subprocess.call([
                     'vimdiff',
-                    '+{}'.format(line_num),
-                    '-c', '/ {}'.format(word), file_name
+                    '+{}'.format(self.line_num),
+                    '-c', 'match Search /{}/'.format(word), file_name
                 ])
                 raise FileChangedException
             elif response == 'close' or response == 'c' or response == '4':
@@ -258,7 +258,6 @@ with open(custom_dict, 'r') as f:
 
 # Execute the spellchecker
 added_words = set()
-line_num = 0
 parser = HTMLSpellChecker()
 spellCheckFile(parser, file_name)
 
