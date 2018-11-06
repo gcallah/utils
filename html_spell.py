@@ -181,11 +181,14 @@ class HTMLSpellChecker(HTMLParser):
                 print("Invalid response, Please try again!")
 
     def isWordInOxfordDictionary(self, lower_word):
-        return urllib.request.urlopen(
-            urllib.request.Request(
-                url=OXFORD_URL.format(language, lower_word),
-                headers={'app_id': app_id, 'app_key': app_key}
-            )).getcode() == 200
+        try:
+            return urllib.request.urlopen(
+                urllib.request.Request(
+                    url=OXFORD_URL.format(language, lower_word),
+                    headers={'app_id': app_id, 'app_key': app_key}
+                )).getcode() == 200
+        except urllib.error.URLError:
+            return False
 
     def isPossessive(self, word):
         return '\'s' == word[len(word)-2:]
@@ -247,7 +250,8 @@ check_files_exist(file_name, main_dict, custom_dict)
 # Load words from Dictionary files
 word_set = set()
 with open(main_dict, 'r') as f:
-    word_set = set(json.load(f).keys())
+    for line in f:
+        word_set.add(line.split()[0].lower())
 with open(custom_dict, 'r') as f:
     for line in f:
         word_set.add(line.split()[0].lower())
