@@ -148,6 +148,8 @@ class HTMLSpellChecker(HTMLParser):
         Raises:
             FileChangedException if the edit option was chosen
         """
+        if not interactive_mode:
+            raise SpellingException
         validResponse = False  # type: bool
         while not validResponse:
             response = input(
@@ -217,7 +219,7 @@ class HTMLSpellChecker(HTMLParser):
             self.handle_bad_word(lower_word)
 
 
-exit_error = False  # type: bool
+interactive_mode = False  # type: bool
 strict_mode = False  # type: bool
 file_name = None
 main_dict = None
@@ -229,11 +231,11 @@ if __name__ == '__main__':
     arg_parser.add_argument("main_dict", help="main dictionary file")
     arg_parser.add_argument("custom_dict", help="custom dictionary file")
     arg_parser.add_argument(
-        "-e", help="enable exit error", action="store_true")
+        "-i", help="enable interactive spell-checking", action="store_true")
     arg_parser.add_argument("-s", help="strict mode checks capitalized words",
                             action="store_true")
     args = arg_parser.parse_args()
-    exit_error = args.e
+    interactive_mode = args.i
     strict_mode = args.s
     file_name = args.file_name
     main_dict = args.main_dict
