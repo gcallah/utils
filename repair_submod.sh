@@ -12,5 +12,4 @@ git commit -m "Remove submodules $1"
 rm -rf $1
 git push origin master
 
-echo "Re-add Submodule"
-git submodule add <submod_url>
+echo "To re-add the submodule, please run: git submodule add <submod_url>"
