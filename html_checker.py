@@ -10,53 +10,55 @@ import argparse
 try:
     from typing import List, Set, Dict
 except ImportError:
-    print("WARNING: Typing module is not find")
+    print("WARNING: Typing module is not found.")
 
-ARG_ERROR = 1 # type: int
-PARSE_ERROR = 2 # type: int
-MAX_LINE = 80 # type: int
+ARG_ERROR = 1  # type: int
+PARSE_ERROR = 2  # type: int
+MAX_LINE = 80  # type: int
 SCRIPT = "script"
 PRE = "pre"
 
-tag_stack = [] # type: List[str]
-line_no = 0 # type: int
-saw_error = False # type: bool
-tag_error = False # type: bool
-tag_check = False # type: bool
+tag_stack = []  # type: List[str]
+line_no = 0  # type: int
+saw_error = False  # type: bool
+tag_error = False  # type: bool
+tag_check = False  # type: bool
 
 void_tags = {"area", "base", "br", "col", "hr", "img", "input", "link",
              "meta", "param"}  # type: Set[str]
 
-tags_of_interest = {"pre": False, "script": False, "a": False, }  # that's all for now!
+in_sig_tag = {"pre": False, "script": False, "a": False,
+              "style": False }  # that's all for now!
 
 
-def line_msg(): # type: () -> str
+def line_msg():  # type: () -> str
     """
     A little func to regularize reporting line #s for errors.
     """
     return " at line number " + str(line_no)
+
 
 class OurHTMLParser(HTMLParser):
     """
     Our descendant of base HTMLParser class: we override just the methods we
     need to.
     """
-    def __init__(self): # type: () -> None
+    def __init__(self):  # type: () -> None
         super(OurHTMLParser, self).__init__(convert_charrefs=False)
 
-    def handle_starttag(self, tag, attrs): # type: (str, object) -> None
+    def handle_starttag(self, tag, attrs):  # type: (str, object) -> None
         """
         This is a callback function that is used by HTMLParser for start tags:
             it is called!
         """
-        if tag in tags_of_interest:
-            tags_of_interest[tag] = True
+        if tag in in_sig_tag:
+            in_sig_tag[tag] = True
         if tag not in void_tags:
             tag_stack.append(tag)
 
 
-    def handle_endtag(self, tag): # type: (str) -> None
-        global saw_error # type :bool
+    def handle_endtag(self, tag):  # type: (str) -> None
+        global saw_error  # type :bool
         if not tag_stack:
             print("ERROR: unmatched close tag " + tag + "'" + line_msg())
             saw_error = True
@@ -68,22 +70,21 @@ class OurHTMLParser(HTMLParser):
                       "' does not match open tag '"
                       + open_tag + "'" + line_msg())
                 saw_error = True
-            if tag in tags_of_interest:
-                tags_of_interest[tag] = False
+            if tag in in_sig_tag:
+                in_sig_tag[tag] = False
 
-    def handle_data(self, data):# type: (str) -> None
+    def handle_data(self, data):  # type: (str) -> None
         """
         Here we can look for long lines or other such problems.
         """
-        global saw_error # type :bool
-        # print(data)
-        if not tags_of_interest["pre"] and not tags_of_interest["a"]:
+        global saw_error  # type :bool
+        if not in_sig_tag["pre"] and not in_sig_tag["a"]:
             if len(data) > MAX_LINE:
                 print("WARNING: long line found" + line_msg())
         if re.search('\x09', data):
             print("WARNING: tab character found" + line_msg()
                   + "; please uses spaces instead of tabs.")
-        if not tags_of_interest["script"] and re.search('[<>]', data):
+        if not in_sig_tag["script"] and re.search('[<>]', data):
             print("ERROR: Use &gt; or &lt; instead of < or >"
                   + line_msg())
             saw_error = True
