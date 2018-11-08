@@ -76,9 +76,11 @@ class OurHTMLParser(HTMLParser):
         Here we can look for long lines or other such problems.
         """
         global saw_error  # type :bool
-        if not in_sig_tag["pre"] and not in_sig_tag["a"]:
+        if (not in_sig_tag["pre"] and not in_sig_tag["a"] and not
+            in_sig_tag["script"]):
             if len(data) > MAX_LINE:
                 print("WARNING: long line found" + line_msg())
+                print(data)
         if re.search('\x09', data):
             print("WARNING: tab character found" + line_msg()
                   + "; please uses spaces instead of tabs.")
