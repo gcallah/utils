@@ -7,16 +7,16 @@ import sys
 from pylib.parse_site import parse_site, InputError
 from pylib.html_tags import sidebar, sidebar_links
 
-TITLE = 0 # type: int
-INPUT = 1 # type: int
-OUTPUT = 2 # type: int
-EMPTY_LIST = 1 # type: int
-INDENT_MISMATCH = 2 # type: int
-BAD_ARGS = 3 # type: int
+TITLE = 0  # type: int
+INPUT = 1  # type: int
+OUTPUT = 2  # type: int
+EMPTY_LIST = 1  # type: int
+INDENT_MISMATCH = 2  # type: int
+BAD_ARGS = 3  # type: int
 
-INDENT = "    " # type: str
+INDENT = "    "  # type: str
 
-TOT_SUBMENUS = 0 # type: int
+TOT_SUBMENUS = 0  # type: int
 
 
 def get_pad(level):
@@ -46,7 +46,7 @@ def process_menu(topics, level):
     if level == 1:
         menu_txt += "%s<ul class=\"list-unstyled components\">\n" % padding
     else:
-        menu_txt += ("%s<ul class=\"collapse list-unstyled\" id=\"Submenu%d\">\n"
+        menu_txt += ('%s<ul class="collapse list-unstyled" id="Submenu%d">\n'
                      % (padding, TOT_SUBMENUS))
         TOT_SUBMENUS += 1
 

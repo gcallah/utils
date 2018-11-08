@@ -1,3 +1,4 @@
+#!/usr/bin/python
 """
 Script to check proper nesting and matching of html tags.
 """
@@ -15,6 +16,7 @@ ARG_ERROR = 1 # type: int
 PARSE_ERROR = 2 # type: int
 MAX_LINE = 80 # type: int
 SCRIPT = "script"
+PRE = "pre"
 
 tag_stack = [] # type: List[str]
 line_no = 0 # type: int
@@ -23,7 +25,10 @@ tag_error = False # type: bool
 tag_check = False # type: bool
 
 void_tags = {"area", "base", "br", "col", "hr", "img", "input", "link",
-             "meta", "param"} # type: Set[str]
+             "meta", "param"}  # type: Set[str]
+
+tags_of_interest = {"pre": False, "script": False, "a": False, }  # that's all for now!
+
 
 def line_msg(): # type: () -> str
     """
@@ -37,7 +42,6 @@ class OurHTMLParser(HTMLParser):
     need to.
     """
     def __init__(self): # type: () -> None
-        self.is_in_script_tag = False
         super(OurHTMLParser, self).__init__(convert_charrefs=False)
 
     def handle_starttag(self, tag, attrs): # type: (str, object) -> None
@@ -45,8 +49,8 @@ class OurHTMLParser(HTMLParser):
         This is a callback function that is used by HTMLParser for start tags:
             it is called!
         """
-        if tag == SCRIPT:
-            self.is_in_script_tag = True
+        if tag in tags_of_interest:
+            tags_of_interest[tag] = True
         if tag not in void_tags:
             tag_stack.append(tag)
 
@@ -64,8 +68,8 @@ class OurHTMLParser(HTMLParser):
                       "' does not match open tag '"
                       + open_tag + "'" + line_msg())
                 saw_error = True
-        if tag is SCRIPT:
-            self.is_in_script_tag = False
+            if tag in tags_of_interest:
+                tags_of_interest[tag] = False
 
     def handle_data(self, data):# type: (str) -> None
         """
@@ -73,12 +77,13 @@ class OurHTMLParser(HTMLParser):
         """
         global saw_error # type :bool
         # print(data)
-        if len(data) > MAX_LINE:
-            print("WARNING: long line found" + line_msg())
+        if not tags_of_interest["pre"] and not tags_of_interest["a"]:
+            if len(data) > MAX_LINE:
+                print("WARNING: long line found" + line_msg())
         if re.search('\x09', data):
             print("WARNING: tab character found" + line_msg()
                   + "; please uses spaces instead of tabs.")
-        if re.search('[<>]', data) and not self.is_in_script_tag:
+        if not tags_of_interest["script"] and re.search('[<>]', data):
             print("ERROR: Use &gt; or &lt; instead of < or >"
                   + line_msg())
             saw_error = True

@@ -1,19 +1,22 @@
 # Need to export as ENV var
 export TEST_DIR = tests
 export TEST_DATA = test_data
+LIB = pylib
 PYTHONFILES = $(shell ls *.py)
+PYTHONFILES += $(shell ls $(LIB)/*.py)
 
 FORCE:
 
 tests: FORCE
 	$(TEST_DIR)/all_tests.sh
 
-pylint: $(patsubst %.py,%.pylint,$(PYTHONFILES))
+lint: $(patsubst %.py,%.pylint,$(PYTHONFILES))
 
-%.pylint:
+%.lint:
 	flake8 $*.py
 
-repo: $(INCS) $(HTMLFILES) tests pylint
+# lint should go here... but we're not quite ready
+repo: $(INCS) $(HTMLFILES) tests 
 	-git commit -a 
 	git pull origin master
 	git push origin master
