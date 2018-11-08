@@ -114,3 +114,7 @@ def sidebar(title="", short_title="", menu_txt=""): # for create_menu.py
     s += "</nav>\n" 
     return s 
 
+def str_to_valid_id(key): 
+    if key.find('(') != -1:
+        key = key[0:key.find('(')-1]
+    return key.replace(" ", "_")

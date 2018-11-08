@@ -7,7 +7,7 @@ list as an HTML file. Has internal tags the key terms will be linked to.
 
 import argparse
 from collections import OrderedDict
-from pylib.html_tags import ulist
+from pylib.html_tags import ulist, str_to_valid_id
 
 ARG_ERROR = 1  # type: int
 IO_ERROR = 2  # type: int
@@ -33,7 +33,8 @@ try:
         try:
             # place terms/defs in dictionary
             for line in f:
-                term = line.strip().split("\t")  # tab delimited
+                term = line.strip().split("\n\n")  # tab delimited
+                print(term)
                 d[term[0]] = term[1]
                 line_no += 1
         except IndexError:
@@ -44,9 +45,9 @@ except IOError:
 
 gloss_list = []
 for key in d:
-    gloss_item = '<a name=' + key + '>'
-    gloss_item += '<span class="hilight">' + key + '</span>:'
-    gloss_item += '</a> '
+    key_id = str_to_valid_id(key)
+    gloss_item = '<span class="hilight" id="'
+    gloss_item += key_id + '">' + key + '</span>: '
     gloss_item += d[key]
     gloss_list.append(gloss_item)
 
