@@ -15,8 +15,6 @@ except ImportError:
 ARG_ERROR = 1  # type: int
 PARSE_ERROR = 2  # type: int
 MAX_LINE = 80  # type: int
-SCRIPT = "script"
-PRE = "pre"
 
 tag_stack = []  # type: List[str]
 line_no = 0  # type: int
