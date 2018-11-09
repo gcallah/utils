@@ -33,8 +33,7 @@ try:
         try:
             # place terms/defs in dictionary
             for line in f:
-                term = line.strip().split("\n\n")  # tab delimited
-                print(term)
+                term = line.strip().split("\t")  # tab delimited
                 d[term[0]] = term[1]
                 line_no += 1
         except IndexError:
