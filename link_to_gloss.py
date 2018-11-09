@@ -8,7 +8,9 @@ import argparse
 import sys
 import glob
 import errno
+import os
 from collections import OrderedDict
+from pylib.html_tags import str_to_valid_id
 
 ARG_ERROR = 1  # type: int
 IO_ERROR = 2  # type: int
@@ -40,17 +42,21 @@ except IOError:
     exit(IO_ERROR)
 
 # Read all files in a directory
-path = html_dir_path+"*.html"
+path = html_dir_path + "*.html"
 files = glob.glob(path)
+
+gloss_terms_found = []
 
 for name in files: 
     try:
-        with open(name, "w+") as f: 
-            # sys.stdout.write(f.read())
+        with open(name, "r+") as f:
             # find 1st gloss term and replace with anchor
             for line in f:
                 for word in line.split():
-                    print(word)
+                    if word in d and word not in gloss_terms_found:
+                        gloss_terms_found.append(word)
+                        key_id = str_to_valid_id(word)
+                        word = '<a href="http://www.thedevopscourse.com/devops/gloss#"' + key_id+ '">' + word + '</a>'
     except IOError as exc:
-        if exc.errno != errno.EISDIR: # ignore if dir not found.
+        if exc.errno != errno.EISDIR: # Do not fail if a directory is found, just ignore it.
             raise # Propagate other kinds of IOError.
