@@ -1,3 +1,4 @@
+#!/usr/bin/python
 """
 Note: code will index any word containing keyword as substring.
 eg: DRY
@@ -20,8 +21,9 @@ files and value is list of context for that file.
 {filenm:[context,contxt],..., filenm:[context,context]}}
 """
 
-#!/usr/bin/python
+
 import argparse
+import re
 ARG_ERROR = 1  # type: int
 
 def process_file(filenm, keyword_context, gloss_list):
@@ -29,20 +31,21 @@ def process_file(filenm, keyword_context, gloss_list):
     Args: filenm and contexts_per_file
     returns: None
     """
+
     try:
         with open(filenm, 'r') as txt:
             for keyword in gloss_list:
                 for line in txt:
                     # splits into a list
                     if keyword in line:
+                        # line = re.sub(r'[^\w\s]','',str(line.strip())).split()
                         line = line.strip().split(" ")
                         context = None
                         index_list = []
 
-                        # iterate over list to handle edge case when
-                        # keyword ends with punctuation
                         for index, word in enumerate(line):
-                            if keyword in word:
+                            word = re.sub(r'[^\w\s]','',str(word))
+                            if keyword == word:
                                 index_list.append(index)
 
                         for index in index_list:
@@ -105,7 +108,7 @@ def output_context(outdir, keyword_context):
     for keyword in keyword_context:
         output_name = outdir + "/" + keyword + ".txt"
         with open(output_name, 'w') as files:
-            files.write(keyword + " occurs in: \n")
+            files.write(keyword + " found in: \n")
             temp = keyword_context[keyword]
             for filenm, context_list in temp.items():
                 for context in context_list:
