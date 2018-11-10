@@ -1,14 +1,10 @@
 #!/usr/bin/python
 """
-Note: code will index any word containing keyword as substring.
-eg: DRY
-
-will index: DRYwasher, DRY?, DRY!!, DRY., DRY
-
 for testing run:
 (python3 gloss_links.py test_data/gloss_key.txt test_data --lf
 "test_data/gloss_links_inp1.txt" "test_data/gloss_links_inp2.txt")
 
+--------- for understanding code --------
 Each file is opened only once now.
 The data structure used in new version
 is a bit complicated:
@@ -19,6 +15,7 @@ files and value is list of context for that file.
 {keyword: {filenm:[context,...,contxt],..., filenm:
 [context,...,contxt]},.....,keyword:
 {filenm:[context,contxt],..., filenm:[context,context]}}
+--------- for understanding code ---------
 """
 
 
