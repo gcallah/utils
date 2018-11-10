@@ -23,6 +23,7 @@ import argparse
 import re
 ARG_ERROR = 1  # type: int
 
+
 def process_file(filenm, keyword_context, gloss_list):
     """
     Args: filenm and contexts_per_file
@@ -35,13 +36,14 @@ def process_file(filenm, keyword_context, gloss_list):
                 for line in txt:
                     # splits into a list
                     if keyword in line:
-                        # line = re.sub(r'[^\w\s]','',str(line.strip())).split()
+                        # line = re.sub(r'[^\w\s]','',
+                        # str(line.strip())).split()
                         line = line.strip().split(" ")
                         context = None
                         index_list = []
 
                         for index, word in enumerate(line):
-                            word = re.sub(r'[^\w\s]','',str(word))
+                            word = re.sub(r'[^\w\s]', '', str(word))
                             if keyword == word:
                                 index_list.append(index)
 
@@ -77,6 +79,7 @@ def process_file(filenm, keyword_context, gloss_list):
 
     except IOError as ioe:
         print("Error opening file: %s; exception: %s", (filenm, str(ioe)))
+
 
 def process_args():
     """
