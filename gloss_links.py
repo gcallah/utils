@@ -36,8 +36,7 @@ def process_file(filenm, keyword_context, gloss_list):
                 for line in txt:
                     # splits into a list
                     if keyword in line:
-                        # line = re.sub(r'[^\w\s]','',
-                        # str(line.strip())).split()
+                        # line=re.sub(r'[^\w\s]','',str(line.strip())).split()
                         line = line.strip().split(" ")
                         context = None
                         index_list = []
