@@ -1,7 +1,9 @@
 # Need to export as ENV var
 export TEST_DIR = tests
 export TEST_DATA = test_data
+LIB = pylib
 PYTHONFILES = $(shell ls *.py)
+PYTHONFILES += $(shell ls $(LIB)/*.py)
 DOCKER_DIR = docker
 
 FORCE:
@@ -14,10 +16,11 @@ tests: FORCE
 
 lint: $(patsubst %.py,%.pylint,$(PYTHONFILES))
 
-%.pylint:
+%.lint:
 	flake8 $*.py
 
-repo: $(INCS) $(HTMLFILES) tests lint
+# lint should go here... but we're not quite ready
+repo: $(INCS) $(HTMLFILES) tests 
 	-git commit -a 
 	git pull origin master
 	git push origin master

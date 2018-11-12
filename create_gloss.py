@@ -7,7 +7,7 @@ list as an HTML file. Has internal tags the key terms will be linked to.
 
 import argparse
 from collections import OrderedDict
-from pylib.html_tags import ulist, include_tag
+from pylib.html_tags import ulist, include_tag, str_to_valid_id
 
 ARG_ERROR = 1  # type: int
 IO_ERROR = 2  # type: int
@@ -44,7 +44,7 @@ except IOError:
 
 gloss_list = []
 for key in d:
-    key_id = key   # for now: your new func goes here!
+    key_id = str_to_valid_id(key)
     gloss_item = '<span class="hilight" id="'
     gloss_item += key_id + '">' + key + '</span>: '
     gloss_item += d[key]

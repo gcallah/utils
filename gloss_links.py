@@ -1,15 +1,14 @@
 #!/usr/bin/python
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7bab7fa0bb6f280ca8c43b3dc5490adef4e4d434
 """
-Note: code will index any word containing keyword as substring.
-eg: DRY
-
-will index: DRYwasher, DRY?, DRY!!, DRY., DRY
-
 for testing run:
 (python3 gloss_links.py test_data/gloss_key.txt test_data --lf
 "test_data/gloss_links_inp1.txt" "test_data/gloss_links_inp2.txt")
 
+--------- for understanding code --------
 Each file is opened only once now.
 The data structure used in new version
 is a bit complicated:
@@ -20,10 +19,12 @@ files and value is list of context for that file.
 {keyword: {filenm:[context,...,contxt],..., filenm:
 [context,...,contxt]},.....,keyword:
 {filenm:[context,contxt],..., filenm:[context,context]}}
+--------- for understanding code ---------
 """
 
 
 import argparse
+import re
 ARG_ERROR = 1  # type: int
 
 
@@ -32,20 +33,21 @@ def process_file(filenm, keyword_context, gloss_list):
     Args: filenm and contexts_per_file
     returns: None
     """
+
     try:
         with open(filenm, 'r') as txt:
             for keyword in gloss_list:
                 for line in txt:
                     # splits into a list
                     if keyword in line:
+                        # line=re.sub(r'[^\w\s]','',str(line.strip())).split()
                         line = line.strip().split(" ")
                         context = None
                         index_list = []
 
-                        # iterate over list to handle edge case when
-                        # keyword ends with punctuation
                         for index, word in enumerate(line):
-                            if keyword in word:
+                            word = re.sub(r'[^\w\s]', '', str(word))
+                            if keyword == word:
                                 index_list.append(index)
 
                         for index in index_list:
@@ -109,7 +111,7 @@ def output_context(outdir, keyword_context):
     for keyword in keyword_context:
         output_name = outdir + "/" + keyword + ".txt"
         with open(output_name, 'w') as files:
-            files.write(keyword + " occurs in: \n")
+            files.write(keyword + " found in: \n")
             temp = keyword_context[keyword]
             for filenm, context_list in temp.items():
                 for context in context_list:
@@ -133,3 +135,16 @@ if __name__ == '__main__':
         process_file(filename, KEYWORD_CONTEXTS, GLOSS_LISTS)
 
     output_context(OUTDIR, KEYWORD_CONTEXTS)
+
+""" 
+
+# For parsing content out of html file. Ignore code below now:
+try: 
+    from BeautifulSoup import BeautifulSoup
+except ImportError:
+    from bs4 import BeautifulSoup
+html = file
+parsed_html = BeautifulSoup(html)
+print parsed_html.body.find('div', attrs={'class':'container'}).text
+
+"""

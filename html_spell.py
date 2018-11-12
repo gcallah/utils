@@ -49,7 +49,6 @@ app_key = 'c7d48867f7506e51e70507d85bc9cbe6'
 language = 'en'
 OXFORD_URL = 'https://od-api.oxforddictionaries.com/api/v1/inflections/{}/{}'
 
-
 class FileChangedException(Exception):
     pass
 
@@ -83,11 +82,12 @@ def spellCheckFile(spell_checker, file_name):
         Nothing
     """
     code_tag_on = False  # type:bool
-    line_num = 0
     try:
         spell_checker.reset()
+        spell_checker.line_num = 0
         with open(file_name, "r", ) as f:
             for line in f:
+                spell_checker.line_num += 1
                 if "<code>" in line:
                     code_tag_on = True
                 if "</code>" in line:
@@ -96,7 +96,6 @@ def spellCheckFile(spell_checker, file_name):
 
                 if not code_tag_on:
                     spell_checker.feed(line)
-                line_num += 1
     except FileChangedException:
         # Redo spell check for the entire file
         return spellCheckFile(spell_checker, file_name)
@@ -108,6 +107,7 @@ def spellCheckFile(spell_checker, file_name):
 class HTMLSpellChecker(HTMLParser):
     def __init__(self):  # type: () -> None
         self.is_in_script_tag = False
+        self.line_num = 0
         super(HTMLSpellChecker, self).__init__(convert_charrefs=False)
 
     def handle_data(self, html_line):  # type: (str) -> None
@@ -148,6 +148,8 @@ class HTMLSpellChecker(HTMLParser):
         Raises:
             FileChangedException if the edit option was chosen
         """
+        if not interactive_mode:
+            raise SpellingException
         validResponse = False  # type: bool
         while not validResponse:
             response = input(
@@ -169,8 +171,8 @@ class HTMLSpellChecker(HTMLParser):
                 # This opens up vim with all instances of the word highlighted.
                 subprocess.call([
                     'vimdiff',
-                    '+{}'.format(line_num),
-                    '-c', '/ {}'.format(word), file_name
+                    '+{}'.format(self.line_num),
+                    '-c', 'match Search /{}/'.format(word), file_name
                 ])
                 raise FileChangedException
             elif response == 'close' or response == 'c' or response == '4':
@@ -179,11 +181,14 @@ class HTMLSpellChecker(HTMLParser):
                 print("Invalid response, Please try again!")
 
     def isWordInOxfordDictionary(self, lower_word):
-        return urllib.request.urlopen(
-            urllib.request.Request(
-                url=OXFORD_URL.format(language, lower_word),
-                headers={'app_id': app_id, 'app_key': app_key}
-            )).getcode() == 200
+        try:
+            return urllib.request.urlopen(
+                urllib.request.Request(
+                    url=OXFORD_URL.format(language, lower_word),
+                    headers={'app_id': app_id, 'app_key': app_key}
+                )).getcode() == 200
+        except urllib.error.URLError:
+            return False
 
     def isPossessive(self, word):
         return '\'s' == word[len(word)-2:]
@@ -217,7 +222,7 @@ class HTMLSpellChecker(HTMLParser):
             self.handle_bad_word(lower_word)
 
 
-exit_error = False  # type: bool
+interactive_mode = False  # type: bool
 strict_mode = False  # type: bool
 file_name = None
 main_dict = None
@@ -229,11 +234,11 @@ if __name__ == '__main__':
     arg_parser.add_argument("main_dict", help="main dictionary file")
     arg_parser.add_argument("custom_dict", help="custom dictionary file")
     arg_parser.add_argument(
-        "-e", help="enable exit error", action="store_true")
+        "-i", help="enable interactive spell-checking", action="store_true")
     arg_parser.add_argument("-s", help="strict mode checks capitalized words",
                             action="store_true")
     args = arg_parser.parse_args()
-    exit_error = args.e
+    interactive_mode = args.i
     strict_mode = args.s
     file_name = args.file_name
     main_dict = args.main_dict
@@ -245,14 +250,14 @@ check_files_exist(file_name, main_dict, custom_dict)
 # Load words from Dictionary files
 word_set = set()
 with open(main_dict, 'r') as f:
-    word_set = set(json.load(f).keys())
+    for line in f:
+        word_set.add(line.split()[0].lower())
 with open(custom_dict, 'r') as f:
     for line in f:
         word_set.add(line.split()[0].lower())
 
 # Execute the spellchecker
 added_words = set()
-line_num = 0
 parser = HTMLSpellChecker()
 spellCheckFile(parser, file_name)
 

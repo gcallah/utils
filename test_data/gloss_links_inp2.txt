@@ -1,11 +1,13 @@
-was designed Django to help developers take
-When it comes to programming, DRY
-You may need DRY to think a DRY lot when you’re implementing DRY!! code
-DRY coding approach saves you time and space
+was designed Django to DRY help developers take
+DRY When it comes to programming, Django?
+You may need DRY to think a DRY lot when you’re implementing DRY code
+Django coding approach saves you time and space Dry?
 Django is a high-level Python Web framework that encourages rapid development
 The above looks too wet and can be made dry in many ways
-DRY
-takes security seriously and helps Django 
-DRY?
-Everyone knows that DRY stuff is lighter and easier to maintain
+Django
+Dry
+Django DRY!
+takes security seriously and helps Django? No need to Dry.
+DRY Django?
+Everyone knows that DRY DRY DRY stuff is Django Django Django and easier to maintain
 
