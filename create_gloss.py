@@ -7,7 +7,7 @@ list as an HTML file. Has internal tags the key terms will be linked to.
 
 import argparse
 from collections import OrderedDict
-from pylib.html_tags import ulist
+from pylib.html_tags import ulist, include_tag
 
 ARG_ERROR = 1  # type: int
 IO_ERROR = 2  # type: int
@@ -48,6 +48,8 @@ for key in d:
     gloss_item = '<span class="hilight" id="'
     gloss_item += key_id + '">' + key + '</span>: '
     gloss_item += d[key]
+    gloss_item += "<br />"
+    gloss_item += include_tag(key ".txt")
     gloss_list.append(gloss_item)
 
 s = ulist(css_class="nested", l=gloss_list)  # noqa E741

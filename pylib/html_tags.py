@@ -4,14 +4,17 @@ INDENT1 = "    "
 INDENT2 = INDENT1 + INDENT1
 INDENT4 = INDENT2 + INDENT2
 
-    
+def include_tag(file_nm, django=True):
+    return "{% include '" + file_nm + "' %}"
+
+
 def par(text=None, indent=INDENT4):
     s = indent + '<p>\n'
     if text is not None:
         s += text + '\n'
     s += indent + '</p>\n'
     return s
-    
+
 def figure(src="", caption=None, indent=INDENT4):
     # by default we get an empty figure tag
     s = indent + '<figure>\n'
@@ -22,6 +25,7 @@ def figure(src="", caption=None, indent=INDENT4):
     s += indent + INDENT1 + '</figcaption>\n'
     s += indent + '</figure>\n'
     return s
+
 
 def details(sumtext, level=1, indent=INDENT4, inc_par=False, inc_fig=False,
            inner_details=None):
@@ -40,15 +44,18 @@ def details(sumtext, level=1, indent=INDENT4, inc_par=False, inc_fig=False,
     s += indent + '</details>\n'
     return s
 
+
 def ulist(css_class=None, l=None, indent=INDENT4, level=1):
     return html_list(css_class=css_class, l=l,
                      indent=indent, level=level,
                      list_type='ul')
 
+
 def olist(css_class=None, l=None, indent=INDENT4, level=1):
     return html_list(css_class=css_class, l=l,
                      indent=indent, level=level,
                      list_type='ol')
+
 
 def html_list(css_class=None, l=None, indent=INDENT4, level=1,
               list_type='ul'):
@@ -101,6 +108,7 @@ def sidebar_links(padding=INDENT1, topic=None, tot_submenus=0,
     s += "%s</a>\n" % (padding+INDENT1)
     s += "%s</li>\n" % padding
     return s
+
 
 def sidebar(title="", short_title="", menu_txt=""): # for create_menu.py
     s = "<!-- Sidebar Holder -->\n"

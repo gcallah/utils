@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 """
 Note: code will index any word containing keyword as substring.
 eg: DRY
@@ -20,9 +22,10 @@ files and value is list of context for that file.
 {filenm:[context,contxt],..., filenm:[context,context]}}
 """
 
-#!/usr/bin/python
+
 import argparse
 ARG_ERROR = 1  # type: int
+
 
 def process_file(filenm, keyword_context, gloss_list):
     """
@@ -77,6 +80,7 @@ def process_file(filenm, keyword_context, gloss_list):
 
     except IOError as ioe:
         print("Error opening file: %s; exception: %s", (filenm, str(ioe)))
+
 
 def process_args():
     """
