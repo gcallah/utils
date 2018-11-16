@@ -9,6 +9,7 @@ import sys
 import glob
 import errno
 import os
+import re
 from collections import OrderedDict
 from pylib.html_tags import str_to_valid_id
 
@@ -56,7 +57,9 @@ for name in files:
                     if word in d and word not in gloss_terms_found:
                         gloss_terms_found.append(word)
                         key_id = str_to_valid_id(word)
-                        word = '<a href="http://www.thedevopscourse.com/devops/gloss#"' + key_id+ '">' + word + '</a>'
+                        word_link = '<a href="http://www.thedevopscourse.com/devops/gloss#' + key_id + '">' + word + '</a>'
+                        data = open(name).read()
+                        f.write( re.sub(word,word_link,data, count=1) )
     except IOError as exc:
         if exc.errno != errno.EISDIR: # Do not fail if a directory is found, just ignore it.
             raise # Propagate other kinds of IOError.
