@@ -1,14 +1,12 @@
 """
-Glossary Linker: Takes in a directory of html files and 
-modifies each file to include anchor links on the 
+Glossary Linker: Takes in a directory of html files and
+modifies each file to include anchor links on the
 first instance of a term.
 """
 
 import argparse
-import sys
 import glob
 import errno
-import os
 import re
 from collections import OrderedDict
 from pylib.html_tags import str_to_valid_id
@@ -17,49 +15,50 @@ ARG_ERROR = 1  # type: int
 IO_ERROR = 2  # type: int
 
 if __name__ == '__main__':
-    arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument("gloss_terms", help="glossary terms to contain links")
-    arg_parser.add_argument("html_dir_path", help="html directory path to be parsed")
-    args = arg_parser.parse_args()
-    gloss_terms = args.gloss_terms
-    html_dir_path = args.html_dir_path
+    ARG_PARSER = argparse.ArgumentParser()
+    ARG_PARSER.add_argument("gloss_terms", help="glossary terms to contain links")
+    ARG_PARSER.add_argument("html_dir_path", help="html directory path to be parsed")
+    ARGS = ARG_PARSER.parse_args()
+    GLOSS_TERMS = ARGS.gloss_terms
+    HTML_DIR_PATH = ARGS.html_dir_path
 
 # Create a dictionary for gloss terms
-d = OrderedDict()  # type: Dict[str]
+GLOSS_DICT = OrderedDict()  # type: Dict[str]
 
 try:
-    with open(gloss_terms, 'r') as f:
-        line_no = 1
+    with open(GLOSS_TERMS, 'r') as f:
+        LINE_NO = 1
         try:
             # place terms/defs in dictionary
             for line in f:
                 term = line.strip().split("\t")  # tab delimited
-                d[term[0]] = term[1]
-                line_no += 1
+                GLOSS_DICT[term[0]] = term[1]
+                LINE_NO += 1
         except IndexError:
-            print("Index error: check line " + str(line_no))
+            print("Index error: check line " + str(LINE_NO))
 except IOError:
-    print("Couldn't read " + gloss_terms)
+    print("Couldn't read " + GLOSS_TERMS)
     exit(IO_ERROR)
 
 # Read all files in a directory
-path = html_dir_path + "*.html"
-files = glob.glob(path)
+PATH = HTML_DIR_PATH + "*.html"
+FILES = glob.glob(PATH)
 
-gloss_terms_found = []
+GLOSS_TERMS_FOUND = []
 
-for name in files: 
+for name in FILES:
     try:
         with open(name, "r+") as f:
             # find 1st gloss term and replace with anchor
             for line in f:
                 for word in line.split():
-                    if word in d and word not in gloss_terms_found:
-                        gloss_terms_found.append(word)
+                    if word in GLOSS_DICT and word not in GLOSS_TERMS_FOUND:
+                        GLOSS_TERMS_FOUND.append(word)
                         key_id = str_to_valid_id(word)
-                        word_link = '<a href="http://www.thedevopscourse.com/devops/gloss#' + key_id + '">' + word + '</a>'
+                        word_link = '<a href="http://www.thedevopscourse.com/devops/gloss#'
+                        word_link += key_id + '">' + word + '</a>'
                         data = open(name).read()
-                        f.write( re.sub(word,word_link,data, count=1) )
+                        f.write(re.sub(word, word_link, data, count=1))
     except IOError as exc:
         if exc.errno != errno.EISDIR: # Do not fail if a directory is found, just ignore it.
             raise # Propagate other kinds of IOError.
