@@ -12,6 +12,9 @@ for test_file in $TEST_DIR/*.html;
 do
     echo 'Html-checking file:' $test_file
     python3 $CODE_DIR/html_checker.py "$test_file"
+    # Will be put back in once url_checker works properly
+    # echo 'Url-checking file:' $test_file
+    # python3 $CODE_DIR/url_checker.py "$test_file"
     echo 'Spell-checking file:' $test_file
     if [ -z $PS1 ]
     then

@@ -14,42 +14,39 @@ def is_accessible(link): # type: (str) -> bool
     """
     Function that accesses a url string and returns response status code.
     """
-    try:
-        if link.startswith('http') or link.startswith('https'):
-            connection = req.urlopen(link)
-            print(connection.getcode())
-        elif link.startswith('/'):
-            rel_link = "http://www.thedevopscourse.com" + link
-            connection = req.urlopen(rel_link)
-            print(connection.getcode())
-        else:
-            rel_link_two = "http://www.thedevopscourse.com/" + link
-            connection = req.urlopen(rel_link_two)
-            print(connection.getcode())
-    except req.HTTPError as http_e:
-        print(http_e.getcode())
-    except req.URLError:
-        print("Invalid URL. No response code because address doesn't exist.")
+    if link.startswith('http') or link.startswith('https'):
+        connection = req.urlopen(link)
+    elif link.startswith('/'):
+        rel_link = "http://www.thedevopscourse.com" + link
+        connection = req.urlopen(rel_link)
+    else:
+        rel_link_two = "http://www.thedevopscourse.com/" + link
+        connection = req.urlopen(rel_link_two)
 
 if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument("url_inp_file", help="text url input file to be parsed")
     args = arg_parser.parse_args()
-    URL_INP_FILE = args.url_inp_file
+    url_inp_file = args.url_inp_file
 
-    URL_LIST = []
+    url_list = []
 
     try:
         # get all the url links
-        with open(URL_INP_FILE, 'r') as urls:
+        with open(url_inp_file, 'r') as urls:
             for url_link in urls:
                 url_link = url_link.strip()
-                URL_LIST.append(url_link)
+                url_list.append(url_link)
     except IOError:
-        print("Couldn't read " + URL_INP_FILE)
+        print("Couldn't read " + url_inp_file)
         exit(IO_ERROR)
 
-    for url in URL_LIST:
-        is_accessible(url)
+    for url in url_list:
+        try:
+            is_accessible(url)
+        except req.HTTPError as http_e:
+            print(str(http_e.getcode())+" for file "+url_inp_file+" at url "+url)
+        except req.URLError:
+            print(req.URLError.reason+" for file "+url_inp_file+" at url "+url)
 
     exit(0)
