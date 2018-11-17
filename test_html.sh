@@ -4,8 +4,8 @@
 # exit on any error with that error status:
 set -e
 
-export TEST_DIR="devops/templates"
-export CODE_DIR="utils"
+export TEST_DIR="."
+export CODE_DIR="."
 export DATA_DIR="$CODE_DIR/data"
 
 for test_file in $TEST_DIR/*.html;
