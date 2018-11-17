@@ -48,8 +48,8 @@ for key in d:
     gloss_item = '<span class="hilight" id="'
     gloss_item += key_id + '">' + key + '</span>: '
     gloss_item += d[key]
-    gloss_item += "<br />"
-    gloss_item += include_tag(key ".txt")
+    gloss_item += "<br />\n"
+    gloss_item += include_tag(key + ".txt")
     gloss_list.append(gloss_item)
 
 s = ulist(css_class="nested", l=gloss_list)  # noqa E741

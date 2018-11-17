@@ -1,8 +1,4 @@
 #!/usr/bin/python
-<<<<<<< HEAD
-
-=======
->>>>>>> 7bab7fa0bb6f280ca8c43b3dc5490adef4e4d434
 """
 for testing run:
 (python3 gloss_links.py test_data/gloss_key.txt test_data --lf

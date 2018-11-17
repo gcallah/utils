@@ -49,6 +49,7 @@ app_key = 'c7d48867f7506e51e70507d85bc9cbe6'
 language = 'en'
 OXFORD_URL = 'https://od-api.oxforddictionaries.com/api/v1/inflections/{}/{}'
 
+
 class FileChangedException(Exception):
     pass
 
@@ -149,7 +150,7 @@ class HTMLSpellChecker(HTMLParser):
             FileChangedException if the edit option was chosen
         """
         if not interactive_mode:
-            raise SpellingException
+            raise SpellingException("Mis-spelled word: " + word)
         validResponse = False  # type: bool
         while not validResponse:
             response = input(
@@ -176,7 +177,7 @@ class HTMLSpellChecker(HTMLParser):
                 ])
                 raise FileChangedException
             elif response == 'close' or response == 'c' or response == '4':
-                raise SpellingException
+                raise SpellingException("Mis-spelled word: " + word)
             else:
                 print("Invalid response, Please try again!")
 
