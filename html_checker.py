@@ -8,25 +8,25 @@ import re
 import argparse
 
 try:
-    from typing import List, Set, Dict
+    from typing import List, Set, Dict  # noqa F401
 except ImportError:
     print("WARNING: Typing module is not found.")
 
-ARG_ERROR = 1  # type: int
-PARSE_ERROR = 2  # type: int
-MAX_LINE = 80  # type: int
+ARG_ERROR = 1   # type: int
+PARSE_ERROR = 2   # type: int
+MAX_LINE = 80   # type: int
 
-tag_stack = []  # type: List[str]
-line_no = 0  # type: int
-saw_error = False  # type: bool
-tag_error = False  # type: bool
-tag_check = False  # type: bool
+tag_stack = []   # type: List[str]
+line_no = 0   # type: int
+saw_error = False   # type: bool
+tag_error = False   # type: bool
+tag_check = False   # type: bool
 
 void_tags = {"area", "base", "br", "col", "hr", "img", "input", "link",
              "meta", "param"}  # type: Set[str]
 
 in_sig_tag = {"pre": False, "script": False, "a": False,
-              "style": False }  # that's all for now!
+              "style": False}  # that's all for now!
 
 
 def line_msg():  # type: () -> str
@@ -54,7 +54,6 @@ class OurHTMLParser(HTMLParser):
         if tag not in void_tags:
             tag_stack.append(tag)
 
-
     def handle_endtag(self, tag):  # type: (str) -> None
         global saw_error  # type :bool
         if not tag_stack:
@@ -76,8 +75,8 @@ class OurHTMLParser(HTMLParser):
         Here we can look for long lines or other such problems.
         """
         global saw_error  # type :bool
-        if (not in_sig_tag["pre"] and not in_sig_tag["a"] and not
-            in_sig_tag["script"]):
+        if(not in_sig_tag["pre"] and not in_sig_tag["a"] and not
+           in_sig_tag["script"]):
             if len(data) > MAX_LINE:
                 print("WARNING: long line found" + line_msg())
                 print(data)
@@ -88,6 +87,7 @@ class OurHTMLParser(HTMLParser):
             print("ERROR: Use &gt; or &lt; instead of < or >"
                   + line_msg())
             saw_error = True
+
 
 if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser()

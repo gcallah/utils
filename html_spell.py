@@ -22,7 +22,6 @@ The tool was written to anticipate the following situations,
     --> Solution: everything passes.
 """
 
-import json
 import os
 import subprocess
 import urllib.request
@@ -32,7 +31,7 @@ import re
 import argparse
 
 try:
-    from typing import List, Set
+    from typing import List, Set  # noqa F401
 except ImportError:
     print(
         "WARNING: Typing module is not found! Kindly install the latest "

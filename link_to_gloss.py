@@ -16,8 +16,10 @@ IO_ERROR = 2  # type: int
 
 if __name__ == '__main__':
     ARG_PARSER = argparse.ArgumentParser()
-    ARG_PARSER.add_argument("gloss_terms", help="glossary terms to contain links")
-    ARG_PARSER.add_argument("html_dir_path", help="html directory path to be parsed")
+    ARG_PARSER.add_argument("gloss_terms",
+                            help="glossary terms to contain links")
+    ARG_PARSER.add_argument("html_dir_path",
+                            help="html directory path to be parsed")
     ARGS = ARG_PARSER.parse_args()
     GLOSS_TERMS = ARGS.gloss_terms
     HTML_DIR_PATH = ARGS.html_dir_path
@@ -55,10 +57,11 @@ for name in FILES:
                     if word in GLOSS_DICT and word not in GLOSS_TERMS_FOUND:
                         GLOSS_TERMS_FOUND.append(word)
                         key_id = str_to_valid_id(word)
-                        word_link = '<a href="http://www.thedevopscourse.com/devops/gloss#'
+                        # what the hey is this hard-coded URL?!
+                        word_link = '<a href="http://www.thedevopscourse.com/devops/gloss#'  # noqa E501
                         word_link += key_id + '">' + word + '</a>'
                         data = open(name).read()
                         f.write(re.sub(word, word_link, data, count=1))
     except IOError as exc:
-        if exc.errno != errno.EISDIR: # Do not fail if a directory is found, just ignore it.
-            raise # Propagate other kinds of IOError.
+        if exc.errno != errno.EISDIR:  # Do not fail if a directory is found
+            raise  # Propagate other kinds of IOError.
