@@ -153,6 +153,5 @@ class MyHTMLParser(HTMLParser):
    def handle_startendtag(self,startendTag, attrs):
        self.lsStartEndTags.append(startendTag)
 
-   def handle_comment(self,data):
-       self.lsComments.append(data)
-       
+
+
