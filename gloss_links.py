@@ -132,6 +132,7 @@ if __name__ == '__main__':
 
     output_context(OUTDIR, KEYWORD_CONTEXTS)
 
+""""
 from html.parser import HTMLParser
 import urllib.request as urllib2
 
@@ -152,6 +153,8 @@ class MyHTMLParser(HTMLParser):
 
    def handle_startendtag(self,startendTag, attrs):
        self.lsStartEndTags.append(startendTag)
+"""
+
 
 
 
