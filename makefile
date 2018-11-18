@@ -1,23 +1,30 @@
 # Need to export as ENV var
 export TEST_DIR = tests
 export TEST_DATA = test_data
-LIB = pylib
+export LIB_DIR = pylib
+export CODE_DIR = .
+export HTML_DIR = .
+export DATA_DIR = $(CODE_DIR)/data
+export DOCKER_DIR = docker
 PYTHONFILES = $(shell ls *.py)
-PYTHONFILES += $(shell ls $(LIB)/*.py)
-DOCKER_DIR = docker
+PYTHONFILES += $(shell ls $(LIB_DIR)/*.py)
 
 FORCE:
 
 container: $(DOCKER_DIR)/Dockerfile  $(DOCKER_DIR)/requirements.txt
 	docker build -t utils docker
 
-tests: FORCE
+html_tests: FORCE
+	$(TEST_DIR)/html_tests.sh
+
+script_tests: FORCE
+	$(TEST_DIR)/script_tests.sh
+
+all_tests: FORCE
 	$(TEST_DIR)/all_tests.sh
 
-lint: $(patsubst %.py,%.pylint,$(PYTHONFILES))
-
-%.lint:
-	flake8 $*.py
+lint: 
+	flake8 $(PYTHONFILES)
 
 # lint should go here... but we're not quite ready
 repo: $(INCS) $(HTMLFILES) tests 

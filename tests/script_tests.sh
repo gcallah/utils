@@ -61,5 +61,6 @@ run_diff_test_file create_menu
 run_diff_test_file html_checker
 run_diff_test_std_monitor monitor "$page"
 # run_quiz_test_work qexport "$title2"
-run_diff_test_file url_checker
+# url checker not ready for testing!
+# run_diff_test_file url_checker
 exit 0
