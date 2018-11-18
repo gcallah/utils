@@ -10,6 +10,7 @@ diff_output() {
     rm $TEST_DATA/$1_tmp.txt
 }
 
+# customized diff function for gloss_links
 diff_output_gloss_links() {
     echo "Going to diff $TEST_DATA/$1_out.txt $TEST_DATA/$2.txt"
     diff $TEST_DATA/$1_out.txt $TEST_DATA/$2.txt
