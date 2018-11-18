@@ -131,16 +131,4 @@ if __name__ == '__main__':
         process_file(filename, KEYWORD_CONTEXTS, GLOSS_LISTS)
 
     output_context(OUTDIR, KEYWORD_CONTEXTS)
-
-""" 
-
-# For parsing content out of html file. Ignore code below now:
-try: 
-    from BeautifulSoup import BeautifulSoup
-except ImportError:
-    from bs4 import BeautifulSoup
-html = file
-parsed_html = BeautifulSoup(html)
-print parsed_html.body.find('div', attrs={'class':'container'}).text
-
-"""
+    
