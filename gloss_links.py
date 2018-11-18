@@ -131,4 +131,27 @@ if __name__ == '__main__':
         process_file(filename, KEYWORD_CONTEXTS, GLOSS_LISTS)
 
     output_context(OUTDIR, KEYWORD_CONTEXTS)
-    
+
+from html.parser import HTMLParser
+import urllib.request as urllib2
+
+class MyHTMLParser(HTMLParser):
+
+   #Initializing lists
+   lsStartTags = list()
+   lsEndTags = list()
+   lsStartEndTags = list()
+   lsComments = list()
+
+   #HTML Parser Methods
+   def handle_starttag(self, startTag, attrs):
+       self.lsStartTags.append(startTag)
+
+   def handle_endtag(self, endTag):
+       self.lsEndTags.append(endTag)
+
+   def handle_startendtag(self,startendTag, attrs):
+       self.lsStartEndTags.append(startendTag)
+
+   def handle_comment(self,data):
+       self.lsComments.append(data)
