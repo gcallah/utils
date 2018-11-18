@@ -10,6 +10,6 @@ if len(sys.argv) < 2:
     print("Must supply a page name.")
     exit(1)
 
-PAGE_NM = sys.argv[1] # type: str
+PAGE_NM = sys.argv[1]  # type: str
 sys.stderr.write(PAGE_NM + "\n")
 create_page(sys.stdin, sys.stdout, PAGE_NM)

@@ -24,12 +24,6 @@ run_diff_test_std() {
     diff_output $1
 }
 
-run_diff_test_std_monitor() {
-    echo "Running python ./$1.py $2 < $TEST_DATA/$1_inp.txt > $TEST_DATA/$1_tmp.txt"
-    python ./"$1.py" "$2" > $TEST_DATA/$1_tmp.txt
-    diff_output $1
-}
-
 run_diff_test_file() {
     echo "Running python ./$1.py $TEST_DATA/$1_inp.txt > $TEST_DATA/$1_tmp.txt"
     python ./"$1.py" $TEST_DATA/$1_inp.txt > $TEST_DATA/$1_tmp.txt || true
@@ -59,7 +53,6 @@ run_diff_test_file create_gloss
 run_gloss_links_file gloss_links "$key" "$key_word"
 run_diff_test_file create_menu
 run_diff_test_file html_checker
-run_diff_test_std_monitor monitor "$page"
 # run_quiz_test_work qexport "$title2"
 # url checker not ready for testing!
 # run_diff_test_file url_checker

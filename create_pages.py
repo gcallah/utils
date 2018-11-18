@@ -11,7 +11,7 @@ from pylib.parse_site import parse_site
 from pylib.create_page import create_page
 
 HTML_PG = 0  # type: int
-TITLE = 1  # type: int
+title = 1  # type: int
 OPEN_ERROR = 1  # type: int
 
 HTML_EXT = "html"  # type: str
@@ -28,12 +28,11 @@ def process_level(topic_list, level):
     for topic in topic_list:
         if topic.url is not None:
             ptml_file = topic.url.replace(HTML_EXT, PTML_EXT)
-            ptml_file = PTML_DIR +  "/" + ptml_file
+            ptml_file = PTML_DIR + "/" + ptml_file
             my_file = Path(ptml_file)
             if not my_file.is_file():  # don't overwrite existing files!
                 print("\nGoing to create " + ptml_file)
-                with open(PAGE_TEMPL, 'r') as inf, \
-                      open(ptml_file, 'w') as outf:
+                with open(pg_templ, 'r') as inf, open(ptml_file, 'w') as outf:
                     create_page(inf, outf, topic.title, topic.subtopics)
         elif topic.subtopics is not None:
             # if the topic had a url, we processed the subtopics above
@@ -44,18 +43,17 @@ if len(sys.argv) < 3:
     print("Must supply a file of topics to create and a page template.")
     exit(1)
 
-TOPICS = [] # type: List[Any]
-TOPICS_FILE = sys.argv[1] # type: str
-PAGE_TEMPL = sys.argv[2]  # type: str
+topics = []  # type: List[Any]
+topics_file = sys.argv[1]  # type: str
+pg_templ = sys.argv[2]  # type: str
 if len(sys.argv) > 3:
     PTML_DIR = sys.argv[3]
 
-TITLE = None
-TOPICS = None
+title = None
 try:
-    (TITLE, TOPICS) = parse_site(TOPICS_FILE)
+    (title, topics) = parse_site(topics_file)
 except IOError:
-    print("ERROR: Failed to open " + TOPICS_FILE)
+    print("ERROR: Failed to open " + topics_file)
     exit(OPEN_ERROR)
 
-process_level(TOPICS, 1)
+process_level(topics, 1)

@@ -154,7 +154,3 @@ class MyHTMLParser(HTMLParser):
    def handle_startendtag(self,startendTag, attrs):
        self.lsStartEndTags.append(startendTag)
 """
-
-
-
-
