@@ -155,3 +155,4 @@ class MyHTMLParser(HTMLParser):
 
    def handle_comment(self,data):
        self.lsComments.append(data)
+       
