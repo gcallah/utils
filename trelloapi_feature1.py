@@ -1,3 +1,4 @@
+#!/usr/bin/python
 """
 Script to send an email to professor whenever
 any cards in the DevOps course boards did not
@@ -13,7 +14,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 try:
-    from typing import List,Set, Dict
+    from typing import List, Set, Dict
 except ImportError:
     print("WARNING: Typing module is not found! Kindly install the latest version of python!")
 
@@ -24,7 +25,7 @@ time_now = datetime.datetime.utcnow()
 days_of_inactivity_limit = 14 # type: int #default value: 14 days
 
 # initializing key and token api for trelloapi to function
-querystring = {"key":"b282952c1211b7eb3c16b7c3adfbbf7f","token":"12f1ebbfd62746257dbfb66c07ce42d1240d0a0cf0d1959b5706f411edd6315d"} # type: Dict[str, str]
+querystring = {"key":"b282952c1211b7eb3c16b7c3adfbbf7f", "token":"12f1ebbfd62746257dbfb66c07ce42d1240d0a0cf0d1959b5706f411edd6315d"} # type: Dict[str, str]
 
 # Board Ids and their names
 # '5a5017502c3092150d1e26e1': Workflow Management
@@ -90,7 +91,7 @@ s.starttls()
 
 # reading login credentials from a EMAIL_INFO.txt file
 # Format of EMAIL_INFO.txt file: <email_id> <password>
-text_file = open("EMAIL_INFO.txt","r")
+text_file = open("EMAIL_INFO.txt", "r")
 lines = text_file.read().split(' ')
 s.login(user=lines[0], password=lines[1])
 

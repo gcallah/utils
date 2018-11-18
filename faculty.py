@@ -1,4 +1,4 @@
-#!/usr/bin/env python3 
+#!/usr/bin/env python3
 # program to process SJC CVS file for faculty.
 
 import csv
@@ -13,9 +13,9 @@ DEPT = 2 # type: int
 RANK = 3 # type: int
 URL = 4 # type: int
 
-with open("/home/gcallah/utils/faculty.csv","r") as f_in:
+with open("/home/gcallah/utils/faculty.csv", "r") as f_in:
     freader = csv.reader(f_in)
-    with open("/home/gcallah/utils/out.csv","w") as f_out:
+    with open("/home/gcallah/utils/out.csv", "w") as f_out:
         for row in freader:
            # nms = "Judy A. Cardoza"
             nms = row[NAME].split() # type: List[str]
@@ -31,5 +31,3 @@ with open("/home/gcallah/utils/faculty.csv","r") as f_in:
             fwriter = csv.writer(f_out)
             fwriter.writerow([no_titles[0], no_titles[1], row[CAMPUS],
                     row[DEPT], row[RANK], row[URL]])
-    
-
