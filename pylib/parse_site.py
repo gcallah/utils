@@ -1,21 +1,21 @@
 
-MAX_FLDS = 5 # type: int
+MAX_FLDS = 5  # type: int
 
-SEP = '\t' # type: str
+SEP = '\t'  # type: str
 COMMENT = "#"
 
 INDENT1 = "    "
 
-LEVEL = 0 # type: int
-TITLE = 1 # type: int
-URL = 2 # type: int
-SHORT_TITLE = 3 # type: int
-GLYPHICON = 4 # type: int
+LEVEL = 0  # type: int
+TITLE = 1  # type: int
+URL = 2  # type: int
+SHORT_TITLE = 3  # type: int
+GLYPHICON = 4  # type: int
 
 UNSET = -999999999  # topic level not yet set
 
 try:
-    from typing import List, Any
+    from typing import List
 except ImportError:
     print("Warning: could not import List or Any")
 
@@ -27,8 +27,9 @@ class IndentError(Exception):
     def __str__(self):
         return self.msg
 
+
 class InputError(Exception):
-    def __init__(self, value:str, msg:str)->None:
+    def __init__(self, value: str, msg: str)->None:
         self.value = value
         self.msg = msg
 
@@ -37,14 +38,15 @@ class InputError(Exception):
 
 
 class Topic:
-    def __init__(self, flds:List[str])->None:
+    def __init__(self, flds: List[str])->None:
         # make sure indent level is present and has a valid value
         if flds[LEVEL] is None:
             flds = ["" if fld is None else fld for fld in flds]
             raise InputError(SEP.join(flds), "Indent level is required.")
         else:
             try:
-# if flds[LEVEL] is not a number, say 'a' or '!', this will raise a ValueError
+                # if flds[LEVEL] is not a number
+                # this will raise a ValueError
                 level = int(flds[LEVEL])
                 if level < 0:
                     raise ValueError
@@ -68,7 +70,7 @@ class Topic:
         self.subtopics = sub
 
     def to_string_just_me(self)->str:
-    # when we don't want to recursively print the subtopics!
+        # when we don't want to recursively print the subtopics!
         s = self.str_indent
         s += str(self.level)
         s += "; " + self.title
@@ -106,13 +108,13 @@ def parse_site(file):
     title = None
     curr_level = UNSET
     with open(file) as f:
-        lines = f.readlines() # type: List[str]
+        lines = f.readlines()  # type: List[str]
 
     lines = [line.rstrip('\n') for line in lines]
-    lines = [line.rstrip('\r') for line in lines] # for windows machines
+    lines = [line.rstrip('\r') for line in lines]  # for windows machines
 
     stack = []
-    curr_topic_list = [] # type: List[Any]
+    curr_topic_list = []  # type: List[Any]
     prev_topic = None
     line_no = 0
     for line in lines:
@@ -152,7 +154,7 @@ def parse_site(file):
                 for i in range(0, pops):
                     curr_topic_list = restore_state(stack, curr_topic_list)
         curr_level = t.level
-        
+
         curr_topic_list.append(t)
         prev_topic = t
 

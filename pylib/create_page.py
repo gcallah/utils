@@ -1,7 +1,8 @@
 from pylib.html_tags import details
 
-indent1 = "            " # type: str
-indent2 = "                    " # type: str
+indent1 = "            "  # type: str
+indent2 = "                    "  # type: str
+
 
 def create_subtopics(outf, subtopics, level):
     s = ""
@@ -12,6 +13,7 @@ def create_subtopics(outf, subtopics, level):
         s += details(topic.title, level=level, inc_par=True, inc_fig=True,
                      inner_details=inner)
     return s
+
 
 def create_page(inf, outf, page_nm, subtopics=None):
     for line in inf:
