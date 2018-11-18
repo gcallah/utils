@@ -15,10 +15,8 @@ class TestUrlChecker(unittest.TestCase):
         self.assertTrue(self.url_checker.is_accessible(link2))
 
     def test_invalid_url(self):
-        link1 = "https://gcallah.github.io/DevOps/reviews/Practical_DevOps-Joakim_Verona.html"
         link2 = "weird.link.org"
-        self.assertTrue(self.url_checker.is_accessible(link1))
         self.assertFalse(self.url_checker.is_accessible(link2))
-        
+
 if __name__ == '__main__':
     unittest.main()

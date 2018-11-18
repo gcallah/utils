@@ -1,4 +1,4 @@
-#!/usr/bin/env python3 
+#!/usr/bin/env python3
 
 """
 Process (CSV) quiz files of the form:
@@ -7,12 +7,12 @@ Process (CSV) quiz files of the form:
 
 import sys
 import csv
-from typing import List
-QUESTION = 0 # type: int
-FIRST_ANSWER = 1 # type: int
-CORRECT = '^' # type: str
+from typing import List  # noqa F401
+QUESTION = 0  # type: int
+FIRST_ANSWER = 1  # type: int
+CORRECT = '^'  # type: str
 
-INDENT1 = "    " # type: str
+INDENT1 = "    "  # type: str
 INDENT2 = INDENT1 + INDENT1  # type: str
 INDENT3 = INDENT2 + INDENT1  # type: str
 INDENT4 = INDENT2 + INDENT2  # type: str
@@ -43,8 +43,8 @@ with open(quiz_file, "r") as f_in:
 #    print(INDENT3 + 'Test Yourself!')
 #    print(INDENT2 + '</summary>')
     print(INDENT2 + '<ol class="nested">')
-    
-    i = 1 # type: int
+
+    i = 1  # type: int
     for row in freader:
         if len(row) < 2:  # allow blank lines; len of 1 makes no sense!
             continue
@@ -53,7 +53,7 @@ with open(quiz_file, "r") as f_in:
         print(INDENT4 + row[QUESTION])
         print(INDENT3 + '</li>')
         print(INDENT3 + '<ol type="a" class="nested">')
-        j = 0 # type: int
+        j = 0  # type: int
         for a in row[FIRST_ANSWER:]:
             a = a.strip()
             if a.startswith(CORRECT):
