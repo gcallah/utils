@@ -10054,3 +10054,6 @@ aren't
 shouldn't
 utilties
 trello
+linting
+chroot
+hostname
