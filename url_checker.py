@@ -1,8 +1,8 @@
 """
-Script to check validity of a given file with a lists of URLs.
-Prints request response back.
+Script to check validity of anchor tag links in an HTML file.
 """
 
+from html.parser import HTMLParser
 import argparse
 import urllib.request as req
 
@@ -10,7 +10,24 @@ ARG_ERROR = 1  # type: int
 PARSE_ERROR = 2  # type: int
 IO_ERROR = 3   # type: int
 
+class OurHTMLParser(HTMLParser):
+    """
+    Our descendant of base HTMLParser class: we override just the methods we
+    need to.
+    """
+    def __init__(self):  # type: () -> None
+        super(OurHTMLParser, self).__init__(convert_charrefs=False)
 
+    def handle_starttag(self, tag, attrs):  # type: (str, object) -> None
+        """
+        This is a callback function that is used by HTMLParser for start tags:
+            it is called!
+        """
+    def handle_data(self, data):  # type: (str) -> None
+        """
+        Here we can look for long lines or other such problems.
+        """
+        
 def is_accessible(link):  # type: (str) -> bool
     """
     Function that accesses a url string and returns response status code.
