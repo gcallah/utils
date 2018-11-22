@@ -10,6 +10,13 @@ ARG_ERROR = 1  # type: int
 PARSE_ERROR = 2  # type: int
 IO_ERROR = 3   # type: int
 
+LINE_NO = 0  # type: int
+
+
+def line_msg():  # type: () -> str
+    return " at line number " + str(LINE_NO)
+
+
 class OurHTMLParser(HTMLParser):
     """
     Our descendant of base HTMLParser class: we override just the methods we
@@ -23,11 +30,21 @@ class OurHTMLParser(HTMLParser):
         This is a callback function that is used by HTMLParser for start tags:
             it is called!
         """
-    def handle_data(self, data):  # type: (str) -> None
-        """
-        Here we can look for long lines or other such problems.
-        """
-        
+
+        # Find anchor tags and href attr
+        if (tag == 'a' and len(attrs) != 0):
+            if attrs[0][0] == 'href':
+                url = attrs[0][1]
+                try:
+                    is_accessible(url)
+                except req.HTTPError as http_e:
+                    print(str(http_e.getcode()) + " for file " +
+                          html_file + " at url " + url)
+                except req.URLError:
+                    print(req.URLError.reason + " for file " +
+                          html_file + " at url " + url)
+
+
 def is_accessible(link):  # type: (str) -> bool
     """
     Function that accesses a url string and returns response status code.
@@ -45,31 +62,19 @@ def is_accessible(link):  # type: (str) -> bool
 
 if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument("url_inp_file",
-                            help="text url input file to be parsed")
+    arg_parser.add_argument("html_file",
+                            help="html file to be parsed")
     args = arg_parser.parse_args()
-    url_inp_file = args.url_inp_file
-
-    url_list = []
+    html_file = args.html_file
+    parser = OurHTMLParser()
 
     try:
-        # get all the url links
-        with open(url_inp_file, 'r') as urls:
-            for url_link in urls:
-                url_link = url_link.strip()
-                url_list.append(url_link)
+        file = open(html_file, "r")
+        for line in file:
+            LINE_NO += 1
+            parser.feed(line)
     except IOError:
-        print("Couldn't read " + url_inp_file)
+        print("Couldn't read " + html_file)
         exit(IO_ERROR)
-
-    for url in url_list:
-        try:
-            is_accessible(url)
-        except req.HTTPError as http_e:
-            print(str(http_e.getcode()) + " for file "
-                  + url_inp_file + " at url " + url)
-        except req.URLError:
-            print(req.URLError.reason + " for file "
-                  + url_inp_file + " at url " + url)
 
     exit(0)
