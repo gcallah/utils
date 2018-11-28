@@ -1,0 +1,19 @@
+stop = 4
+2
+j = 2
+j = 4
+j = 6
+j = 8
+j = 10
+j = 12
+j = 14
+j = 16
+j = 18
+3
+j = 4
+j = 7
+j = 10
+j = 13
+j = 16
+4
+[True, True, False, True, False, True, False, False, False, True, False, True, False, False, False, True, False, True, False]
