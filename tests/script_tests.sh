@@ -30,6 +30,12 @@ run_diff_test_file() {
     diff_output $1
 }
 
+run_sieve_test() {
+    echo "Running python ./$1.py > $TEST_DATA/$1_tmp.txt"
+    python ./"$1.py" > $TEST_DATA/$1_tmp.txt
+    diff_output $1
+}
+
 run_quiz_test_work() {
     echo "Running python ./$1.py $2 > $TEST_DATA/$1_tmp.txt"
     python ./"$1.py" "$2" > $TEST_DATA/$1_tmp.txt
@@ -53,6 +59,7 @@ run_diff_test_file create_gloss
 run_gloss_links_file gloss_links "$key" "$key_word"
 run_diff_test_file create_menu
 run_diff_test_file html_checker
+run_sieve_test sieve
 # run_quiz_test_work qexport "$title2"
 # url checker not ready for testing!
 # run_diff_test_file url_checker
