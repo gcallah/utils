@@ -122,10 +122,17 @@ if __name__ == '__main__':
     GLOSS_LISTS = []
     KEYWORD_CONTEXTS = {}
     # first get all the gloss keywords
-    with open(KEYWORD_FILE_LIST, 'r') as gloss:
-        for key in gloss:
-            key = key.strip()
-            GLOSS_LISTS.append(key)
+    try:
+        with open(KEYWORD_FILE_LIST, 'r') as f:
+
+            for line in f:
+                # tab delimited
+                key = line.strip().split("\t")
+                GLOSS_LISTS.append(key[0])
+
+    except IOError:
+        print("Couldn't read " + KEYWORD_FILE_LIST)
+        exit(1)
 
     for filename in FILE_LIST:  # look for keywords in all files
         process_file(filename, KEYWORD_CONTEXTS, GLOSS_LISTS)

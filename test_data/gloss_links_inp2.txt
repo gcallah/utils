@@ -1,13 +1,14 @@
-was designed Django to DRY help developers take
-DRY When it comes to programming, Django?
-You may need DRY to think a DRY lot when you’re implementing DRY code
-Django coding approach saves you time and space Dry?
-Django is a high-level Python Web framework that encourages rapid development
-The above looks too wet and can be made dry in many ways
-Django
-Dry
-Django DRY!
-takes security seriously and helps Django? No need to Dry.
-DRY Django?
-Everyone knows that DRY DRY DRY stuff is Django Django Django and easier to maintain
+was designed Docker to Anti-Pattern help developers take
+Anti-Pattern When it comes to programming, Docker?
+Anti-Pattern
+Docker Anti-Pattern!
+takes security seriously and helps Docker? No need to Anti-Pattern.
+Anti-Pattern Docker? GitHub
+Everyone knows that Anti-Pattern Anti-Pattern Anti-Pattern stuff is Docker Docker Docker and easier to maintain
+You may need Anti-Pattern to think a Anti-Pattern lot when you’re implementing Anti-Pattern code
+Docker coding approach saves you time and space Anti-Pattern?
+Docker is GitHub a high-level Python Web framework that encourages rapid development
+The above looks too wet and can be made Anti-Pattern in many ways
+Docker
+
 
