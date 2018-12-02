@@ -1,6 +1,85 @@
 #!/usr/bin/python
+
+import argparse
+import re
+ARG_ERROR = 1
+from subprocess import Popen, PIPE
+
+def process_file(filenm, keyword_context, gloss_list):
+    for keyword in gloss_list:
+        process = Popen(['grep', '-ioZ', keyword, filenm], stdout=PIPE)
+        (output, err) = process.communicate()
+        if(len(output) > 0):
+            if keyword not in keyword_context:
+                keyword_context[keyword] = []
+            keyword_context[keyword].append(filenm)
+
+def process_args():
+    """
+    Parses command line args and returns:
+        keyword_file, file_list
+    """
+    arg_parser = argparse.ArgumentParser()
+    arg_parser.add_argument("gloss_key")
+    arg_parser.add_argument("outdir")
+    arg_parser.add_argument(
+        "--lf",  # you need to add "--lf" flag in command line
+        nargs="*",
+        type=str,
+        default=[],
+    )
+    args = arg_parser.parse_args()
+    return (args.gloss_key, args.outdir, args.lf)
+
+def output_context(outdir, keyword_context):
+    """
+        output context of a keyword
+        Args: outdir, keyword, context
+        Returns: None
+    """
+    for keyword in keyword_context:
+        output_name = outdir + "/" + keyword + ".txt"
+        with open(output_name, 'w') as files:
+            files.write(keyword + " found in: \n")
+            temp = keyword_context[keyword]
+            for i in range(0,len(temp)):
+                files.write("    " + temp[i])
+                files.write("\n")
+
+
+if __name__ == '__main__':
+    # get command line params:
+    (KEYWORD_FILE_LIST, OUTDIR, FILE_LIST) = process_args()
+
+    GLOSS_LISTS = []
+    KEYWORD_CONTEXTS = {}
+    # first get all the gloss keywords
+    try:
+        with open(KEYWORD_FILE_LIST, 'r') as f:
+
+            for line in f:
+                # tab delimited
+                key = line.strip().split("\t")
+                GLOSS_LISTS.append(key[0])
+
+    except IOError:
+        print("Couldn't read " + KEYWORD_FILE_LIST)
+        exit(1)
+
+    for filename in FILE_LIST:  # look for keywords in all files
+        process_file(filename, KEYWORD_CONTEXTS, GLOSS_LISTS)
+
+    output_context(OUTDIR, KEYWORD_CONTEXTS)
+
+
 """
-for testing run:
+The code below is the previous version of gloss_links.
+In this program search was done manually and a context was created for each
+keyword as well. I have kept this code here if it's needed in future. 
+
+"""
+
+""" for testing run:
 (python3 gloss_links.py test_data/gloss_key.txt test_data --lf
 "test_data/gloss_links_inp1.txt" "test_data/gloss_links_inp2.txt")
 
@@ -16,7 +95,6 @@ files and value is list of context for that file.
 [context,...,contxt]},.....,keyword:
 {filenm:[context,contxt],..., filenm:[context,context]}}
 --------- for understanding code ---------
-"""
 
 
 import argparse
@@ -25,11 +103,6 @@ ARG_ERROR = 1  # type: int
 
 
 def process_file(filenm, keyword_context, gloss_list):
-    """
-    Args: filenm and contexts_per_file
-    returns: None
-    """
-
     try:
         with open(filenm, 'r') as txt:
             for keyword in gloss_list:
@@ -81,10 +154,6 @@ def process_file(filenm, keyword_context, gloss_list):
 
 
 def process_args():
-    """
-    Parses command line args and returns:
-        keyword_file, file_list
-    """
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument("gloss_key")
     arg_parser.add_argument("outdir")
@@ -99,11 +168,6 @@ def process_args():
 
 
 def output_context(outdir, keyword_context):
-    """
-        output context of a keyword
-        Args: outdir, keyword, context
-        Returns: None
-    """
     for keyword in keyword_context:
         output_name = outdir + "/" + keyword + ".txt"
         with open(output_name, 'w') as files:
@@ -139,7 +203,8 @@ if __name__ == '__main__':
 
     output_context(OUTDIR, KEYWORD_CONTEXTS)
 
-""""
+
+## started this code for parsing html 
 from html.parser import HTMLParser
 import urllib.request as urllib2
 
@@ -160,4 +225,5 @@ class MyHTMLParser(HTMLParser):
 
    def handle_startendtag(self,startendTag, attrs):
        self.lsStartEndTags.append(startendTag)
-"""
+
+ """
