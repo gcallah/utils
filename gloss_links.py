@@ -75,7 +75,7 @@ if __name__ == '__main__':
 """
 The code below is the previous version of gloss_links.
 In this program search was done manually and a context was created for each
-keyword as well. I have kept this code here if it's needed in future. 
+keyword as well. I have kept this code here in case it's needed in future. 
 
 """
 
