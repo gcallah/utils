@@ -5,7 +5,18 @@ import re
 ARG_ERROR = 1
 from subprocess import Popen, PIPE
 
+"""
+for testing run:
+(python3 gloss_links.py test_data/gloss_key.txt test_data --lf
+"test_data/gloss_links_inp1.txt" "test_data/gloss_links_inp2.txt")
+
+"""
+
 def process_file(filenm, keyword_context, gloss_list):
+    """
+    Parses each file for all the keyword and appends the 
+        keyword context dictionary.
+    """
     for keyword in gloss_list:
         process = Popen(['grep', '-ioZ', keyword, filenm], stdout=PIPE)
         (output, err) = process.communicate()
@@ -79,10 +90,7 @@ keyword as well. I have kept this code here in case it's needed in future.
 
 """
 
-""" for testing run:
-(python3 gloss_links.py test_data/gloss_key.txt test_data --lf
-"test_data/gloss_links_inp1.txt" "test_data/gloss_links_inp2.txt")
-
+""" 
 --------- for understanding code --------
 Each file is opened only once now.
 The data structure used in new version
