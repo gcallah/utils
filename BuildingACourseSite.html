@@ -25,14 +25,17 @@
                     </a>
                 </i>
                 utility and a number of rules
-                to build various targets. We will discuss two targets here:
-                <i>local</i> and <i>website</i>.
+                to build various targets. We will discuss possible
+                two targets here:
+                <i>local</i> and <i>prod</i>.
             </li>
             <li>
-                Our courses use "ptml" files (pre-html) to include
+                Our static site courses use "ptml" files (pre-html) to include
                 various common or script-generated components in
                 target html files. Always edit a ptml file, not an 
                 html file.
+                (This is a substitute for a server-side include utility 
+                like the one Django has.)
             </li>
             <li>
                 After editing the ptml file, run 'make local' to build
@@ -53,7 +56,7 @@
             <li>
                 Once you have verified your work is correct, you
                 can re-build the online website by running
-                'make website'.
+                'make prod'.
             </li>
             <li>
                 The final step is to check the online version and
