@@ -18,7 +18,8 @@ def process_file(filenm, keyword_context, gloss_list):
         keyword context dictionary.
     """
     for keyword in gloss_list:
-        process = Popen(['grep', '-ioZ', keyword, filenm], stdout=PIPE)
+        process = Popen(['grep', '-ioZ', '\b' + keyword + '\b',
+                         filenm], stdout=PIPE)
         (output, err) = process.communicate()
         if(len(output) > 0):
             if keyword not in keyword_context:
@@ -62,27 +63,27 @@ def output_context(outdir, keyword_context):
 
 if __name__ == '__main__':
     # get command line params:
-    (KEYWORD_FILE_LIST, OUTDIR, FILE_LIST) = process_args()
+    (keyword_list, outdir, file_list) = process_args()
 
-    GLOSS_LISTS = []
-    KEYWORD_CONTEXTS = {}
+    gloss_lists = []
+    keyword_contexts = {}
     # first get all the gloss keywords
     try:
-        with open(KEYWORD_FILE_LIST, 'r') as f:
+        with open(keyword_list, 'r') as f:
 
             for line in f:
                 # tab delimited
                 key = line.strip().split("\t")
-                GLOSS_LISTS.append(key[0])
+                gloss_lists.append(key[0])
 
     except IOError:
-        print("Couldn't read " + KEYWORD_FILE_LIST)
+        print("Couldn't read " + keyword_list)
         exit(1)
 
-    for filename in FILE_LIST:  # look for keywords in all files
-        process_file(filename, KEYWORD_CONTEXTS, GLOSS_LISTS)
+    for filename in file_list:  # look for keywords in all files
+        process_file(filename, keyword_contexts, gloss_lists)
 
-    output_context(OUTDIR, KEYWORD_CONTEXTS)
+    output_context(outdir, keyword_contexts)
 
 
 """
