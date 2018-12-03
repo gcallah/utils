@@ -57,7 +57,7 @@ class OurHTMLParser(HTMLParser):
     def handle_endtag(self, tag):  # type: (str) -> None
         global saw_error  # type :bool
         if not tag_stack:
-            print("ERROR: unmatched close tag " + tag + "'" + line_msg())
+            print("ERROR: unmatched close tag '" + tag + "'" + line_msg())
             saw_error = True
         elif tag not in void_tags:
             open_tag = tag_stack.pop()
