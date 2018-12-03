@@ -1,9 +1,8 @@
 #!/usr/bin/python
 
 import argparse
-import re
-ARG_ERROR = 1
 from subprocess import Popen, PIPE
+ARG_ERROR = 1
 
 """
 for testing run:
@@ -12,9 +11,10 @@ for testing run:
 
 """
 
+
 def process_file(filenm, keyword_context, gloss_list):
     """
-    Parses each file for all the keyword and appends the 
+    Parses each file for all the keyword and appends the
         keyword context dictionary.
     """
     for keyword in gloss_list:
@@ -24,6 +24,7 @@ def process_file(filenm, keyword_context, gloss_list):
             if keyword not in keyword_context:
                 keyword_context[keyword] = []
             keyword_context[keyword].append(filenm)
+
 
 def process_args():
     """
@@ -42,6 +43,7 @@ def process_args():
     args = arg_parser.parse_args()
     return (args.gloss_key, args.outdir, args.lf)
 
+
 def output_context(outdir, keyword_context):
     """
         output context of a keyword
@@ -53,7 +55,7 @@ def output_context(outdir, keyword_context):
         with open(output_name, 'w') as files:
             files.write(keyword + " found in: \n")
             temp = keyword_context[keyword]
-            for i in range(0,len(temp)):
+            for i in range(0, len(temp)):
                 files.write("    " + temp[i])
                 files.write("\n")
 
@@ -86,11 +88,10 @@ if __name__ == '__main__':
 """
 The code below is the previous version of gloss_links.
 In this program search was done manually and a context was created for each
-keyword as well. I have kept this code here in case it's needed in future. 
-
+keyword as well. I have kept this code here in case it's needed in future.
 """
 
-""" 
+"""
 --------- for understanding code --------
 Each file is opened only once now.
 The data structure used in new version
@@ -212,7 +213,7 @@ if __name__ == '__main__':
     output_context(OUTDIR, KEYWORD_CONTEXTS)
 
 
-## started this code for parsing html 
+## started this code for parsing html
 from html.parser import HTMLParser
 import urllib.request as urllib2
 
