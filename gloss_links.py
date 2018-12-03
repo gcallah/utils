@@ -18,7 +18,7 @@ def process_file(filenm, keyword_context, gloss_list):
         keyword context dictionary.
     """
     for keyword in gloss_list:
-        process = Popen(['grep', '-ioZ', keyword,
+        process = Popen(['grep', '-ioZ', '\\b'+keyword +'\\b',
                          filenm], stdout=PIPE)
         (output, err) = process.communicate()
         # str_utf8 = output.decode("utf-8")
@@ -238,4 +238,5 @@ class MyHTMLParser(HTMLParser):
    def handle_startendtag(self,startendTag, attrs):
        self.lsStartEndTags.append(startendTag)
 
+       
  """

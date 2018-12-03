@@ -1,4 +1,4 @@
-was designed Docker to Anti-Pattern help developers take
+was designed Docker to Anti-Pattern help developers take continuous integration
 Anti-Pattern When it comes to programming, Docker?
 Anti-Pattern
 Docker Anti-Pattern!
