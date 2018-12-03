@@ -18,9 +18,11 @@ def process_file(filenm, keyword_context, gloss_list):
         keyword context dictionary.
     """
     for keyword in gloss_list:
-        process = Popen(['grep', '-ioZ', '\b' + keyword + '\b',
+        process = Popen(['grep', '-ioZ', keyword,
                          filenm], stdout=PIPE)
         (output, err) = process.communicate()
+        # str_utf8 = output.decode("utf-8")
+        # str_utf8 = re.sub(r'[^\w\s]','',str(str_utf8.strip())).split()
         if(len(output) > 0):
             if keyword not in keyword_context:
                 keyword_context[keyword] = []
