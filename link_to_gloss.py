@@ -1,7 +1,7 @@
 """
 Glossary Linker: Takes in a directory of html files and
-modifies each file to include anchor links on the
-first instance of a term.
+gloss terms, then modifies each file to include anchor links
+on the first instance of a term.
 """
 
 import argparse
@@ -13,6 +13,14 @@ from pylib.html_tags import str_to_valid_id
 
 ARG_ERROR = 1  # type: int
 IO_ERROR = 2  # type: int
+
+
+def create_word_link(key_id, word, href_link="http://www.thedevopscourse.com/devops/gloss"):
+    """
+        Function that creates an anchor link for a word
+        using given key_id and word
+    """
+    return '<a href="' + href_link + '#' + key_id + '">' + word + '</a>'
 
 if __name__ == '__main__':
     ARG_PARSER = argparse.ArgumentParser()
@@ -57,9 +65,8 @@ for name in FILES:
                     if word in GLOSS_DICT and word not in GLOSS_TERMS_FOUND:
                         GLOSS_TERMS_FOUND.append(word)
                         key_id = str_to_valid_id(word)
-                        # what the hey is this hard-coded URL?!
-                        word_link = '<a href="http://www.thedevopscourse.com/devops/gloss#'  # noqa E501
-                        word_link += key_id + '">' + word + '</a>'
+                        word_link = create_word_link(key_id, word, 
+                            href_link="http://www.thedevopscourse.com/devops/gloss")
                         data = open(name).read()
                         f.write(re.sub(word, word_link, data, count=1))
     except IOError as exc:

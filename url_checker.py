@@ -45,18 +45,18 @@ class OurHTMLParser(HTMLParser):
                           html_file + " at url " + url)
 
 
-def is_accessible(link):  # type: (str) -> bool
+def is_accessible(rel_link, abs_link="http://www.thedevopscourse.com"):
     """
     Function that accesses a url string and returns response status code.
     """
-    if link.startswith('http') or link.startswith('https'):
-        req.urlopen(link)
-    elif link.startswith('/'):
-        rel_link = "http://www.thedevopscourse.com" + link
+    if rel_link.startswith('http') or rel_link.startswith('https'):
         req.urlopen(rel_link)
+    elif rel_link.startswith('/'):
+        result_link = abs_link + rel_link
+        req.urlopen(result_link)
     else:
-        rel_link_two = "http://www.thedevopscourse.com/" + link
-        req.urlopen(rel_link_two)
+        result_link = abs_link + "/" + rel_link
+        req.urlopen(result_link)
     return True  # this needs to return false if not accesible!
 
 
