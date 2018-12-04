@@ -52,6 +52,9 @@ def is_accessible(link, abs_link="http://www.thedevopscourse.com"):
     """
     Function that accesses a url string and returns response status code.
     """
+    if link.startswith('{'):  # fancy Django link: we can't handle it!
+        return True
+
     result_link = link
     possible_slash = ''
     if (not link.startswith('http')) and (not link.startswith('https')):
