@@ -39,8 +39,10 @@ class OurHTMLParser(HTMLParser):
                     print("Going to try " + url)
                     is_accessible(url)
                 except req.HTTPError as http_e:
-                    print(str(http_e.getcode()) + " in file " +
-                          html_file + " for url " + url)
+                    code = http_e.getcode()
+                    if code != 403:
+                        print(str(code) + " in file " +
+                              html_file + " for url " + url)
                 except req.URLError:
                     print(req.URLError.reason + " in file " +
                           html_file + " for url " + url)
