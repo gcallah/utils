@@ -36,6 +36,7 @@ class OurHTMLParser(HTMLParser):
             if attrs[0][0] == 'href':
                 url = attrs[0][1]
                 try:
+                    print("Going to try " + url)
                     is_accessible(url)
                 except req.HTTPError as http_e:
                     print(str(http_e.getcode()) + " for file " +
@@ -45,17 +46,17 @@ class OurHTMLParser(HTMLParser):
                           html_file + " at url " + url)
 
 
-def is_accessible(rel_link, abs_link="http://www.thedevopscourse.com"):
+def is_accessible(link, abs_link="http://www.thedevopscourse.com"):
     """
     Function that accesses a url string and returns response status code.
     """
-    if rel_link.startswith('http') or rel_link.startswith('https'):
-        req.urlopen(rel_link)
-    elif rel_link.startswith('/'):
-        result_link = abs_link + rel_link
-        req.urlopen(result_link)
+    possible_slash = ''
+    if link.startswith('http') or link.startswith('https'):
+        req.urlopen(link)
     else:
-        result_link = abs_link + "/" + rel_link
+        if not link.startswith('/'):
+            possible_slash = '/'
+        result_link = abs_link + possible_slash + link
         req.urlopen(result_link)
     return True  # this needs to return false if not accesible!
 
