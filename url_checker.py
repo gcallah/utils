@@ -36,7 +36,6 @@ class OurHTMLParser(HTMLParser):
             if attrs[0][0] == 'href':
                 url = attrs[0][1]
                 try:
-                    print("Going to try " + url)
                     is_accessible(url)
                 except req.HTTPError as http_e:
                     code = http_e.getcode()
