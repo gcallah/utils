@@ -36,18 +36,18 @@ class OurHTMLParser(HTMLParser):
             if attrs[0][0] == 'href':
                 url = attrs[0][1]
                 try:
-                    is_accessible(url)
+                    is_accessible(url, abs_link)
                 except req.HTTPError as http_e:
                     code = http_e.getcode()
                     if code != 403:
                         print(str(code) + " in file " +
                               html_file + " for url " + url)
-                except req.URLError:
-                    print(req.URLError.reason + " in file " +
+                except req.URLError as url_e: # DNS/Proxy issue
+                    print(str(url_e.reason) + " in file " +
                           html_file + " for url " + url)
 
 
-def is_accessible(link, abs_link="http://www.thedevopscourse.com"):
+def is_accessible(link, abs_link):
     """
     Function that accesses a url string and returns response status code.
     """
@@ -68,8 +68,11 @@ if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument("html_file",
                             help="html file to be parsed")
+    arg_parser.add_argument("abs_link",
+                            help="absolute link to be parsed")
     args = arg_parser.parse_args()
     html_file = args.html_file
+    abs_link = args.abs_link
     parser = OurHTMLParser()
 
     try:
