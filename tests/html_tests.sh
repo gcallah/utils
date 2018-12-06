@@ -8,9 +8,8 @@ for test_file in $HTML_DIR/*.html;
 do
     echo 'Html-checking file:' $test_file
     python3 $CODE_DIR/html_checker.py "$test_file"
-    # The following will be put back in once url_checker works properly
-    # echo 'Url-checking file:' $test_file
-    # python3 $CODE_DIR/url_checker.py "$test_file"
+    echo 'URL-checking file:' $test_file
+    python3 $CODE_DIR/url_checker.py "$test_file" "https://gcallah.github.io/utils/"
     echo 'Spell-checking file:' $test_file
     if [ -z $PS1 ]
     then

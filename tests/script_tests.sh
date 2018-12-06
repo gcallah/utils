@@ -56,7 +56,7 @@ export key_word="Django"
 # export page="http://www.thedevopscourse.com"
 run_diff_test_std create_page "$title"
 run_diff_test_file create_gloss
-run_gloss_links_file gloss_links "$key" "$key_word"
+#run_gloss_links_file gloss_links "$key" "$key_word"
 run_diff_test_file create_menu
 run_diff_test_file html_checker
 run_sieve_test sieve

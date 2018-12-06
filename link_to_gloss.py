@@ -22,6 +22,7 @@ def create_word_link(key_id, word, href_link):
     """
     return '<a href="' + href_link + '#' + key_id + '">' + word + '</a>'
 
+
 if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument("gloss_terms",
@@ -33,7 +34,7 @@ if __name__ == '__main__':
     args = arg_parser.parse_args()
     gloss_terms = args.gloss_terms
     html_dir_path = args.html_dir_path
-    href_link = args.href_link 
+    href_link = args.href_link
 
 # Create a dictionary for gloss terms
 gloss_dict = OrderedDict()  # type: Dict[str]

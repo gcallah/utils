@@ -10,4 +10,4 @@ Docker image!
 takes security seriously GitHub and helps Docker? No need to image.
 image message Docker?
 Everyone knows that image image image stuff is Docker Docker Docker and easier to maintain
-
+What about Agile Development?

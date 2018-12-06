@@ -1,3 +1,4 @@
+Aardvark	A funny-looking animal.
 Agile Development	A method of developing software featuring frequent releases, adaptability to change, and close collaboration with customers.
 Anti-Pattern	A set of characteristics of some code structure or development practice that have been found to be common and harmful.
 Automated Testing	Testing through scripts rather than "by hand."

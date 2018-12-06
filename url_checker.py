@@ -42,7 +42,7 @@ class OurHTMLParser(HTMLParser):
                     if code != 403:
                         print(str(code) + " in file " +
                               html_file + " for url " + url)
-                except req.URLError as url_e: # DNS/Proxy issue
+                except req.URLError as url_e:  # DNS/Proxy issue
                     print(str(url_e.reason) + " in file " +
                           html_file + " for url " + url)
 
