@@ -1,11 +1,11 @@
                 <ul class="nested">
                     <li>
                     <span class="hilight" id="DRY">DRY</span>: Don't Repeat Yourself! A crucial principle for good software engineering.<br />
-{% include 'DRY.txt' %}
+
                     </li>
                     <li>
                     <span class="hilight" id="repository">repository</span>: the data store of a version control system<br />
-{% include 'repository.txt' %}
+
                     </li>
                 </ul>
 
