@@ -8,7 +8,7 @@ list as an HTML file. Has internal tags the key terms will be linked to.
 import argparse
 from collections import OrderedDict
 # no include tag until we solve missing include file problem
-from pylib.html_tags import ulist, str_to_valid_id  # , include_tag
+from pylib.html_tags import ulist, str_to_valid_id, include_tag
 from pylib.misc import filenm_from_key
 
 ARG_ERROR = 1  # type: int
