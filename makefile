@@ -26,7 +26,7 @@ all_tests: FORCE
 lint: 
 	flake8 $(PYTHONFILES)
 
-prod: $(INCS) $(HTMLFILES) lint tests
+prod: $(INCS) $(HTMLFILES) lint all_tests
 	-git commit -a 
 	git pull origin master
 	git push origin master
