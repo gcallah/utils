@@ -21,8 +21,7 @@ def process_file(filenm, keyword_context, gloss_list):
         process = Popen(['grep', '-ioZ', '\\b' + keyword + '\\b',
                          filenm], stdout=PIPE)
         (output, err) = process.communicate()
-        # str_utf8 = output.decode("utf-8")
-        # str_utf8 = re.sub(r'[^\w\s]','',str(str_utf8.strip())).split()
+
         if(len(output) > 0):
             if keyword not in keyword_context:
                 keyword_context[keyword] = []
@@ -47,20 +46,28 @@ def process_args():
     return (args.gloss_key, args.outdir, args.lf)
 
 
-def output_context(outdir, keyword_context):
+def output_context(outdir, keyword_context, gloss_lists):
     """
         output context of a keyword
         Args: outdir, keyword, context
         Returns: None
     """
     for keyword in keyword_context:
-        output_name = outdir + "/" + keyword + ".txt"
+        file_name = keyword.replace(" ", "_")
+        output_name = outdir + "/" + file_name + ".txt"
         with open(output_name, 'w') as files:
             files.write(keyword + " found in: \n")
             temp = keyword_context[keyword]
             for i in range(0, len(temp)):
                 files.write("    " + temp[i])
                 files.write("\n")
+
+    for key in gloss_lists:
+        file_name = key.replace(" ", "_")
+        output_name = outdir + "/" + file_name + ".txt"
+        if key not in keyword_context:
+            with open(output_name, 'w') as files:
+                pass
 
 
 if __name__ == '__main__':
@@ -85,4 +92,4 @@ if __name__ == '__main__':
     for filename in file_list:  # look for keywords in all files
         process_file(filename, keyword_contexts, gloss_lists)
 
-    output_context(outdir, keyword_contexts)
+    output_context(outdir, keyword_contexts, gloss_lists)

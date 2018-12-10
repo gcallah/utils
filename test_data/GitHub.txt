@@ -1,3 +1,0 @@
-GitHub found in: 
-    test_data/gloss_links_inp1.txt
-    test_data/gloss_links_inp2.txt

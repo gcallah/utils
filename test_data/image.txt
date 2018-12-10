@@ -1,2 +1,0 @@
-image found in: 
-    test_data/gloss_links_inp1.txt
