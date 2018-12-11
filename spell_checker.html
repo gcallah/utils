@@ -1,57 +1,69 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <link href="style.css" rel="stylesheet" type="text/css"/>
-        <title>
-            Spell Checker Tool Reference
-        </title>
-    </head>
+  <head>
+    <link href="style.css" rel="stylesheet" type="text/css"/>
+    <title>
+      Spell Checker Tool Reference
+    </title>
+  </head>
 
-    <body>
-        <h1>
-            Spell Checker Tool Reference
-        </h1>
+  <body>
+    <h1>
+      Spell Checker Tool Reference
+    </h1>
 
-        <h2>
-            Requirement
-        </h2>
+    <h2>
+      Requirement
+    </h2>
 
-        <p>
-          Python 3 and above
-        </p>
+    <p>
+      Python 3 and above
+    </p>
 
-        <h2>
-            Usage
-        </h2>
+    <h2>
+      Usage
+    </h2>
 
-        <p>
-            html_spell.py &lthtml file&gt &ltmain dict&gt &ltcustom dict&gt &#91-e&#93 &#91-s&#93 &#91-h&#93
-        </p>
+    <p>
+      html_spell.py main_dict custom_dict [-i -s]
+    </p>
 
+    <h2>
+      Current Features
+    </h2>
 
-        <h2>
-          Current Features
-        </h2>
-
-        <ul>
-          Matches words with dictionary (/utils/English.txt).
-        </ul>
-        <ul>
-          Provision to add new words to dictionary or ignore.
-        </ul>
-        <ul>
-          Uses Regular Expression to skip words containing any characters other
-          than a letter, hyphen or apostrophe.
-        </ul>
-        <ul>
-          Adds new words to a custom dictionary rather than the original one.
-        </ul>
-        <ul>
-          Exit with error code can be enabled with -e cmd line argument.
-        </ul>
-        <ul>
-          Strict mode can be enabled to check capitalized words with -s flag.
-        </ul>
-
+    <ul>
+      Interactive mode (toggled with -i flag): a REPL for addressing typos on-the-go.
+    </ul>
+    <ul>
+      Fix words in-place in a file, by opening to the specific line and word in vim.
+    </ul>
+    <ul>
+      Add custom words to a custom dictionary (/utils/data/custom-dict.txt).
+    </ul>
+    <ul>
+      Uses Regular Expression to skip words containing any characters other
+      than a letter, hyphen or apostrophe.
+    </ul>
+    <ul>
+      Exit with error code if aborted while the -i flag is provided,
+      or upon encountering a misspelt word when the -i flag is not provided.
+    </ul>
+    <h2>
+      Future Features?
+    </h2>
+    <ul>
+      Currently, the spell-checker is intended to be used to parse
+      one html file at a time. This means that for every file parsed,
+      the program has to read a large file (the english dictionary)
+      from disk. In the future, the program might be changed to process
+      files in batches, rather than one-by-one, to avoid this upfront cost.
+    </ul>
+    <ul>
+      It might be worthwhile to rewrite this application in a compiled
+      language (or cython?), in order to boost runtime speed.  This
+      application's primary activity is parsing, and compiled languages
+      are the lingua franca of this arena.  Might consider Rust, or Go.
+    </ul>
     </body>
 </html>

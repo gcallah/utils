@@ -2,7 +2,7 @@
 CLI Tool to check word spelling in an file.
 
 Uses multiple sources of truth for spelling, checked in the following order:
-  1. ./data/Dictionary.json, unioned with ./data/English.txt
+  1. ./data/main-dict.txt, unioned with ./data/custom-dict.txt
   2. the oxford dictionary api
 
 If a user decides that a word, not found in either source,
