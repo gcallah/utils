@@ -8,7 +8,8 @@ list as an HTML file. Has internal tags the key terms will be linked to.
 import argparse
 from collections import OrderedDict
 # no include tag until we solve missing include file problem
-from pylib.html_tags import ulist, str_to_valid_id  # , include_tag
+from pylib.html_tags import ulist, str_to_valid_id, include_tag
+from pylib.misc import filenm_from_key
 
 ARG_ERROR = 1  # type: int
 IO_ERROR = 2  # type: int
@@ -50,9 +51,8 @@ for key in d:
     gloss_item += key_id + '">' + key + '</span>: '
     gloss_item += d[key]
     gloss_item += "<br />\n"
-    # we need to handle missing file problem before outputting include tag.
-    # also we need to remove spaces from key.
-    # gloss_item += include_tag(key + ".txt")
+    file_name = filenm_from_key(key)
+    gloss_item += include_tag(file_name + ".txt")
     gloss_list.append(gloss_item)
 
 s = ulist(css_class="nested", l=gloss_list)  # noqa E741

@@ -2,6 +2,8 @@
 
 import argparse
 from subprocess import Popen, PIPE
+from pylib.misc import filenm_from_key
+
 ARG_ERROR = 1
 
 """
@@ -53,7 +55,7 @@ def output_context(outdir, keyword_context, gloss_lists):
         Returns: None
     """
     for keyword in keyword_context:
-        file_name = keyword.replace(" ", "_")
+        file_name = filenm_from_key(keyword)
         output_name = outdir + "/" + file_name + ".txt"
         with open(output_name, 'w') as files:
             files.write(keyword + " found in: <br>")
@@ -64,7 +66,7 @@ def output_context(outdir, keyword_context, gloss_lists):
                 files.write("<br>")
 
     for key in gloss_lists:
-        file_name = key.replace(" ", "_")
+        file_name = filenm_from_key(key)
         output_name = outdir + "/" + file_name + ".txt"
         if key not in keyword_context:
             with open(output_name, 'w') as files:
