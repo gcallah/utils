@@ -56,11 +56,12 @@ def output_context(outdir, keyword_context, gloss_lists):
         file_name = keyword.replace(" ", "_")
         output_name = outdir + "/" + file_name + ".txt"
         with open(output_name, 'w') as files:
-            files.write(keyword + " found in: \n")
+            files.write(keyword + " found in: <br>")
             temp = keyword_context[keyword]
             for i in range(0, len(temp)):
                 files.write("    " + temp[i])
                 files.write("\n")
+                files.write("<br>")
 
     for key in gloss_lists:
         file_name = key.replace(" ", "_")
