@@ -76,7 +76,7 @@ if __name__ == '__main__':
     parser = OurHTMLParser()
 
     try:
-        file = open(html_file, "r")
+        file = open(html_file, "r", encoding="utf8")
         for line in file:
             LINE_NO += 1
             parser.feed(line)
