@@ -9,7 +9,6 @@ import urllib.request as req
 ARG_ERROR = 1  # type: int
 PARSE_ERROR = 2  # type: int
 IO_ERROR = 3   # type: int
-
 LINE_NO = 0  # type: int
 
 
@@ -51,7 +50,8 @@ def is_accessible(link, abs_link):
     """
     Function that accesses a url string and returns response status code.
     """
-    if link.startswith('{'):  # fancy Django link: we can't handle it!
+
+    if '{' in link:  # fancy Django link: we can't handle it!
         return True
 
     result_link = link
