@@ -7,6 +7,9 @@ from pylib.misc import filenm_from_key
 ARG_ERROR = 1
 
 """
+This program searches and outputs name of the file where glossary/keyword
+appear. Check below on how to run the program.
+
 for testing run:
 (python3 gloss_links.py test_data/gloss_key.txt test_data --lf
 "test_data/gloss_links_inp1.txt" "test_data/gloss_links_inp2.txt")
@@ -19,7 +22,9 @@ def process_file(filenm, keyword_context, gloss_list):
     Parses each file for all the keyword and appends the
         keyword context dictionary.
     """
+
     for keyword in gloss_list:
+        # \\b was used for word breaks. Single backflash is ignored by python.
         process = Popen(['grep', '-ioZ', '\\b' + keyword + '\\b',
                          filenm], stdout=PIPE)
         (output, err) = process.communicate()
@@ -58,6 +63,7 @@ def output_context(outdir, keyword_context, gloss_lists):
         file_name = filenm_from_key(keyword)
         output_name = outdir + "/" + file_name + ".txt"
         with open(output_name, 'w') as files:
+            # br tags since this will be added as html file.
             files.write(keyword + " found in: <br>")
             temp = keyword_context[keyword]
             for i in range(0, len(temp)):
@@ -65,6 +71,8 @@ def output_context(outdir, keyword_context, gloss_lists):
                 files.write("\n")
                 files.write("<br>")
 
+    # outputting names of files that dont't appear in glossary list
+    # needed to avoid django include error
     for key in gloss_lists:
         file_name = filenm_from_key(key)
         output_name = outdir + "/" + file_name + ".txt"
