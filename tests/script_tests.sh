@@ -19,8 +19,8 @@ diff_output_gloss_links() {
 }
 
 run_diff_test_std() {
-    echo "Running python ./$1.py $2 < $TEST_DATA/$1_inp.txt > $TEST_DATA/$1_tmp.txt"
-    python ./"$1.py" "$2" < $TEST_DATA/$1_inp.txt > $TEST_DATA/$1_tmp.txt
+    echo "Running python ./$1.py "$2" $3 < $TEST_DATA/$1_inp.txt > $TEST_DATA/$1_tmp.txt"
+    python ./"$1.py" "$2" $3 < $TEST_DATA/$1_inp.txt > $TEST_DATA/$1_tmp.txt
     diff_output $1
 }
 
@@ -49,12 +49,12 @@ run_gloss_links_file() {
 
 }
 
-export title="Test page"
+export title="Test"
 export title2="work"
 export key="gloss_key"
 export key_word="Django"
 # export page="http://www.thedevopscourse.com"
-run_diff_test_std create_page "$title"
+run_diff_test_std create_page "$title" "http://www.testingit.com/"
 run_diff_test_file create_gloss
 #run_gloss_links_file gloss_links "$key" "$key_word"
 run_diff_test_file create_menu

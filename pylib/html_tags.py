@@ -17,6 +17,9 @@ def par(text=None, indent=INDENT4):
     return s
 
 
+def link(target, text):
+    return '<a href="' + target + '">' + text + '</a>'
+
 def figure(src="", caption=None, indent=INDENT4):
     # by default we get an empty figure tag
     s = indent + '<figure>\n'

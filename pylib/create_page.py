@@ -1,4 +1,4 @@
-from pylib.html_tags import details
+from pylib.html_tags import details, par, link
 
 indent1 = "            "  # type: str
 indent2 = "                    "  # type: str
@@ -15,14 +15,16 @@ def create_subtopics(outf, subtopics, level):
     return s
 
 
-def create_page(inf, outf, page_nm, subtopics=None):
+def create_page(inf, outf, page_nm, subtopics=None, link_insert=None):
     for line in inf:
         outf.write(line)
         if "<title>" in line:
             outf.write(indent1 + page_nm + "\n")
         if "<h1>" in line:
             outf.write(indent2 + page_nm + "\n")
-# after close h1, we will create subtopics:
-        if "</h1>" in line and subtopics is not None:
-            s = create_subtopics(outf, subtopics, 1)
-            outf.write(s)
+# after close h1, we will create subtopics and link:
+        if "</h1>" in line:
+            if link_insert is not None:
+                outf.write(par(link(link_insert, "Source code")))
+            if subtopics is not None:
+                outf.write(create_subtopics(outf, subtopics, 1))

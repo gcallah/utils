@@ -10,6 +10,10 @@ if len(sys.argv) < 2:
     print("Must supply a page name.")
     exit(1)
 
-PAGE_NM = sys.argv[1]  # type: str
-sys.stderr.write(PAGE_NM + "\n")
-create_page(sys.stdin, sys.stdout, PAGE_NM)
+page_nm = sys.argv[1]  # type: str
+link = None
+if len(sys.argv) > 2:
+    link = sys.argv[2]
+    sys.stderr.write("Link is " + link + "\n")
+
+create_page(sys.stdin, sys.stdout, page_nm, link_insert=link)

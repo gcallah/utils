@@ -3,7 +3,7 @@
     <head>
 <!--include head.txt -->
         <title>
-            Test page
+            Test
         </title>
 <!--include googleAnalyticsScript.txt -->
     </head>
@@ -13,8 +13,11 @@
 <!--include navbar.txt -->
             <div id="content">
                 <h1>
-                    Test page
+                    Test
                 </h1>
+                <p>
+<a href="http://www.testingit.com/">Source code</a>
+                </p>
 
                 <details>
                     <summary class="sum1">

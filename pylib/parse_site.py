@@ -11,6 +11,7 @@ TITLE = 1  # type: int
 URL = 2  # type: int
 SHORT_TITLE = 3  # type: int
 GLYPHICON = 4  # type: int
+LINK_INSERT = 5  # type: int
 
 UNSET = -999999999  # topic level not yet set
 
@@ -63,6 +64,7 @@ class Topic:
         self.url = flds[URL]
         self.short_title = flds[SHORT_TITLE]
         self.glyphicon = flds[GLYPHICON]
+        self.link_insert = flds[LINK_INSERT]
         self.subtopics = None
         self.str_indent = self.level * INDENT1
 
