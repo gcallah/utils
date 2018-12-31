@@ -12,6 +12,7 @@ URL = 2  # type: int
 SHORT_TITLE = 3  # type: int
 GLYPHICON = 4  # type: int
 LINK_INSERT = 5  # type: int
+MAX_FLD = LINK_INSERT  # type: int
 
 UNSET = -999999999  # topic level not yet set
 
@@ -56,6 +57,9 @@ class Topic:
                 raise InputError(SEP.join(flds),
                                  "Indent level is " + flds[LEVEL] +
                                  "; it must be a non-negative integer.")
+        while len(flds) < MAX_FLD + 1:
+            flds.append(None)
+
         # make sure title is present
         if flds[TITLE] is None:
             raise InputError(flds, "Title is required.")
