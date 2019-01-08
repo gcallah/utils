@@ -27,7 +27,7 @@ def process_level(topic_list, level):
     """
     for topic in topic_list:
         if topic.url is not None:
-            ptml_file = topic.url.replace(HTML_EXT, PTML_EXT)
+            ptml_file = topic.url.replace('html/', '').replace(HTML_EXT, PTML_EXT)
             ptml_file = PTML_DIR + "/" + ptml_file
             my_file = Path(ptml_file)
             if not my_file.is_file():  # don't overwrite existing files!
