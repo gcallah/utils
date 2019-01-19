@@ -39,7 +39,7 @@ def process_level(topic_list, level):
                 with open(pg_templ, 'r') as inf, open(ptml_file, 'w') as outf:
                     create_page(inf, outf, topic.title,
                                 topic.subtopics, topic.link_insert,
-                                topic.doc_txt)
+                                topic.doc_txt, topic.hw_txt)
         elif topic.subtopics is not None:
             # if the topic had a url, we processed the subtopics above
             process_level(topic.subtopics, level + 1)

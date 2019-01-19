@@ -16,7 +16,7 @@ def create_subtopics(outf, subtopics, level):
 
 
 def create_page(inf, outf, page_nm, subtopics=None,
-                link_insert=None, doc_txt=None):
+                link_insert=None, doc_txt=None, hw_txt=None):
     for line in inf:
         outf.write(line)
         if "<title>" in line:
@@ -31,6 +31,10 @@ def create_page(inf, outf, page_nm, subtopics=None,
         if "<!-- Include the documentation" in line:
             if doc_txt is not None:
                 outf.write("<!--include " + doc_txt + " -->\n")
+# include documentation from source where indicated
+        if "<!-- Include the text material here!" in line:
+            if hw_txt is not None:
+                outf.write("<!--include " + hw_txt + " -->\n")
 # include link to source code where indicated
         if "<!-- Include source code" in line:
             if link_insert is not None:
