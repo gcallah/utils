@@ -6,6 +6,7 @@ following the template.
 """
 
 import sys
+import re
 from pathlib import Path
 from pylib.parse_site import parse_site
 from pylib.create_page import create_page
@@ -14,10 +15,11 @@ HTML_PG = 0  # type: int
 title = 1  # type: int
 OPEN_ERROR = 1  # type: int
 
-HTML_EXT = ".html"  # type: str
+HTML_EXT = re.compile("\.html$")  # type: str
 PTML_EXT = ".ptml"  # type: str
 PTML_DIR = "html_src"  # type: str
-PATH_DIR = "/NYCOpenDocs/html"
+REPO_DIR = "/NYCOpenDocs/"
+HTML_DIR = "html/"
 
 
 def process_level(topic_list, level):
@@ -28,7 +30,8 @@ def process_level(topic_list, level):
     """
     for topic in topic_list:
         if topic.url is not None:
-            ptml_file = topic.url.replace(PATH_DIR, '').replace(HTML_EXT, PTML_EXT)
+            ptml_file = topic.url.replace(REPO_DIR, '').replace(HTML_DIR, '')
+            ptml_file = re.sub(HTML_EXT, PTML_EXT, ptml_file)
             ptml_file = PTML_DIR + "/" + ptml_file
             my_file = Path(ptml_file)
             if not my_file.is_file():  # don't overwrite existing files!
@@ -36,7 +39,7 @@ def process_level(topic_list, level):
                 with open(pg_templ, 'r') as inf, open(ptml_file, 'w') as outf:
                     create_page(inf, outf, topic.title,
                                 topic.subtopics, topic.link_insert,
-                                topic.template_txt)
+                                topic.doc_txt)
         elif topic.subtopics is not None:
             # if the topic had a url, we processed the subtopics above
             process_level(topic.subtopics, level + 1)
