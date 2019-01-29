@@ -1,0 +1,17 @@
+<html>
+    <head>
+<!--include head.txt -->
+        <title>
+            Web site
+        </title>
+    </head>
+
+    <body>
+<!--include logo.txt -->
+<!--include menu.txt -->
+        <h1>
+            Web site
+        </h1>
+
+    </body>
+</html>
