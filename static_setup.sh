@@ -23,6 +23,7 @@ if [ -n "$2" ]; then
 fi
 echo "utils dir is $utilsdir"
 
+cp $utilsdir/style.css $newdir/style.css
 cp $utilsdir/templates/index.ptml $newdir/html_src/index.ptml
 cp $utilsdir/templates/makefile $newdir/makefile 
 cp $utilsdir/templates/head.txt $newdir/templates/head.txt
