@@ -1,24 +1,32 @@
 #!/bin/sh
 
 # script to create a static website served by e.g. GitHub pages.
-
 # we need the name of the git repo to clone as $1
 
 # run sed on $1 to get dir name
-dirname=$(echo $1 | sed 's/.*\/\([A-Za-z0-9]*\)\.git/\1/')
-#dirname=OOP2
-echo $dirname
-echo "Dir name = $dirname"
+newdir=$(echo $1 | sed 's/.*\/\([A-Za-z0-9]*\)\.git/\1/')
 
-mkdir html_src
-mkdir docker 
-mkdir templates
-mkdir tests
+echo "Dir name = $newdir"
 
-cp utils/templates/index.ptml html_src/index.ptml
-cp utils/templates/makefile makefile 
-cp utils/templates/head.txt templates/head.txt
-cp utils/templates/menu.txt templates/menu.txt
-cp utils/templates/logo.txt templates/logo.txt
+echo "going to clone $1"
+git clone $1 
 
-git submodule add https://github.com/gcallah/utils
+echo "we are going to try to make: $newdir/html_src "
+mkdir $newdir/html_src
+mkdir $newdir/docker 
+mkdir $newdir/templates
+mkdir $newdir/tests
+
+utilsdir=utils
+if [ -n "$2" ]; then
+    utilsdir=$2
+fi
+echo "utils dir is $utilsdir"
+
+cp $utilsdir/templates/index.ptml $newdir/html_src/index.ptml
+cp $utilsdir/templates/makefile $newdir/makefile 
+cp $utilsdir/templates/head.txt $newdir/templates/head.txt
+cp $utilsdir/templates/menu.txt $newdir/templates/menu.txt
+cp $utilsdir/templates/logo.txt $newdir/templates/logo.txt
+
+cd $newdir; git submodule add https://github.com/gcallah/utils
