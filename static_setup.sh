@@ -3,6 +3,12 @@
 # script to create a static website served by e.g. GitHub pages.
 # we need the name of the git repo to clone as $1
 
+add_file()
+{
+    cp $1/$2 $3/$2
+    cd $3; git add $2; cd -
+}
+
 # run sed on $1 to get dir name
 newdir=$(echo $1 | sed 's/.*\/\([A-Za-z0-9]*\)\.git/\1/')
 
@@ -23,11 +29,11 @@ if [ -n "$2" ]; then
 fi
 echo "utils dir is $utilsdir"
 
-cp $utilsdir/style.css $newdir/style.css
-cp $utilsdir/templates/index.ptml $newdir/html_src/index.ptml
-cp $utilsdir/templates/makefile $newdir/makefile 
-cp $utilsdir/templates/head.txt $newdir/templates/head.txt
-cp $utilsdir/templates/menu.txt $newdir/templates/menu.txt
-cp $utilsdir/templates/logo.txt $newdir/templates/logo.txt
+add_file $utilsdir style.css $newdir
+add_file "$utilsdir/templates" index.ptml "$newdir/html_src"
+add_file "$utilsdir/templates" makefile "$newdir"
+add_file "$utilsdir/templates" head.txt "$newdir/templates"
+add_file "$utilsdir/templates" menu.txt "$newdir/templates"
+add_file "$utilsdir/templates" logo.txt "$newdir/templates"
 
 cd $newdir; git submodule add https://github.com/gcallah/utils
