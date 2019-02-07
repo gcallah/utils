@@ -10,7 +10,7 @@ add_file()
 }
 
 # run sed on $1 to get dir name
-newdir=$(echo $1 | sed 's/.*\/\([A-Za-z0-9]*\)\.git/\1/')
+newdir=$(echo $1 | sed 's/.*\/\([^\/]*\)\.git/\1/')
 
 echo "Dir name = $newdir"
 
@@ -31,6 +31,7 @@ echo "utils dir is $utilsdir"
 
 add_file $utilsdir style.css $newdir
 add_file "$utilsdir/templates" index.ptml "$newdir/html_src"
+add_file "$utilsdir/templates" about.ptml "$newdir/html_src"
 add_file "$utilsdir/templates" makefile "$newdir"
 add_file "$utilsdir/templates" head.txt "$newdir/templates"
 add_file "$utilsdir/templates" menu.txt "$newdir/templates"

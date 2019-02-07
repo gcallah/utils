@@ -196,6 +196,13 @@ p.leadquote {
     color: #9eb;
 }
 
+p.menu {
+    text-align: center;
+    margin: 1em 1em 1em 2em;
+    font-size: 1.4em;
+    color: #9eb;
+}
+
 p.def {
     margin: .8em 1.5em .3em 4em;
     font-size: 1.3em;
