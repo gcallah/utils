@@ -30,7 +30,7 @@ from devops.models import Question  # noqa E402
 
 def read_questions(mod_nm):
     """
-    reads questions for mdule 'mod_nm'
+    reads questions for module 'mod_nm'
     """
     recs = None
     if mod_nm is None:

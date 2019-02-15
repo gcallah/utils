@@ -1,3 +1,4 @@
+#!/usr/bin/python
 """
 CLI Tool to check word spelling in an file.
 
