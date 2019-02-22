@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
 
 SECRET_KEY = os.getenv('SECRET_KEY')
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mysite.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mysite.settings') # setting DB variables from mysite/settings.py
 django.setup()
 from devops.models import Question  # noqa E402
 
