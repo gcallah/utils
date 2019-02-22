@@ -15,7 +15,7 @@ HTML_PG = 0  # type: int
 title = 1  # type: int
 OPEN_ERROR = 1  # type: int
 
-HTML_EXT = re.compile("\.html$")  # type: str
+HTML_EXT = re.compile(".html$")  # type: str
 PTML_EXT = ".ptml"  # type: str
 PTML_DIR = "html_src"  # type: str
 REPO_DIR = "/NYCOpenDocs/"
