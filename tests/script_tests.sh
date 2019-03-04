@@ -49,6 +49,11 @@ run_gloss_links_file() {
 
 }
 
+run_spell_checker() {
+	echo "Running the spell checker: python"
+	python ./"$1.py" "$2.txt" "$3.txt"	
+}
+
 export title="Test"
 export title2="work"
 export key="gloss_key"
