@@ -1,3 +1,8 @@
+*~
+html_src/*
+**/.DS_Store
+.idea/*
+\.vscode/
 
 # Created by https://www.gitignore.io/api/python
 # Edit at https://www.gitignore.io/?templates=python
