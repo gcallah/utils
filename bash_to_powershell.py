@@ -9,7 +9,10 @@ convertedFile = open(newFileName, "w+")
 for line in fileContent:
     line = line.strip()
     if line == "set -e":
-        convertedFile.write("$erroractionpreference = \"stop\"\n")
+        line = "$erroractionpreference = \"stop\""
+    elif line.startswith("export "):
+        line.replace("export ", "$", 1)
+    convertedFile.write(line + "\n")
 
 fileContent.close()
 convertedFile.close()
