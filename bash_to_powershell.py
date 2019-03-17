@@ -1,6 +1,11 @@
 import sys
 
-fileName = sys.argv[1]
+try:
+    fileName = sys.argv[1]
+except:
+    print("Please provide a file to convert")
+    sys.exit()
+
 newFileName = str(fileName).split(".sh")[0] + "_converted.sh"
 
 fileContent = open(fileName, "r")
