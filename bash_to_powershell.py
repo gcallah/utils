@@ -29,6 +29,8 @@ for line in fileContent:
         line = "$erroractionpreference = \"stop\""
     elif line.startswith("export "):
         line = line.replace("export ", "$", 1)
+    elif line.startswith("touch"):
+        line.replace("touch", "echo $null >>")
     elif line.startswith("if"):
         line = replaceConditions(line)
     elif line.startswith("elif"):
