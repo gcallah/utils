@@ -33,6 +33,9 @@ for line in fileContent:
         line = line.replace("pwd", "Get-Location")
     elif line.startswith("touch"):
         line.replace("touch", "echo $null >>")
+    elif line.startswith("tail"):
+        line.replace("tail -n", "Get-Content -Tail ")
+        line.replace("tail", "Get-Content -Tail 10")  # there is no -n parameter (default is -n10)
     elif line.startswith("grep"):
         line.replace("grep", "Select-String")
     elif line.startswith("find"):
