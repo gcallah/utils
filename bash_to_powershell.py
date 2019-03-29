@@ -53,7 +53,12 @@ for line in fileContent:
         line = line.replace("else", "else {")
     elif line.startswith("fi"):
         line = "}"
+    elif "()" in line:
+        line = "function " + line
+        line = line.replace("()", "")
+    line = line.replace("echo", "Write-Host")
     convertedFile.write(line + "\n")
+    i += 1
 
 fileContent.close()
 convertedFile.close()
