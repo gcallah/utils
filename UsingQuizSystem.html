@@ -65,11 +65,18 @@
                 <b>qexport.py</b>:
                 Exports quiz content from the database and prints it on screen.
 				The database configurations are set in mysite/settings.py.
-				Quiz material for different modules can be filtered by calling qexport.py <module_name>
+				Quiz material for different modules can be filtered by calling qexport.py
+                &lt;module_name&gt;
             </li>
 			<li>
                 <b>qimport.py</b>:
                 Reads a file provided as input and writes them to the database. 
+            </li>
+			<li>
+                <b>qexport.sh</b>:
+                Shell script which set database configurations to prod DB and
+                calls qexport.py.  This script is encrypted using git-crypt for
+                safe keeping of the database credentials.				
             </li>
         </ul>
 

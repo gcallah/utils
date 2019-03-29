@@ -2,6 +2,7 @@
 """
 Creates an html page from a template file.
 """
+DEBUG = False
 
 import sys
 from pylib.create_page import create_page
@@ -14,6 +15,7 @@ page_nm = sys.argv[1]  # type: str
 link = None
 if len(sys.argv) > 2:
     link = sys.argv[2]
-    sys.stderr.write("Link is " + link + "\n")
+    if DEBUG:
+        sys.stderr.write("Link is " + link + "\n")
 
 create_page(sys.stdin, sys.stdout, page_nm, link_insert=link)
