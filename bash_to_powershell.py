@@ -11,7 +11,9 @@ newFileName = str(fileName).split(".sh")[0] + "_converted.sh"
 fileContent = open(fileName, "r")
 convertedFile = open(newFileName, "w+")
 
-def replaceConditions(s):
+insideFunction = False
+
+def convertConditions(s):
     s = s.replace("[", "(", 1)
     s = s[::-1].replace("]", ")")[::-1]
     s = s.replace("[", "")
@@ -21,6 +23,28 @@ def replaceConditions(s):
     s = s.replace("!=", "-ne")
     s = s.replace("&&", "-and")
     s = s.replace("||", "-or")
+    return s
+
+def convertFunctionArguments(s):
+    i, arg = 0, None
+    variableFound = False
+    while i < len(s):
+        print("i = " + str(i) + "char = " + s[i])
+        if s[i] == "$":
+            variableFound = True
+            start = i+1
+        elif variableFound:
+            if s[start:i+1].isnumeric():
+                arg = s[start:i+1]
+            else:
+                if arg:
+                    s = s[:start-1] + "args[" + s[start:start+len(arg)] + "]" + s[start+len(arg):]
+                    i += 5
+                    arg = None
+                variableFound = False
+        i += 1
+    if variableFound and s[start:].isnumeric():
+        s = s[:start-1] + "args[" + s[start:start+len(arg)] + "]" + s[start+len(arg):]
     return s
 
 for line in fileContent:
@@ -41,11 +65,11 @@ for line in fileContent:
     elif line.startswith("find"):
         line.replace("find", "Get-ChildItem")
     elif line.startswith("if"):
-        line = replaceConditions(line)
+        line = convertConditions(line)
     elif line.startswith("elif"):
         line = "} \n" + line
         line = line.replace("elif", "elseif")
-        line = replaceConditions(line)
+        line = convertConditions(line)
     elif line.startswith("then"):
         line = "{"
     elif line.startswith("else"):
@@ -56,6 +80,14 @@ for line in fileContent:
     elif "()" in line:
         line = "function " + line
         line = line.replace("()", "")
+        insideFunction = True
+    
+    if insideFunction:
+        if "$" in line:
+            line = convertFunctionArguments(line)
+        elif "}" in line:
+            insideFunction = False
+
     line = line.replace("echo", "Write-Host")
     convertedFile.write(line + "\n")
     i += 1
