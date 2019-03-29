@@ -2,10 +2,11 @@
 """
 Creates an html page from a template file.
 """
-DEBUG = False
 
 import sys
 from pylib.create_page import create_page
+
+DEBUG = False
 
 if len(sys.argv) < 2:
     print("Must supply a page name.")

@@ -60,8 +60,8 @@ with open(quiz_file, "r") as f_in:
                 a = a[1:]
                 answer_key += str(i) + '. ' + answers[j] + "; "
             print(INDENT4 + '<li>')
-            print(INDENT4 + '<input type="radio" name="q'
-                  + str(i) + '" value="' + answers[j] + '">')
+            print(INDENT4 + '<input type="radio" name="q' +
+                  str(i) + '" value="' + answers[j] + '">')
             print(INDENT4 + a)
             print(INDENT4 + '</li>')
             j += 1

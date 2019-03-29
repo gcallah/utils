@@ -39,12 +39,13 @@ class OurHTMLParser(HTMLParser):
                 except req.HTTPError as http_e:
                     code = http_e.getcode()
                     if code != 403:
-                        print("[" + str(code) + "] URL " + url + " "  + 
+                        print("[" + str(code) + "] URL " + url + " " +
                               str(http_e.reason) + " in file " + html_file)
                 except req.URLError as url_e:  # DNS/Proxy issue
                     errno = str(url_e.reason).split("]")[0].split()[-1]
                     if errno == "-2" or errno == "8":
-                        url_e.reason = "[Errno " + errno + "] Server cannot be reached"
+                        url_e.reason = "[Errno " + errno + \
+                                       "] Server cannot be reached"
                     print(str(url_e.reason) + " in file " +
                           html_file + " for url " + url)
 

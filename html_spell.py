@@ -65,8 +65,8 @@ def is_word(s, search=re.compile(r'[^a-zA-Z-\']').search):
 def check_files_exist(*files):
     for file_name in files:
         if not os.path.isfile(file_name):
-            if "custom_dict" in file_name: 
-                file_name= open("./data/custom_dict.txt","w+")
+            if "custom_dict" in file_name:
+                file_name = open("./data/custom_dict.txt", "w+")
             else:
                 print(file_name + " is not a file")
                 exit(ARG_ERROR)
@@ -157,13 +157,14 @@ class HTMLSpellChecker(HTMLParser):
         validResponse = False  # type: bool
         while not validResponse:
             response = input(
-                "How would you like to handle the bad word {}?\n".format(word)
-                + "1. Add as valid word to dictionary (1/a/add)\n"
-                + "2. Skip error, because word is a unique string (2/s/skip)\n"
-                + "3. Edit file, to fix the word (3/e/edit)\n"
-                + "4. Exit the spell-checker for this file."
-                + " Will result in a non-zero exit code. (4/c/close)\n"
-                + ">>")
+                "How would you like to handle the " +
+                "bad word {}?\n".format(word) +
+                "1. Add as valid word to dictionary (1/a/add)\n" +
+                "2. Skip error, because word is a unique string (2/s/skip)\n" +
+                "3. Edit file, to fix the word (3/e/edit)\n" +
+                "4. Exit the spell-checker for this file." +
+                " Will result in a non-zero exit code. (4/c/close)\n" +
+                ">>")
             response = response.lower()
             if response == 'add' or response == 'a' or response == '1':
                 added_words.add(word)
@@ -221,8 +222,8 @@ class HTMLSpellChecker(HTMLParser):
 
         lower_word = word.lower()  # type: (str)
 
-        if (lower_word not in word_set
-                and not self.isWordInOxfordDictionary(lower_word)):
+        if (lower_word not in word_set and
+                not self.isWordInOxfordDictionary(lower_word)):
             self.handle_bad_word(lower_word)
 
 

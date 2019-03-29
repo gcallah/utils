@@ -13,6 +13,7 @@ convertedFile = open(newFileName, "w+")
 
 insideFunction = False
 
+
 def convertConditions(s):
     s = s.replace("[", "(", 1)
     s = s[::-1].replace("]", ")")[::-1]
@@ -24,6 +25,7 @@ def convertConditions(s):
     s = s.replace("&&", "-and")
     s = s.replace("||", "-or")
     return s
+
 
 def convertFunctionArguments(s):
     i, arg = 0, None
@@ -38,13 +40,15 @@ def convertFunctionArguments(s):
                 arg = s[start:i+1]
             else:
                 if arg:
-                    s = s[:start-1] + "args[" + s[start:start+len(arg)] + "]" + s[start+len(arg):]
+                    s = s[:start-1] + "args[" + s[start:start+len(arg)] + \
+                        "]" + s[start+len(arg):]
                     i += 5
                     arg = None
                 variableFound = False
         i += 1
     if variableFound and s[start:].isnumeric():
-        s = s[:start-1] + "args[" + s[start:start+len(arg)] + "]" + s[start+len(arg):]
+        s = s[:start-1] + "args[" + s[start:start+len(arg)] + \
+            "]" + s[start+len(arg):]
     return s
 
 for line in fileContent:
@@ -59,7 +63,8 @@ for line in fileContent:
         line.replace("touch", "echo $null >>")
     elif line.startswith("tail"):
         line.replace("tail -n", "Get-Content -Tail ")
-        line.replace("tail", "Get-Content -Tail 10")  # there is no -n parameter (default is -n10)
+        # when -n parameter is not specified (default is -n10)
+        line.replace("tail", "Get-Content -Tail 10")
     elif line.startswith("grep"):
         line.replace("grep", "Select-String")
     elif line.startswith("find"):
@@ -81,7 +86,7 @@ for line in fileContent:
         line = "function " + line
         line = line.replace("()", "")
         insideFunction = True
-    
+
     if insideFunction:
         if "$" in line:
             line = convertFunctionArguments(line)
@@ -90,7 +95,6 @@ for line in fileContent:
 
     line = line.replace("echo", "Write-Host")
     convertedFile.write(line + "\n")
-    i += 1
 
 fileContent.close()
 convertedFile.close()
