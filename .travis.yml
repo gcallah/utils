@@ -10,7 +10,7 @@ install:
     - pip install -r docker/requirements.txt
 
 env:
-#    - PYTHONPATH=/home/travis/build/gcallah/OnlineDevops
+    - PYTHONPATH=/home/travis/build/gcallah/utils
 
 script:
     - make tests

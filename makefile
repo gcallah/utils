@@ -20,13 +20,12 @@ html_tests: FORCE
 script_tests: FORCE
 	$(TEST_DIR)/script_tests.sh
 
-all_tests: FORCE
-	$(TEST_DIR)/all_tests.sh
+tests: html_tests script_tests
 
 lint: 
 	flake8 $(PYTHONFILES)
 
-prod: $(INCS) $(HTMLFILES) lint all_tests
+prod: $(INCS) $(HTMLFILES) lint tests
 	-git commit -a 
 	git pull origin master
 	git push origin master

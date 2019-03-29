@@ -64,14 +64,13 @@ def is_word(s, search=re.compile(r'[^a-zA-Z-\']').search):
 
 def check_files_exist(*files):
     for file_name in files:
-		
         if not os.path.isfile(file_name):
-			if "custom_dict" in file_name: 
-				file_name= open("./data/custom_dict.txt","w+")
-			else:
-				print(file_name + " is not a file")
-				exit(ARG_ERROR)
-		
+            if "custom_dict" in file_name: 
+                file_name= open("./data/custom_dict.txt","w+")
+            else:
+                print(file_name + " is not a file")
+                exit(ARG_ERROR)
+
 
 def saveAddedWords():
     with open(custom_dict, 'a+') as f:
