@@ -1,5 +1,17 @@
-https://www.arresteddevops.com/
-http://devopscafe.org/
-weird.link.org
-/devops/gloss
-frndkvnfkdv
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>
+            Test Page
+        </title>
+    </head>
+
+    <body>
+        <a href="https://www.arresteddevops.com/"></a>
+        <a href="http://devopscafe.org/"></a>
+        <a href="weird.link.org"></a>
+        <a href="/devops/gloss"></a>
+        <a href="frndkvnfkdv"></a>
+    </body>
+</html>

@@ -40,7 +40,8 @@ class OurHTMLParser(HTMLParser):
                     code = http_e.getcode()
                     if code != 403:
                         print("[" + str(code) + "] URL " + url + " " +
-                              str(http_e.reason) + " in file " + html_file)
+                              str(http_e.reason).lower() + " in file " +
+                              html_file)
                 except req.URLError as url_e:  # DNS/Proxy issue
                     errno = str(url_e.reason).split("]")[0].split()[-1]
                     if errno == "-2" or errno == "8":
@@ -64,6 +65,7 @@ def is_accessible(link, abs_link):
         if not link.startswith('/'):
             possible_slash = '/'
         result_link = abs_link + possible_slash + link
+
     req.urlopen(result_link)
     return True  # this needs to return false if not accesible!
 
