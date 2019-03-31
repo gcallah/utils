@@ -13,5 +13,6 @@
         <a href="weird.link.org"></a>
         <a href="/devops/gloss"></a>
         <a href="frndkvnfkdv"></a>
+        <a href="http://dunne.yenn.ulegend.net/semiotics-and-gui-design.html"></a>
     </body>
 </html>
