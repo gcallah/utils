@@ -6,7 +6,7 @@ except IndexError:
     print("Please provide a file to convert")
     sys.exit()
 
-newFileName = str(fileName).split(".sh")[0] + "_converted.sh"
+newFileName = str(fileName).split(".sh")[0] + "_converted.ps1"
 
 fileContent = open(fileName, "r")
 convertedFile = open(newFileName, "w+")
@@ -31,7 +31,6 @@ def convertFunctionArguments(s):
     i, arg = 0, None
     variableFound = False
     while i < len(s):
-        print("i = " + str(i) + "char = " + s[i])
         if s[i] == "$":
             variableFound = True
             start = i+1
@@ -61,15 +60,15 @@ for line in fileContent:
     elif line.startswith("pwd"):
         line = line.replace("pwd", "Get-Location")
     elif line.startswith("touch"):
-        line.replace("touch", "echo $null >>")
+        line = line.replace("touch", "echo $null >>")
     elif line.startswith("tail"):
-        line.replace("tail -n", "Get-Content -Tail ")
+        line = line.replace("tail -n", "Get-Content -Tail ")
         # when -n parameter is not specified (default is -n10)
-        line.replace("tail", "Get-Content -Tail 10")
+        line = line.replace("tail", "Get-Content -Tail 10")
     elif line.startswith("grep"):
-        line.replace("grep", "Select-String")
+        line = line.replace("grep", "Select-String")
     elif line.startswith("find"):
-        line.replace("find", "Get-ChildItem")
+        line = line.replace("find", "Get-ChildItem")
     elif line.startswith("if"):
         line = convertConditions(line)
     elif line.startswith("elif"):
@@ -87,6 +86,14 @@ for line in fileContent:
         line = "function " + line
         line = line.replace("()", "")
         insideFunction = True
+    elif line.startswith("for"):
+        line = line.replace("for ", "foreach($")
+        line = line.replace(";", "")
+        line += ")"
+    elif line.startswith("done"):
+        line = line.replace("done", "}")
+    elif line.startswith("do"):
+        line = line.replace("do", "{")
 
     if insideFunction:
         if "$" in line:
