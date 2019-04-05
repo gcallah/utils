@@ -18,7 +18,7 @@ def convertConditions(s):
     s = s.replace("[", "(", 1)
     s = s[::-1].replace("]", ")")[::-1]
     s = s.replace("[", "")
-    s = s[::-1].replace("]", "")
+    s = s[::-1].replace("]", "")[::-1]
     s = s.replace("=", "-eq")
     s = s.replace("==", "-eq")
     s = s.replace("!=", "-ne")
@@ -69,6 +69,8 @@ for line in fileContent:
         line = line.replace("grep", "Select-String")
     elif line.startswith("find"):
         line = line.replace("find", "Get-ChildItem")
+    elif "python3" in line:
+        line = line.replace("python3", "python")
     elif line.startswith("if"):
         line = convertConditions(line)
     elif line.startswith("elif"):
@@ -87,7 +89,7 @@ for line in fileContent:
         line = line.replace("()", "")
         insideFunction = True
     elif line.startswith("for"):
-        line = line.replace("for ", "foreach($")
+        line = line.replace("for ", "foreach ($")
         line = line.replace(";", "")
         line += ")"
     elif line.startswith("done"):
