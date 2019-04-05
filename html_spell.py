@@ -209,7 +209,7 @@ class HTMLSpellChecker(HTMLParser):
         Raises:
             Makes no attempt to catch exceptions from handle_bad_word.
         """
-        if word is "":
+        if word == "":
             return
         if len(word) == 1:
             return

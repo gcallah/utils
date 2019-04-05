@@ -2,7 +2,7 @@ import sys
 
 try:
     fileName = sys.argv[1]
-except:
+except IndexError:
     print("Please provide a file to convert")
     sys.exit()
 
@@ -50,6 +50,7 @@ def convertFunctionArguments(s):
         s = s[:start-1] + "args[" + s[start:start+len(arg)] + \
             "]" + s[start+len(arg):]
     return s
+
 
 for line in fileContent:
     line = line.strip()
