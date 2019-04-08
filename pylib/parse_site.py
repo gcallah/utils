@@ -124,7 +124,7 @@ def parse_site(file):
     lines = [line.rstrip('\r') for line in lines]  # for windows machines
 
     stack = []
-    curr_topic_list = []  # type: List[Any]
+    curr_topic_list = []  # type List[Any]
     prev_topic = None
     line_no = 0
     for line in lines:
