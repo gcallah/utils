@@ -153,7 +153,7 @@ class HTMLSpellChecker(HTMLParser):
             FileChangedException if the edit option was chosen
         """
         if not interactive_mode:
-            raise SpellingException("Mis-spelled word: " + word)
+            print("Mis-spelled word: " + word)
         validResponse = False  # type: bool
         while not validResponse:
             response = input(
