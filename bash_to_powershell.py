@@ -19,12 +19,12 @@ def convertConditions(s):
     s = s[::-1].replace("]", ")")[::-1]
     s = s.replace("[", "")
     s = s[::-1].replace("]", "")[::-1]
+    s = s.replace("=", "-eq")
     s = convertOperators(s)
     return s
 
 
 def convertOperators(s):
-    s = s.replace("=", "-eq")
     s = s.replace("==", "-eq")
     s = s.replace("!=", "-ne")
     s = s.replace("&&", "-and")
@@ -44,7 +44,7 @@ def convertFunctionArguments(s):
                 arg = s[start:i+1]
             else:
                 if arg:
-                    s = s[:start-1] + "args[" + s[start:start+len(arg)] + \
+                    s = s[:start-1] + "$args[" + s[start:start+len(arg)] + \
                         "]" + s[start+len(arg):]
                     i += 5
                     arg = None
@@ -66,6 +66,10 @@ for line in fileContent:
         line = line.replace("pwd", "Get-Location")
     elif line.startswith("touch"):
         line = line.replace("touch", "echo $null >>")
+    elif line.startswith("rm"):
+        line = line.replace("rm", "Remove-Item")
+    elif line.startswith("diff"):
+        line = line.replace("diff", "Compare-Object")
     elif line.startswith("tail"):
         line = line.replace("tail -n", "Get-Content -Tail ")
         # when -n parameter is not specified (default is -n10)
