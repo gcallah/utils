@@ -1,3 +1,2 @@
 [404] URL weird.link.org not found in file test_data/url_checker_inp.txt
 [404] URL frndkvnfkdv not found in file test_data/url_checker_inp.txt
-Server cannot be reached for url http://dunne.yenn.ulegend.net/semiotics-and-gui-design.html in file test_data/url_checker_inp.txt
