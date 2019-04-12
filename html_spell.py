@@ -174,11 +174,11 @@ class HTMLSpellChecker(HTMLParser):
                 return None
             elif response == 'edit' or response == 'e' or response == '3':
                 # This opens up vim with all instances of the word highlighted.
-                #subprocess.call([
+                # subprocess.call([
                 #    'vimdiff',
                 #    '+{}'.format(self.line_num),
                 #    '-c', 'match Search /{}/'.format(word), file_name
-                #])
+                # ])
                 subprocess.call([
                     'nano',
                     file_name
@@ -242,7 +242,8 @@ if __name__ == '__main__':
     arg_parser.add_argument("file_name", help="html file to be parsed")
     arg_parser.add_argument("main_dict", help="main dictionary file")
     arg_parser.add_argument("custom_dict", help="custom dictionary file")
-    arg_parser.add_argument("-i", help="enable interactive spell-checking", action="store_true")
+    arg_parser.add_argument("-i", help="enable interactive spell-checking",
+                            action="store_true")
     arg_parser.add_argument("-s", help="strict mode checks capitalized words",
                             action="store_true")
     args = arg_parser.parse_args()
@@ -252,7 +253,6 @@ if __name__ == '__main__':
     custom_dict = args.custom_dict
     interactive_mode = args.i
     strict_mode = args.s
-    
 
 # Make sure all the files exist, before doing anything heavy
 check_files_exist(file_name, main_dict, custom_dict)
