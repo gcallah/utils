@@ -19,6 +19,11 @@ def convertConditions(s):
     s = s[::-1].replace("]", ")")[::-1]
     s = s.replace("[", "")
     s = s[::-1].replace("]", "")[::-1]
+    s = convertOperators(s)
+    return s
+
+
+def convertOperators(s):
     s = s.replace("=", "-eq")
     s = s.replace("==", "-eq")
     s = s.replace("!=", "-ne")
@@ -103,6 +108,7 @@ for line in fileContent:
         elif "}" in line:
             insideFunction = False
 
+    line = convertOperators(line)
     line = line.replace("echo", "Write-Host")
     convertedFile.write(line + "\n")
 
