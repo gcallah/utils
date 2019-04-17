@@ -49,7 +49,7 @@ if len(sys.argv) < 3:
     print("Must supply a file of topics to create and a page template.")
     exit(1)
 
-topics = []  # type: List[Any]
+topics = []  # type List[Any]
 topics_file = sys.argv[1]  # type: str
 pg_templ = sys.argv[2]  # type: str
 if len(sys.argv) > 3:

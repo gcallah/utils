@@ -20,33 +20,38 @@ diff_output_gloss_links() {
 
 run_diff_test_std() {
     echo "Running python ./$1.py "$2" $3 < $TEST_DATA/$1_inp.txt > $TEST_DATA/$1_tmp.txt"
-    python ./"$1.py" "$2" $3 < $TEST_DATA/$1_inp.txt > $TEST_DATA/$1_tmp.txt
+    python3 ./"$1.py" "$2" $3 < $TEST_DATA/$1_inp.txt > $TEST_DATA/$1_tmp.txt
     diff_output $1
 }
 
 run_diff_test_file() {
     echo "Running python ./$1.py $TEST_DATA/$1_inp.txt > $TEST_DATA/$1_tmp.txt"
-    python ./"$1.py" $TEST_DATA/$1_inp.txt > $TEST_DATA/$1_tmp.txt || true
+    python3 ./"$1.py" $TEST_DATA/$1_inp.txt > $TEST_DATA/$1_tmp.txt || true
     diff_output $1
 }
 
 run_sieve_test() {
     echo "Running python ./$1.py > $TEST_DATA/$1_tmp.txt"
-    python ./"$1.py" > $TEST_DATA/$1_tmp.txt
+    python3 ./"$1.py" > $TEST_DATA/$1_tmp.txt
     diff_output $1
 }
 
 run_quiz_test_work() {
     echo "Running python ./$1.py $2 > $TEST_DATA/$1_tmp.txt"
-    python ./"$1.py" "$2" > $TEST_DATA/$1_tmp.txt
+    python3 ./"$1.py" "$2" > $TEST_DATA/$1_tmp.txt
     diff_output $1
 }
 
 run_gloss_links_file() {
     echo "Running python ./$1.py with keyword "$3" > $TEST_DATA/$3.txt"
-    python ./"$1.py" $TEST_DATA/"$2.txt" $TEST_DATA --lf "$TEST_DATA/$1_inp.txt"
+    python3 ./"$1.py" $TEST_DATA/"$2.txt" $TEST_DATA --lf "$TEST_DATA/$1_inp.txt"
     diff_output_gloss_links $1 $3
+}
 
+run_url_checker() {
+    echo "Running python ./$1.py $TEST_DATA/$1_inp.txt > $TEST_DATA/$1_tmp.txt"
+    python3 ./"$1.py" $TEST_DATA/$1_inp.txt $2 > $TEST_DATA/$1_tmp.txt || true
+    diff_output $1
 }
 
 run_spell_checker() {
@@ -58,7 +63,7 @@ export title="Test"
 export title2="work"
 export key="gloss_key"
 export key_word="Django"
-# export page="http://www.thedevopscourse.com"
+export page="http://www.thedevopscourse.com"
 run_diff_test_std create_page "$title" "http://www.testingit.com/"
 run_diff_test_file create_gloss
 #run_gloss_links_file gloss_links "$key" "$key_word"
@@ -66,6 +71,5 @@ run_diff_test_file create_menu
 run_diff_test_file html_checker
 run_sieve_test sieve
 # run_quiz_test_work qexport "$title2"
-# url checker not ready for testing!
-# run_diff_test_file url_checker
+run_url_checker url_checker $page
 exit 0
