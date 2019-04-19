@@ -66,10 +66,6 @@ for line in fileContent:
         line = line.replace("pwd", "Get-Location")
     elif line.startswith("touch"):
         line = line.replace("touch", "echo $null >>")
-    elif line.startswith("rm"):
-        line = line.replace("rm", "Remove-Item")
-    elif line.startswith("diff"):
-        line = line.replace("diff", "Compare-Object")
     elif line.startswith("tail"):
         line = line.replace("tail -n", "Get-Content -Tail ")
         # when -n parameter is not specified (default is -n10)
@@ -105,6 +101,16 @@ for line in fileContent:
         line = line.replace("done", "}")
     elif line.startswith("do"):
         line = line.replace("do", "{")
+    elif line.startswith("cp"):
+        line = line.replace("cp ", "Copy-Item ")
+    elif line.startswith("mv"):
+        line = line.replace("mv ", "Move-Item ")
+    elif line.startswith("rm"):
+        line = line.replace("rm ", "Remove-Item ")
+    elif line.startswith("diff"):
+        line = line.replace("diff ", "Compare-Object ")
+    elif line.startswith("echo"):
+        line = line.replace("echo ", "Write-Host ")
 
     if insideFunction:
         if "$" in line:
@@ -113,7 +119,6 @@ for line in fileContent:
             insideFunction = False
 
     line = convertOperators(line)
-    line = line.replace("echo", "Write-Host")
     convertedFile.write(line + "\n")
 
 fileContent.close()
