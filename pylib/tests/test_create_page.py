@@ -16,10 +16,10 @@ class CreatePageTestCase(TestCase):
     def create_page(self):
         str1 = "file name"
         file1 = "file_name"
-        self.assertEqual(filenm_from_key(str1), file1)
+        self.assertEqual(create_page(str1), file1)
         str2 = "filename"
         file2 = "filename"
-        self.assertEqual(filenm_from_key(str2), file2)
+        self.assertEqual(create_page(str2), file2)
     
     def create_subtopics(self):
         self.assertEqual(1,1)
