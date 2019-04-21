@@ -173,13 +173,14 @@ class HTMLSpellChecker(HTMLParser):
             elif response == 'skip' or response == 's' or response == '2':
                 return None
             elif response == 'edit' or response == 'e' or response == '3':
-                # Editing the word in the file itself, with the work highlighted.
+                # Editing the word in the file itself,
+                # with the work highlighted.
                 subprocess.call([
                    'vimdiff',
                    '+{}'.format(self.line_num),
                    '-c', 'match Search /{}/'.format(word), file_name
                 ])
-                
+
                 raise FileChangedException
             elif response == 'close' or response == 'c' or response == '4':
                 raise SpellingException("Mis-spelled word: " + word)
