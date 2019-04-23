@@ -12,6 +12,7 @@ fileContent = open(fileName, "r")
 convertedFile = open(newFileName, "w+")
 
 insideFunction = False
+stack = []
 
 
 def convertConditions(s):
@@ -115,8 +116,13 @@ for line in fileContent:
     if insideFunction:
         if "$" in line:
             line = convertFunctionArguments(line)
+        elif "{" in line:
+            stack.append("{")
         elif "}" in line:
-            insideFunction = False
+            if not stack:
+                insideFunction = False
+            else:
+                stack.pop()
 
     line = convertOperators(line)
     convertedFile.write(line + "\n")
