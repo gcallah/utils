@@ -33,7 +33,14 @@ def convertOperators(s):
     return s
 
 
-def convertFunctionArguments(s):
+def convertFunctionArgument(s, start, arg):
+    s = s[:start-1] + "$($args[" + \
+        str(int(s[start:start+len(arg)])-1) + \
+        "])" + s[start+len(arg):]
+    return s
+
+
+def findAndConvertFunctionArguments(s):
     i, arg = 0, None
     variableFound = False
     while i < len(s):
@@ -45,15 +52,13 @@ def convertFunctionArguments(s):
                 arg = s[start:i+1]
             else:
                 if arg:
-                    s = s[:start-1] + "$args[" + s[start:start+len(arg)] + \
-                        "]" + s[start+len(arg):]
+                    s = convertFunctionArgument(s, start, arg)
                     i += 5
                     arg = None
                 variableFound = False
         i += 1
     if variableFound and s[start:].isnumeric():
-        s = s[:start-1] + "args[" + s[start:start+len(arg)] + \
-            "]" + s[start+len(arg):]
+        s = convertFunctionArgument(s, start, arg)
     return s
 
 
@@ -115,7 +120,7 @@ for line in fileContent:
 
     if insideFunction:
         if "$" in line:
-            line = convertFunctionArguments(line)
+            line = findAndConvertFunctionArguments(line)
         elif "{" in line:
             stack.append("{")
         elif "}" in line:
