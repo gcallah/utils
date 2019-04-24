@@ -2,7 +2,7 @@
 
 # How to add an ssh key to Travis-CI.
 
-if [[ -z "$1" || -z "$2" || -z "$3" -z "$4" ]]
+if [[ -z "$1" || -z "$2" || -z "$3" || -z "$4" ]]
 then
     echo "Usage: travis-ssh.sh [keyfile] [ssh_user] [deploy_host] [repo]."
     exit 1
