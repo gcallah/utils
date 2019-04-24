@@ -22,6 +22,14 @@ script_tests: FORCE
 
 tests: html_tests script_tests
 
+powershell_html_tests: FORCE
+	powershell -ExecutionPolicy ByPass $(TEST_DIR)/html_tests_powershell.ps1
+
+powershell_script_tests: FORCE
+	powershell -ExecutionPolicy ByPass $(TEST_DIR)/script_tests_powershell.ps1
+
+powershell_tests: powershell_html_tests powershell_script_tests
+
 lint: 
 	flake8 $(PYTHONFILES)
 
