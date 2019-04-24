@@ -11,6 +11,7 @@ newFileName = str(fileName).split(".sh")[0] + "_converted.ps1"
 fileContent = open(fileName, "r")
 convertedFile = open(newFileName, "w+")
 
+insideDiff = False
 insideFunction = False
 stack = []
 
@@ -25,19 +26,47 @@ def convertConditions(s):
     return s
 
 
+def convertOperatorConditions(s, op):
+    if op == "&&":
+        newOp = "-and"
+    elif op == "||":
+        newOp = "-or"
+    conditions = s.split(op)
+    s = ""
+    for condition in conditions[:-1]:
+        s += "(" + condition + ") " + newOp + " "
+    s += conditions[-1] + " | out-null"
+    return s
+
+
 def convertOperators(s):
+    s = s.replace("true", "$true")
+    s = s.replace("false", "$false")
     s = s.replace("==", "-eq")
     s = s.replace("!=", "-ne")
-    s = s.replace("&&", "-and")
-    s = s.replace("||", "-or")
+    if "&&" in s:
+        s = convertOperatorConditions(s, "&&")
+    if "||" in s:
+        s = convertOperatorConditions(s, "||")
     return s
+
+
+def convertDiffStatement(s):
+    """
+    This function converts the diff statement provided that it is
+    in the following format: diff a b
+    where a and b are two files to be compared
+    """
+    sList = s.split()
+    file1, file2 = sList[1], sList[2]
+    return "if ( -not (Compare-Object (Get-Content " + file1 + \
+           ") (Get-Content " + file2 + ")) ) {"
 
 
 def convertFunctionArgument(s, start, arg):
-    s = s[:start-1] + "$($args[" + \
-        str(int(s[start:start+len(arg)])-1) + \
-        "])" + s[start+len(arg):]
-    return s
+    return s[:start-1] + "$($args[" + \
+           str(int(s[start:start+len(arg)])-1) + \
+           "])" + s[start+len(arg):]
 
 
 def findAndConvertFunctionArguments(s):
@@ -70,16 +99,16 @@ for line in fileContent:
         line = line.replace("export ", "$", 1)
     elif line.startswith("pwd"):
         line = line.replace("pwd", "Get-Location")
-    elif line.startswith("touch"):
-        line = line.replace("touch", "echo $null >>")
+    elif line.startswith("touch "):
+        line = line.replace("touch ", "echo $null >>")
     elif line.startswith("tail"):
         line = line.replace("tail -n", "Get-Content -Tail ")
         # when -n parameter is not specified (default is -n10)
         line = line.replace("tail", "Get-Content -Tail 10")
-    elif line.startswith("grep"):
-        line = line.replace("grep", "Select-String")
-    elif line.startswith("find"):
-        line = line.replace("find", "Get-ChildItem")
+    elif line.startswith("grep "):
+        line = line.replace("grep ", "Select-String")
+    elif line.startswith("find "):
+        line = line.replace("find ", "Get-ChildItem")
     elif "python3" in line:
         line = line.replace("python3", "python")
     elif line.startswith("if"):
@@ -107,16 +136,25 @@ for line in fileContent:
         line = line.replace("done", "}")
     elif line.startswith("do"):
         line = line.replace("do", "{")
-    elif line.startswith("cp"):
+    elif line.startswith("cp "):
         line = line.replace("cp ", "Copy-Item ")
-    elif line.startswith("mv"):
+    elif line.startswith("mv "):
         line = line.replace("mv ", "Move-Item ")
-    elif line.startswith("rm"):
+    elif line.startswith("rm "):
         line = line.replace("rm ", "Remove-Item ")
-    elif line.startswith("diff"):
-        line = line.replace("diff ", "Compare-Object ")
-    elif line.startswith("echo"):
+    elif line.startswith("diff "):
+        insideDiff = True
+        line = convertDiffStatement(line)
+    elif line.startswith("echo "):
         line = line.replace("echo ", "Write-Host ")
+
+    if insideDiff and "}" in line:
+        line = "}\n" + \
+                "else {\n" + \
+                "Write-Host \"Comparison failed.\"\n" + \
+                "}\n" + \
+                line
+        insideDiff = False
 
     if insideFunction:
         if "$" in line:

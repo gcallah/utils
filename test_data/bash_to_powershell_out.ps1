@@ -12,7 +12,7 @@ Write-Host "$($args[0]) passed."
 Remove-Item $TEST_DATA/$($args[0])_tmp.txt
 }
 else {
-Write-Host "$($args[0]) failed."
+Write-Host "Comparison failed."
 }
 }
 
