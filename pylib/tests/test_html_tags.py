@@ -15,12 +15,9 @@ class HtmlTagTestCase(TestCase):
         pass
 
     def include_tag(self):
-        str1 = "file name"
-        file1 = "file_name"
+        str1 = "{% include ' filename ' %}"
+        file1 = "filename"
         self.assertEqual(include_tag(str1), file1)
-        str2 = "filename"
-        file2 = "filename"
-        self.assertEqual(include_tag(str2), file2)
     
     def par(self):
         self.assertEqual(1,1)
