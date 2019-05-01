@@ -14,7 +14,7 @@ GLYPHICON = 4  # type: int
 LINK_INSERT = 5  # type: int
 DOC_TXT = 6  # type: int
 HW_TXT = 7  # type: int
-LINT_TXT = 8 # type: int
+LINT_TXT = 8  # type: int
 MAX_FLD = LINT_TXT  # type: int
 
 UNSET = -999999999  # topic level not yet set

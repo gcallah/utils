@@ -78,4 +78,3 @@ with open(quiz_file, "r") as f_in:
     print(INDENT4 + answer_key)
     print(INDENT3 + '</p>')
     print(INDENT2 + '</details>')
-#    print(INDENT1 + '</details>')
