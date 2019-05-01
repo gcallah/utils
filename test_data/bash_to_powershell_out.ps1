@@ -18,7 +18,7 @@ Write-Host "Comparison failed."
 
 function run_diff_test_file {
 Write-Host "Running python ./$($args[0]).py $TEST_DATA/$($args[0])_inp.txt > $TEST_DATA/$($args[0])_tmp.txt"
-python ./"$($args[0]).py" $TEST_DATA/$($args[0])_inp.txt > $TEST_DATA/$($args[0])_tmp.txt
+(python ./"$($args[0]).py" $TEST_DATA/$($args[0])_inp.txt > $TEST_DATA/$($args[0])_tmp.txt ) -or  $true | out-null
 diff_output $($args[0])
 }
 

@@ -6,10 +6,10 @@ except IndexError:
     print("Please provide a file to convert")
     sys.exit()
 
-newFileName = str(fileName).split(".sh")[0] + "_converted.ps1"
+newFileName = str(fileName).split(".sh")[0] + "_powershell.ps1"
 
 fileContent = open(fileName, "r")
-convertedFile = open(newFileName, "w+")
+powershellFile = open(newFileName, "w+")
 
 insideDiff = False
 insideFunction = False
@@ -168,7 +168,7 @@ for line in fileContent:
                 stack.pop()
 
     line = convertOperators(line)
-    convertedFile.write(line + "\n")
+    powershellFile.write(line + "\n")
 
 fileContent.close()
-convertedFile.close()
+powershellFile.close()

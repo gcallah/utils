@@ -56,7 +56,16 @@ run_url_checker() {
 
 run_spell_checker() {
 	echo "Running the spell checker: python"
-	python ./"$1.py" "$2.txt" "$3.txt"	
+	python3 ./"$1.py" "$2.txt" "$3.txt"	
+}
+
+run_bash_powershell() {
+    echo "Running python ./$1.py $TEST_DATA/$1_inp.txt > $TEST_DATA/$1_tmp.txt"
+    python3 ./"$1.py" $TEST_DATA/$1_inp.sh || true
+    echo "Going to diff $TEST_DATA/$1_out.ps1 $TEST_DATA/$1_inp_powershell.ps1"
+    diff $TEST_DATA/$1_out.ps1 $TEST_DATA/$1_inp_powershell.ps1
+    echo "$1 passed."
+    rm $TEST_DATA/$1_inp_powershell.ps1
 }
 
 export title="Test"
@@ -65,11 +74,12 @@ export key="gloss_key"
 export key_word="Django"
 export page="http://www.thedevopscourse.com"
 run_diff_test_std create_page "$title" "http://www.testingit.com/"
-run_diff_test_file create_gloss
+# run_diff_test_file create_gloss
 #run_gloss_links_file gloss_links "$key" "$key_word"
 run_diff_test_file create_menu
 run_diff_test_file html_checker
 run_sieve_test sieve
 # run_quiz_test_work qexport "$title2"
 run_url_checker url_checker $page
+run_bash_powershell bash_to_powershell
 exit 0
