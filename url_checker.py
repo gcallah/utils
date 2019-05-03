@@ -5,6 +5,7 @@ Script to check validity of anchor tag links in an HTML file.
 from html.parser import HTMLParser
 import argparse
 import urllib.request as req
+import socket
 
 ARG_ERROR = 1  # type: int
 PARSE_ERROR = 2  # type: int
@@ -43,11 +44,15 @@ class OurHTMLParser(HTMLParser):
                               str(http_e.reason).lower() + " in file " +
                               html_file)
                 except req.URLError as url_e:  # DNS/Proxy issue
-                    errno = str(url_e.reason).split("]")[0].split()[-1]
-                    if errno == "-2" or errno == "8":
-                        url_e.reason = "Server cannot be reached"
-                    print(str(url_e.reason) + " for url " +
-                          url + " in file " + html_file)
+                    if isinstance(url_e.reason, socket.timeout):
+                        print("Timed out for url " +
+                            url + " in file " + html_file)
+                    else:
+                        errno = str(url_e.reason).split("]")[0].split()[-1]
+                        if errno == "-2" or errno == "8":
+                            url_e.reason = "Server cannot be reached"
+                        print(str(url_e.reason) + " for url " +
+                            url + " in file " + html_file)
 
 
 def is_accessible(link, abs_link):
@@ -65,7 +70,7 @@ def is_accessible(link, abs_link):
             possible_slash = '/'
         result_link = abs_link + possible_slash + link
 
-    req.urlopen(result_link)
+    req.urlopen(result_link, timeout=30).read().decode('utf-8')
     return True  # this needs to return false if not accesible!
 
 
