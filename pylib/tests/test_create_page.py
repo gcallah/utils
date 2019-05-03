@@ -2,9 +2,11 @@
 This is the test suite for create_page.py.
 """
 
+import os
 from unittest import TestCase, main
-from pylib.create_page import create_page, create_subtopics
+from pylib.create_page import create_page  # , create_subtopics
 
+templ_dir = os.getenv("templ_dir", default="")
 
 class CreatePageTestCase(TestCase):
     def setUp(self):
@@ -14,14 +16,8 @@ class CreatePageTestCase(TestCase):
         pass
 
     def create_page(self):
-        str1 = "file name"
-        file1 = "file_name"
-        self.assertEqual(create_page(str1), file1)
-        str2 = "filename"
-        file2 = "filename"
-        self.assertEqual(create_page(str2), file2)
-    
+        page = create_page(templ_dir + "/template.ptml", "Test page")
+        self.assertIn(page, "Test page")
+
     def create_subtopics(self):
-        self.assertEqual(1,1)
-		
-		
+        self.assertEqual(1, 1)

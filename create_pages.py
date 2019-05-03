@@ -37,9 +37,11 @@ def process_level(topic_list, level):
             if not my_file.is_file():  # don't overwrite existing files!
                 print("\nGoing to create " + ptml_file)
                 with open(pg_templ, 'r') as inf, open(ptml_file, 'w') as outf:
-                    create_page(inf, outf, topic.title,
-                                topic.subtopics, topic.link_insert,
-                                topic.doc_txt, topic.hw_txt, topic.lint_txt)
+                    page = create_page(inf, topic.title,
+                                       topic.subtopics, topic.link_insert,
+                                       topic.doc_txt, topic.hw_txt,
+                                       topic.lint_txt)
+                    outf.write(page)
         elif topic.subtopics is not None:
             # if the topic had a url, we processed the subtopics above
             process_level(topic.subtopics, level + 1)

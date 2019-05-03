@@ -19,4 +19,5 @@ if len(sys.argv) > 2:
     if DEBUG:
         sys.stderr.write("Link is " + link + "\n")
 
-create_page(sys.stdin, sys.stdout, page_nm, link_insert=link)
+output = create_page(sys.stdin, page_nm, link_insert=link)
+print(output, end="")

@@ -3,6 +3,7 @@ export PYTHONPATH="$GIT_ROOT/utils"
 echo $PYTHONPATH
 export user_type="test"
 export test_dir="tests"
+export templ_dir="../templates"
 export ignores="FOO"   # dummy file
 
 if [ -z $1 ]
