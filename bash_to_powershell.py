@@ -109,8 +109,10 @@ for line in fileContent:
         line = line.replace("grep ", "Select-String")
     elif line.startswith("find "):
         line = line.replace("find ", "Get-ChildItem")
-    elif "python3" in line:
+    elif line.startswith("python3 ") or line.startswith("python "):
         line = line.replace("python3", "python")
+        if "<" in line:
+            line = "cmd /c '" + line + "'"
     elif line.startswith("if"):
         line = convertConditions(line)
     elif line.startswith("elif"):
