@@ -2,22 +2,24 @@
 
 # How to add an ssh key to Travis-CI.
 
-if [[ -z "$1" || -z "$2" || -z "$3" ]]
+if [[ -z "$1" || -z "$2" || -z "$3" || -z "$4" ]]
 then
-    echo "Usage: travis-ssh.sh [keyfile] [ssh_user] [deploy_host]."
+    echo "Usage: travis-ssh.sh [keyfile] [ssh_user] [deploy_host] [repo]."
     exit 1
 fi
 
 key=~/.ssh/$1
 user=$2
 host=$3
+repo=$4
 
 echo "Generating ssh key."
 ssh-keygen -t rsa -b 2048 -C 'build@travis-ci.org' -f $key
 
 echo "Registering key with Travis -- you may need to login to Travis first!"
 echo "(For login, use 'travis login --com' [or --org if you are hosted on .org)"
-travis encrypt-file $key --add
+travis login --com
+travis encrypt-file $key --add --com -r $repo
 git add $1.enc
 
 echo "Deploying key to server host."
