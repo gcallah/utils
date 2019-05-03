@@ -14,46 +14,44 @@ class HtmlTagTestCase(TestCase):
     def tearDown(self):
         pass
 
-    def include_tag(self):
+    def test_for_include_tag(self):
         str1 = "{% include ' filename ' %}"
         file1 = "filename"
         self.assertEqual(include_tag(str1), file1)
-    
-    def par(self):
-        self.assertEqual(1,1)
+		
+	def test_for_par(self):
+        self.assertEqual(1, 1)
 
-    def link(self):
-        self.assertEqual(1,1)
+    def test_for_link(self):
+        self.assertEqual(1, 1)
 		
-    def figure(self):
-        self.assertEqual(1,1)
+    def test_for_figure(self):
+        self.assertEqual(1, 1)
 		
-    def details(self):
-        self.assertEqual(1,1)
+    def test_for_details(self):
+        self.assertEqual(1, 1)
 
-    def ulist(self):
-        self.assertEqual(1,1)
+    def test_for_ulist(self):
+        self.assertEqual(1, 1)
 
-    def olist(self):
-        self.assertEqual(1,1)
+    def test_for_olist(self):
+        self.assertEqual(1, 1)
 
-    def image(self):
-        self.assertEqual(1,1)
+    def test_for_image(self):
+        self.assertEqual(1, 1)
 		
-    def head(self):
-        self.assertEqual(1,1)
+    def test_for_head(self):
+        self.assertEqual(1, 1)
 		
-    def sidebar_links(self):
-        self.assertEqual(1,1)
+    def test_for_sidebar_links(self):
+        self.assertEqual(1, 1)
 		
-    def sidebar(self):
-        self.assertEqual(1,1)
+    def test_for_sidebar(self):
+        self.assertEqual(1, 1)
 		
-    def str_to_valid_id(self):
-        self.assertEqual(1,1)
+    def test_for_str_to_valid_id(self):
+        self.assertEqual(1, 1)
 		
-    def html_list(self):
-        self.assertEqual(1,1)
-
-		
+    def test_for_html_list(self):
+        self.assertEqual(1, 1)
 		
