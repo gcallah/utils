@@ -111,8 +111,19 @@ for line in fileContent:
         line = line.replace("find ", "Get-ChildItem")
     elif line.startswith("python3 ") or line.startswith("python "):
         line = line.replace("python3", "python")
+        # handling "<" operator as it is not allowed in powershell
         if "<" in line:
-            line = "cmd /c '" + line + "'"
+            lineSplit = line.split(">")
+            interchange = lineSplit[0]
+            outputLocExists = False
+            if len(lineSplit) > 1:
+                outputLocExists = True
+                outputLoc = lineSplit[1]
+            lineSplit = interchange.split("<")
+            line = lineSplit[1] + "| " + lineSplit[0]
+            if outputLocExists:
+                line += ">" + outputLoc
+            line = "Get-Content" + line
     elif line.startswith("if"):
         line = convertConditions(line)
     elif line.startswith("elif"):
