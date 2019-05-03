@@ -4,6 +4,30 @@ indent1 = "            "  # type: str
 indent2 = "                    "  # type: str
 
 
+def html_start_stuff(page_title):
+    link_line = '<link href="style.css" rel="stylesheet" type="text/css"/>\n'
+    start_stuff = "<!DOCTYPE html>\n"
+    start_stuff += "<html>\n"
+    start_stuff += "    <head>\n"
+    start_stuff += "        <meta charset=\"UTF-8\">\n"
+    start_stuff += "        " + link_line
+    start_stuff += "        <title>\n"
+    start_stuff += "        " + page_title + "\n"
+    start_stuff += "        </title>\n"
+    start_stuff += "    </head>\n"
+    start_stuff += "    <body>\n"
+    start_stuff += "        <h1>\n"
+    start_stuff += "        " + page_title + "\n"
+    start_stuff += "        </h1>\n"
+    return start_stuff
+
+
+def html_end_stuff():
+    end_stuff = "    </body>\n"
+    end_stuff += "</html>\n"
+    return end_stuff
+
+
 def create_subtopics(outf, subtopics, level):
     s = ""
     for topic in subtopics:
