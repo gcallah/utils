@@ -12,5 +12,5 @@ class HtmlTagTestCase(TestCase):
     def tearDown(self):
         pass
 
-    def parse_site(self):
-	self.assertEqual(test_parse_site(“http://www.thedevopscourse.com/”), “The DevOps Course“)
+    def test_for_parse_site(self):
+		self.assertEqual(test_parse_site(“http://www.thedevopscourse.com/”), “The DevOps Course“)

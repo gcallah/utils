@@ -13,7 +13,7 @@ class CreatePageTestCase(TestCase):
     def tearDown(self):
         pass
 
-    def create_page(self):
+    def test_for_create_page(self):
         str1 = "file name"
         file1 = "file_name"
         self.assertEqual(create_page(str1), file1)
@@ -21,7 +21,7 @@ class CreatePageTestCase(TestCase):
         file2 = "filename"
         self.assertEqual(create_page(str2), file2)
     
-    def create_subtopics(self):
+    def test_for_create_subtopics(self):
         self.assertEqual(1,1)
 		
 		
