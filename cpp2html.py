@@ -6,8 +6,13 @@ file and turn it into a web page.
 """
 
 import sys
+import re
+
 import pylib.create_page as pyl
 import pylib.html_tags as html
+
+COMMENT_START = re.compile("^\s/\*\s*$")
+COMMENT_END = re.compile("^\s\* \*/\s*$")
 
 
 if len(sys.argv) < 2:
