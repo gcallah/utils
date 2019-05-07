@@ -27,6 +27,7 @@ with open(cpp_file, 'r') as inp:
     # or in code.
     text = ""
     in_reg_text = False
+    consec_blanks = 0
     for line in inp:
         if COMMENT_START.match(line):
             if len(text):
@@ -43,6 +44,11 @@ with open(cpp_file, 'r') as inp:
         if in_reg_text:
             line = line.replace("*", "")
         else:
+            if not line.strip():
+                consec_blanks += 1
+            if consec_blanks >= 2:
+                consec_blanks = 0
+                continue
             line = line.replace("<", "&lt;")
             line = line.replace(">", "&gt;")
         text += line
