@@ -4,18 +4,21 @@ indent1 = "            "  # type: str
 indent2 = "                    "  # type: str
 
 
-def html_start_stuff(page_title):
-    link_line = '<link href="style.css" rel="stylesheet" type="text/css"/>\n'
+def ptml_start_stuff(page_title):
+    """
+    For serving static web sites where we pre-process our html.
+    """
     start_stuff = "<!DOCTYPE html>\n"
     start_stuff += "<html>\n"
     start_stuff += "    <head>\n"
-    start_stuff += "        <meta charset=\"UTF-8\">\n"
-    start_stuff += "        " + link_line
+    start_stuff += "<!--include head.txt -->"
     start_stuff += "        <title>\n"
     start_stuff += "        " + page_title + "\n"
     start_stuff += "        </title>\n"
     start_stuff += "    </head>\n"
     start_stuff += "    <body>\n"
+    start_stuff += "<!--include logo.txt -->"
+    start_stuff += "<!--include menu.txt -->"
     start_stuff += "        <h1>\n"
     start_stuff += "        " + page_title + "\n"
     start_stuff += "        </h1>\n"

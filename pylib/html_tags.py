@@ -17,6 +17,23 @@ def par(text=None, indent=INDENT4):
     return s
 
 
+def code(text=None):
+    s = '<code>\n'
+    if text is not None:
+        s += text + '\n'
+    s += '</code>\n'
+    return s
+
+
+def code_par(text=None, indent=INDENT4):
+    s = indent + '<p>\n'
+    s += indent + '<pre>\n'
+    s += indent + code(text)
+    s += indent + '</pre>\n'
+    s += indent + '</p>\n'
+    return s
+
+
 def link(target, text):
     return '<a href="' + target + '">' + text + '</a>'
 
