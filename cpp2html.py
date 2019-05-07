@@ -29,14 +29,13 @@ with open(cpp_file, 'r') as inp:
     in_reg_text = False
     for line in inp:
         if COMMENT_START.match(line):
-            # print("STARTING COMMENT")
             if len(text):
-                print(html.code_par(text))
+                # no extra line after code!
+                print(html.code_par(text), end="")
             in_reg_text = True
             text = ""
             continue
         elif COMMENT_END.match(line):
-            # print("ENDING COMMENT")
             in_reg_text = False
             print(html.par(text))
             text = ""
