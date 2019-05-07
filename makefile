@@ -20,6 +20,9 @@ html_tests: FORCE
 script_tests: FORCE
 	$(TEST_DIR)/script_tests.sh
 
+pytests: FORCE
+	$(LIB_DIR)/pytests.sh
+
 tests: html_tests script_tests
 
 powershell_html_tests: FORCE
