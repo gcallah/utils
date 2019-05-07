@@ -26,11 +26,9 @@ def code(text=None):
 
 
 def code_par(text=None, indent=INDENT4):
-    s = indent + '<p>\n'
-    s += indent + '<pre>\n'
+    s = indent + '<pre>\n'
     s += indent + code(text)
     s += indent + '</pre>\n'
-    s += indent + '</p>\n'
     return s
 
 
