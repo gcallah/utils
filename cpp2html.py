@@ -42,9 +42,11 @@ with open(cpp_file, 'r') as inp:
             text = ""
             continue
         if in_reg_text:
-            text += line.replace("*", "")
+            line = line.replace("*", "")
         else:
-            text += line
+            line = line.replace("<", "&lt;")
+            line = line.replace(">", "&gt;")
+        text += line
 
     if len(text):
         print(html.code_par(text))
