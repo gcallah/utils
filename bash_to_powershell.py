@@ -16,28 +16,6 @@ def parseArguments():
     args = parser.parse_args()
     return args
 
-args = parseArguments()
-fileName = args.file
-
-newFileName = str(fileName).split(".sh")[0] + "_powershell.ps1"
-
-fileContent = open(fileName, "r")
-powershellFile = open(newFileName, "w+")
-
-if args.defaultParams:
-    powershellFile.write("$TEST_DIR = \"tests\"" + "\n")
-    powershellFile.write("$TEST_DATA = \"test_data\"" + "\n")
-    powershellFile.write("$LIB_DIR = \"pylib\"" + "\n")
-    powershellFile.write("$CODE_DIR = \".\"" + "\n")
-    powershellFile.write("$HTML_DIR = \".\"" + "\n")
-    powershellFile.write("$DATA_DIR = $CODE_DIR + \"/data\"" + "\n")
-    powershellFile.write("$DOCKER_DIR = \"docker\"" + "\n")
-    powershellFile.write("\n")
-
-insideDiff = False
-insideFunction = False
-stack = []
-
 
 def convertConditions(s):
     s = s.replace("[", "(", 1)
@@ -45,6 +23,9 @@ def convertConditions(s):
     s = s.replace("[", "")
     s = s[::-1].replace("]", "")[::-1]
     s = s.replace("=", "-eq")
+    s = s.replace("-z ", "$null -eq ")
+    s = s.replace("-n ", "$null -ne ")
+    s = s.replace("-e ", "Test-Path ")
     s = convertOperators(s)
     return s
 
@@ -113,6 +94,28 @@ def findAndConvertFunctionArguments(s):
         s = convertFunctionArgument(s, start, arg)
     return s
 
+
+args = parseArguments()
+fileName = args.file
+
+newFileName = str(fileName).split(".sh")[0] + "_powershell.ps1"
+
+fileContent = open(fileName, "r")
+powershellFile = open(newFileName, "w+")
+
+if args.defaultParams:
+    powershellFile.write("$TEST_DIR = \"tests\"" + "\n")
+    powershellFile.write("$TEST_DATA = \"test_data\"" + "\n")
+    powershellFile.write("$LIB_DIR = \"pylib\"" + "\n")
+    powershellFile.write("$CODE_DIR = \".\"" + "\n")
+    powershellFile.write("$HTML_DIR = \".\"" + "\n")
+    powershellFile.write("$DATA_DIR = $CODE_DIR + \"/data\"" + "\n")
+    powershellFile.write("$DOCKER_DIR = \"docker\"" + "\n")
+    powershellFile.write("\n")
+
+insideDiff = False
+insideFunction = False
+stack = []
 
 for line in fileContent:
     line = line.strip()
