@@ -167,6 +167,12 @@ for line in fileContent:
     elif line.startswith("for"):
         line = line.replace("for ", "foreach ($")
         line = line.replace(";", "")
+        if "*" in line:
+            forStatement = line.split("in")
+            temp, directory = forStatement[0], forStatement[1]
+            # the Force parameter handles hidden files
+            line = temp + "in " + "Get-ChildItem -Path " + \
+                directory + " -Force"
         line += ")"
     elif line.startswith("done"):
         line = line.replace("done", "}")
