@@ -29,6 +29,7 @@ powershell_html_tests: FORCE
 	powershell -ExecutionPolicy ByPass $(TEST_DIR)/html_tests_powershell.ps1
 
 powershell_script_tests: FORCE
+	python bash_to_powershell.py .\tests\script_tests.sh -d=True
 	powershell -ExecutionPolicy ByPass $(TEST_DIR)/script_tests_powershell.ps1
 
 powershell_tests: powershell_html_tests powershell_script_tests
