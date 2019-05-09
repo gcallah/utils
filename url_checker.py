@@ -53,6 +53,8 @@ class OurHTMLParser(HTMLParser):
                             url_e.reason = "Server cannot be reached"
                         print(str(url_e.reason) + " for url " +
                               url + " in file " + html_file)
+                except:
+                    print("Cannot access URL: " + url)
 
 
 def is_accessible(link, abs_link):
