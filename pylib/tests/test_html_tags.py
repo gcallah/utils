@@ -6,6 +6,8 @@ from unittest import TestCase, main
 from pylib.html_tags import include_tag, par, link, figure, details, ulist, olist, image
 from pylib.html_tags import head, sidebar_links, sidebar, str_to_valid_id, html_list
 
+templ_dir = os.getenv("templ_dir", default="")
+page = create_page(templ_dir + "/sample.html", "Test page")
 
 class HtmlTagTestCase(TestCase):
     def setUp(self):
@@ -20,7 +22,7 @@ class HtmlTagTestCase(TestCase):
         self.assertEqual(include_tag(str1), file1)
 		
 	def test_for_par(self):
-        self.assertEqual(1, 1)
+        self.assertIn(templ_dir + "/sample.html", par("Paragraph",indent="")
 
     def test_for_link(self):
         self.assertEqual(1, 1)
