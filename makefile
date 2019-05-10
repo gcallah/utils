@@ -28,6 +28,9 @@ pytests: FORCE
 
 tests: html_tests script_tests
 
+# download make for windows to run tests on powershell:
+# http://gnuwin32.sourceforge.net/packages/make.htm
+
 # the test can depend upon the ps1 files being built like this:
 # pshell_html_tests: $(TEST_DIR)/html_tests_powershell.ps1
 
