@@ -11,8 +11,8 @@ import re
 import pylib.create_page as pyl
 import pylib.html_tags as html
 
-COMMENT_START = re.compile("^\s*/\*\s*$")
-COMMENT_END = re.compile("^\s*\* \*/\s*$")
+COMMENT_START = re.compile(r"^\s*/\*\s*$")
+COMMENT_END = re.compile(r"^\s*\* \*/\s*$")
 
 
 if len(sys.argv) < 2:

@@ -53,7 +53,7 @@ class OurHTMLParser(HTMLParser):
                             url_e.reason = "Server cannot be reached"
                         print(str(url_e.reason) + " for url " +
                               url + " in file " + html_file)
-                except:
+                except:  # noqa E722
                     print("Cannot access URL: " + url)
 
 
