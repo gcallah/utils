@@ -14,8 +14,8 @@ from pygments.lexers.c_cpp import CppLexer
 import pylib.create_page as pyl
 import pylib.html_tags as html
 
-COMMENT_START = re.compile("^\s*/\*\s*$")
-COMMENT_END = re.compile("^\s*\* \*/\s*$")
+COMMENT_START = re.compile(r"^\s*/\*\s*$")
+COMMENT_END = re.compile(r"^\s*\* \*/\s*$")
 
 class InlineHtmlFormatter(pygments.formatters.HtmlFormatter):
     """
