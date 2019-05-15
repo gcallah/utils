@@ -14,8 +14,12 @@ from pygments.lexers.c_cpp import CppLexer
 import pylib.create_page as pyl
 import pylib.html_tags as html
 
+CODE_SPAN = '<span class="code">'
+CLOSE_SPAN = '</span>'
+
 COMMENT_START = re.compile(r"^\s*/\*\s*$")
 COMMENT_END = re.compile(r"^\s*\* \*/\s*$")
+
 
 class InlineHtmlFormatter(pygments.formatters.HtmlFormatter):
     """
@@ -43,6 +47,7 @@ def main():
         # or in code.
         text = ""
         in_reg_text = False
+        in_code_span = False
         consec_blanks = 0
         for line in inp:
             if COMMENT_START.match(line):
@@ -59,6 +64,18 @@ def main():
                 continue
             if in_reg_text:
                 line = line.replace("*", "")
+                proc_line = ""
+                for c in line:
+                    if c == '`':  # back tick means code!
+                        if in_code_span:
+                            in_code_span = False
+                            proc_line += CLOSE_SPAN
+                        else:
+                            in_code_span = True
+                            proc_line += CODE_SPAN
+                    else:
+                        proc_line += c
+                line = proc_line
             else:
                 if not line.strip():
                     consec_blanks += 1
