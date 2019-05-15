@@ -48,8 +48,10 @@ def main():
         text = ""
         in_reg_text = False
         in_code_span = False
+        in_italics = False
         consec_blanks = 0
         for line in inp:
+            first_star = True
             if COMMENT_START.match(line):
                 if len(text):
                     # no extra line after code!
@@ -63,16 +65,25 @@ def main():
                 text = ""
                 continue
             if in_reg_text:
-                line = line.replace("*", "")
+                # line = line.replace("*", "")
                 proc_line = ""
                 for c in line:
                     if c == '`':  # back tick means code!
-                        if in_code_span:
-                            in_code_span = False
-                            proc_line += CLOSE_SPAN
-                        else:
+                        if not in_code_span:
                             in_code_span = True
                             proc_line += CODE_SPAN
+                        else:
+                            in_code_span = False
+                            proc_line += CLOSE_SPAN
+                    elif c == '*':
+                        if first_star:
+                            first_star = False
+                        elif not in_italics:
+                            in_italics = True
+                            proc_line += "<i>"
+                        else:
+                            in_italics = False
+                            proc_line += "</i>"
                     else:
                         proc_line += c
                 line = proc_line
