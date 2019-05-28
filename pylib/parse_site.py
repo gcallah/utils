@@ -14,7 +14,7 @@ GLYPHICON = 4  # type: int
 LINK_INSERT = 5  # type: int
 DOC_TXT = 6  # type: int
 HW_TXT = 7  # type: int
-LINT_TXT = 8
+LINT_TXT = 8  # type: int
 MAX_FLD = LINT_TXT  # type: int
 
 UNSET = -999999999  # topic level not yet set
@@ -34,7 +34,7 @@ class IndentError(Exception):
 
 
 class InputError(Exception):
-    def __init__(self, value: str, msg: str)->None:
+    def __init__(self, value: str, msg: str) -> None:
         self.value = value
         self.msg = msg
 
@@ -43,7 +43,7 @@ class InputError(Exception):
 
 
 class Topic:
-    def __init__(self, flds: List[str])->None:
+    def __init__(self, flds: List[str]) -> None:
         # make sure indent level is present and has a valid value
         if flds[LEVEL] is None:
             flds = ["" if fld is None else fld for fld in flds]
@@ -81,7 +81,7 @@ class Topic:
     def set_subtopics(self, sub):
         self.subtopics = sub
 
-    def to_string_just_me(self)->str:
+    def to_string_just_me(self) -> str:
         # when we don't want to recursively print the subtopics!
         s = self.str_indent
         s += str(self.level)
@@ -94,7 +94,7 @@ class Topic:
             s += "; " + self.glyphicon
         return s
 
-    def __str__(self)->str:
+    def __str__(self) -> str:
         s = self.to_string_just_me()
         s += "\n"
         if self.subtopics is not None:
@@ -126,7 +126,7 @@ def parse_site(file):
     lines = [line.rstrip('\r') for line in lines]  # for windows machines
 
     stack = []
-    curr_topic_list = []  # type: List[Any]
+    curr_topic_list = []  # type List[Any]
     prev_topic = None
     line_no = 0
     for line in lines:

@@ -17,8 +17,24 @@ def par(text=None, indent=INDENT4):
     return s
 
 
+def code(text=None):
+    s = '<code>'
+    if text is not None:
+        s += '\n' + text
+    s += '</code>'
+    return s
+
+
+def code_par(text=None, indent=INDENT4):
+    s = indent + '<pre>\n'
+    s += indent + code(text)
+    s += indent + '</pre>\n'
+    return s
+
+
 def link(target, text):
     return '<a href="' + target + '">' + text + '</a>'
+
 
 def figure(src="", caption=None, indent=INDENT4):
     # by default we get an empty figure tag

@@ -1,3 +1,4 @@
+#!/usr/bin/python
 """
 CLI Tool to check word spelling in an file.
 
@@ -64,8 +65,11 @@ def is_word(s, search=re.compile(r'[^a-zA-Z-\']').search):
 def check_files_exist(*files):
     for file_name in files:
         if not os.path.isfile(file_name):
-            print(file_name + " is not a file")
-            exit(ARG_ERROR)
+            if "custom_dict" in file_name:
+                file_name = open("./data/custom_dict.txt", "w+")
+            else:
+                print(file_name + " is not a file")
+                exit(ARG_ERROR)
 
 
 def saveAddedWords():
@@ -149,17 +153,18 @@ class HTMLSpellChecker(HTMLParser):
             FileChangedException if the edit option was chosen
         """
         if not interactive_mode:
-            raise SpellingException("Mis-spelled word: " + word)
+            print("Mis-spelled word: " + word)
         validResponse = False  # type: bool
         while not validResponse:
             response = input(
-                "How would you like to handle the bad word {}?\n".format(word)
-                + "1. Add as valid word to dictionary (1/a/add)\n"
-                + "2. Skip error, because word is a unique string (2/s/skip)\n"
-                + "3. Edit file, to fix the word (3/e/edit)\n"
-                + "4. Exit the spell-checker for this file."
-                + " Will result in a non-zero exit code. (4/c/close)\n"
-                + ">>")
+                "How would you like to handle the " +
+                "bad word {}?\n".format(word) +
+                "1. Add as valid word to dictionary (1/a/add)\n" +
+                "2. Skip error, because word is a unique string (2/s/skip)\n" +
+                "3. Edit file, to fix the word (3/e/edit)\n" +
+                "4. Exit the spell-checker for this file." +
+                " Will result in a non-zero exit code. (4/c/close)\n" +
+                ">>")
             response = response.lower()
             if response == 'add' or response == 'a' or response == '1':
                 added_words.add(word)
@@ -168,12 +173,14 @@ class HTMLSpellChecker(HTMLParser):
             elif response == 'skip' or response == 's' or response == '2':
                 return None
             elif response == 'edit' or response == 'e' or response == '3':
-                # This opens up vim with all instances of the word highlighted.
+                # Editing the word in the file itself,
+                # with the work highlighted.
                 subprocess.call([
-                    'vimdiff',
-                    '+{}'.format(self.line_num),
-                    '-c', 'match Search /{}/'.format(word), file_name
+                   'vimdiff',
+                   '+{}'.format(self.line_num),
+                   '-c', 'match Search /{}/'.format(word), file_name
                 ])
+
                 raise FileChangedException
             elif response == 'close' or response == 'c' or response == '4':
                 raise SpellingException("Mis-spelled word: " + word)
@@ -204,7 +211,7 @@ class HTMLSpellChecker(HTMLParser):
         Raises:
             Makes no attempt to catch exceptions from handle_bad_word.
         """
-        if word is "":
+        if word == "":
             return
         if len(word) == 1:
             return
@@ -217,8 +224,8 @@ class HTMLSpellChecker(HTMLParser):
 
         lower_word = word.lower()  # type: (str)
 
-        if (lower_word not in word_set
-                and not self.isWordInOxfordDictionary(lower_word)):
+        if (lower_word not in word_set and
+                not self.isWordInOxfordDictionary(lower_word)):
             self.handle_bad_word(lower_word)
 
 
@@ -233,16 +240,17 @@ if __name__ == '__main__':
     arg_parser.add_argument("file_name", help="html file to be parsed")
     arg_parser.add_argument("main_dict", help="main dictionary file")
     arg_parser.add_argument("custom_dict", help="custom dictionary file")
-    arg_parser.add_argument(
-        "-i", help="enable interactive spell-checking", action="store_true")
+    arg_parser.add_argument("-i", help="enable interactive spell-checking",
+                            action="store_true")
     arg_parser.add_argument("-s", help="strict mode checks capitalized words",
                             action="store_true")
     args = arg_parser.parse_args()
-    interactive_mode = args.i
-    strict_mode = args.s
+    print(args)
     file_name = args.file_name
     main_dict = args.main_dict
     custom_dict = args.custom_dict
+    interactive_mode = args.i
+    strict_mode = args.s
 
 # Make sure all the files exist, before doing anything heavy
 check_files_exist(file_name, main_dict, custom_dict)

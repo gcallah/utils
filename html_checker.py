@@ -64,8 +64,8 @@ class OurHTMLParser(HTMLParser):
             if tag != open_tag:
                 print("ERROR: " +
                       "Close tag '" + tag +
-                      "' does not match open tag '" + open_tag
-                      + "'" + line_msg())
+                      "' does not match open tag '" + open_tag +
+                      "'" + line_msg())
                 saw_error = True
             if tag in in_sig_tag:
                 in_sig_tag[tag] = False
@@ -81,11 +81,10 @@ class OurHTMLParser(HTMLParser):
                 print("WARNING: long line found" + line_msg())
                 print(data)
         if re.search('\x09', data):
-            print("WARNING: tab character found"
-                  + line_msg() + "; please uses spaces instead of tabs.")
+            print("WARNING: tab character found" + line_msg() +
+                  "; please uses spaces instead of tabs.")
         if not in_sig_tag["script"] and re.search('[<>]', data):
-            print("ERROR: Use &gt; or &lt; instead of < or >"
-                  + line_msg())
+            print("ERROR: Use &gt; or &lt; instead of < or >" + line_msg())
             saw_error = True
 
 

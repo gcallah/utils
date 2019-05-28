@@ -23,6 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
 
 SECRET_KEY = os.getenv('SECRET_KEY')
+# setting DB variables from mysite/settings.py:
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mysite.settings')
 django.setup()
 from devops.models import Question  # noqa E402
@@ -30,7 +31,7 @@ from devops.models import Question  # noqa E402
 
 def read_questions(mod_nm):
     """
-    reads questions for mdule 'mod_nm'
+    reads questions for module 'mod_nm'
     """
     recs = None
     if mod_nm is None:

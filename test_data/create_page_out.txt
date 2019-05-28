@@ -15,9 +15,6 @@
                 <h1>
                     Test
                 </h1>
-                <p>
-<a href="http://www.testingit.com/">Source code</a>
-                </p>
 
                 <details>
                     <summary class="sum1">

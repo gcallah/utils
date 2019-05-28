@@ -1,5 +1,10 @@
 #!/bin/sh
 
+if [ -z "$1" ]; then
+	echo "No argument provided. You need to provide the name of the submodule you want to repair."
+    exit 1
+fi
+
 echo "Please remove the damaged submodule using the editor"
 vi .gitmodules
 git add .gitmodules

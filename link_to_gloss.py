@@ -37,7 +37,7 @@ if __name__ == '__main__':
     href_link = args.href_link
 
 # Create a dictionary for gloss terms
-gloss_dict = OrderedDict()  # type: Dict[str]
+gloss_dict = OrderedDict()  # type Dict[str]
 
 try:
     with open(gloss_terms, 'r') as f:

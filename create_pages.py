@@ -15,7 +15,7 @@ HTML_PG = 0  # type: int
 title = 1  # type: int
 OPEN_ERROR = 1  # type: int
 
-HTML_EXT = re.compile("\.html$")  # type: str
+HTML_EXT = re.compile(".html$")  # type: str
 PTML_EXT = ".ptml"  # type: str
 PTML_DIR = "html_src"  # type: str
 REPO_DIR = "/NYCOpenDocs/"
@@ -37,9 +37,11 @@ def process_level(topic_list, level):
             if not my_file.is_file():  # don't overwrite existing files!
                 print("\nGoing to create " + ptml_file)
                 with open(pg_templ, 'r') as inf, open(ptml_file, 'w') as outf:
-                    create_page(inf, outf, topic.title,
-                                topic.subtopics, topic.link_insert,
-                                topic.doc_txt, topic.hw_txt, topic.lint_txt)
+                    page = create_page(inf, topic.title,
+                                       topic.subtopics, topic.link_insert,
+                                       topic.doc_txt, topic.hw_txt,
+                                       topic.lint_txt)
+                    outf.write(page)
         elif topic.subtopics is not None:
             # if the topic had a url, we processed the subtopics above
             process_level(topic.subtopics, level + 1)
@@ -49,7 +51,7 @@ if len(sys.argv) < 3:
     print("Must supply a file of topics to create and a page template.")
     exit(1)
 
-topics = []  # type: List[Any]
+topics = []  # type List[Any]
 topics_file = sys.argv[1]  # type: str
 pg_templ = sys.argv[2]  # type: str
 if len(sys.argv) > 3:

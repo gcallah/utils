@@ -27,7 +27,7 @@ if __name__ == '__main__':
     txt_file = args.txt_file
 
 
-d = OrderedDict()  # type: Dict[str]
+d = OrderedDict()  # type Dict[str]
 
 try:
     with open(txt_file, 'r') as f:

@@ -6,6 +6,7 @@ set -e
 
 for test_file in $HTML_DIR/*.html;
 do
+    echo ''
     echo 'Html-checking file:' $test_file
     python3 $CODE_DIR/html_checker.py "$test_file"
     echo 'URL-checking file:' $test_file
