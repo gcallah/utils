@@ -110,7 +110,7 @@ int main() {
     }
 
     /*
-     * Here we are going to pass `is_odd() to `find_if()`.
+     * Here we are going to pass `is_odd()` to `find_if()`.
      * */
     list<int>::iterator if_iter1 = find_if(ilist.begin(), ilist.end(), is_odd);
     cout << "First is_odd() number in list is: " << *if_iter1 << endl;

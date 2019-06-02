@@ -20,7 +20,7 @@ def par(text=None, indent=INDENT4):
 def code(text=None):
     s = '<code>'
     if text is not None:
-        s += '\n' + text
+        s += text
     s += '</code>'
     return s
 
