@@ -56,11 +56,11 @@ def create_page(inf, page_nm, subtopics=None,
             if subtopics is not None:
                 page += create_subtopics(subtopics, 1)
 # include documentation from source where indicated
-        if "<!-- Include the documentation" in line:
+        if "<!-- Include the extracted documentation" in line:
             if doc_txt is not None:
                 page += "<!--include " + doc_txt + " -->\n"
 # include documentation from source where indicated
-        if "<!-- Include the text material here!" in line:
+        if "<!-- Include the code review here!" in line:
             if hw_txt is not None:
                 page += "<!--include " + hw_txt + " -->\n"
 # include lint report for source where indicated
