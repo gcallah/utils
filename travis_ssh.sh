@@ -18,6 +18,7 @@ ssh-keygen -t rsa -b 2048 -C 'build@travis-ci.org' -f $key
 
 echo "Registering key with Travis -- you may need to login to Travis first!"
 travis login --$org_or_com
+# encryption is different on travis-ci.com and .org!
 travis encrypt-file $key --add --$org_or_com -r $repo
 git add $1.enc
 
