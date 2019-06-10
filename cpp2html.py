@@ -75,7 +75,7 @@ def main():
                         else:
                             in_code_span = False
                             proc_line += CLOSE_SPAN
-                    elif c == '*':
+                    elif c == '*':  # * means italics!
                         if first_star:
                             first_star = False
                         elif not in_italics:
@@ -95,7 +95,7 @@ def main():
                     continue
             if not in_reg_text:
                 line = pygments.highlight(line, cpp_lexer,
-                                   InlineHtmlFormatter())
+                                          InlineHtmlFormatter())
             text += line
 
         if len(text):
