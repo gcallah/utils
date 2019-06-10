@@ -18,10 +18,10 @@ def par(text=None, indent=INDENT4):
 
 
 def code(text=None):
-    s = '<code>\n'
+    s = '<code>'
     if text is not None:
-        s += text + '\n'
-    s += '</code>\n'
+        s += '\n' + text
+    s += '</code>'
     return s
 
 
