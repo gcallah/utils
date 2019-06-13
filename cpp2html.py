@@ -49,6 +49,8 @@ def main():
         in_reg_text = False
         in_code_span = False
         in_italics = False
+        in_bold = False
+        prev_is_star = False
         consec_blanks = 0
         for line in inp:
             first_star = True
@@ -75,16 +77,29 @@ def main():
                         else:
                             in_code_span = False
                             proc_line += CLOSE_SPAN
-                    elif c == '*':  # * means italics!
+                    elif c == '*':  # * means italics! ** means bold!
                         if first_star:
                             first_star = False
-                        elif not in_italics:
-                            in_italics = True
-                            proc_line += "<i>"
+                        elif prev_is_star:
+                            if not in_bold:
+                                in_bold = True
+                                proc_line += "<b>"
+                            else:
+                                in_bold = False
+                                proc_line += "</b>"
+                            prev_is_star = False
                         else:
-                            in_italics = False
-                            proc_line += "</i>"
+                            prev_is_star = True
+
                     else:
+                        if prev_is_star:
+                            if not in_italics:
+                                in_italics = True
+                                proc_line += "<i>"
+                            else:
+                                in_italics = False
+                                proc_line += "</i>"
+                            prev_is_star = False
                         proc_line += c
                 line = proc_line
             else:
