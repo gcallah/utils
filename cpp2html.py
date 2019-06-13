@@ -52,6 +52,9 @@ def main():
         in_bold = False
         prev_is_star = False
         consec_blanks = 0
+        num_hashtags = 0;
+        in_header = False;
+        header_number = 0;
         for line in inp:
             first_star = True
             if COMMENT_START.match(line):
@@ -90,8 +93,21 @@ def main():
                             prev_is_star = False
                         else:
                             prev_is_star = True
-
+                    elif c == '#':   #headers. # = h1, ## = h2, etc.
+                        if not in_header:
+                            num_hashtags += 1
+                        else:
+                            num_hashtags -= 1
+                            if num_hashtags == 0:
+                                proc_line += "</h" + str(header_num) + ">"
+                                in_header = False
+                                header_num = 0
                     else:
+                        if not in_header:
+                            if num_hashtags > 0:
+                                proc_line += "<h" + str(num_hashtags) + ">"
+                                in_header = True
+                                header_num = num_hashtags
                         if prev_is_star:
                             if not in_italics:
                                 in_italics = True
