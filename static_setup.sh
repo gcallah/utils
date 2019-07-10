@@ -9,6 +9,12 @@ add_file()
     cd $3; git add $2; cd -
 }
 
+if [[ -z "$1" ]]
+then
+    echo "Usage: static_setup.sh [repo]."
+    exit 1
+fi
+
 # run sed on $1 to get dir name
 newdir=$(echo $1 | sed 's/.*\/\([^\/]*\)\.git/\1/')
 
@@ -37,4 +43,5 @@ add_file "$utilsdir/templates" head.txt "$newdir/templates"
 add_file "$utilsdir/templates" menu.txt "$newdir/templates"
 add_file "$utilsdir/templates" logo.txt "$newdir/templates"
 
-cd $newdir; git submodule add https://github.com/gcallah/utils
+# make cloning utils an option!
+# cd $newdir; git submodule add https://github.com/gcallah/utils
