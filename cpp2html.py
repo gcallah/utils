@@ -49,7 +49,12 @@ def main():
         in_reg_text = False
         in_code_span = False
         in_italics = False
+        in_bold = False
+        prev_is_star = False
         consec_blanks = 0
+        num_hashtags = 0;
+        in_header = False;
+        header_number = 0;
         for line in inp:
             first_star = True
             if COMMENT_START.match(line):
@@ -75,16 +80,42 @@ def main():
                         else:
                             in_code_span = False
                             proc_line += CLOSE_SPAN
-                    elif c == '*':
+                    elif c == '*':  # * means italics! ** means bold!
                         if first_star:
                             first_star = False
-                        elif not in_italics:
-                            in_italics = True
-                            proc_line += "<i>"
+                        elif prev_is_star:
+                            if not in_bold:
+                                in_bold = True
+                                proc_line += "<b>"
+                            else:
+                                in_bold = False
+                                proc_line += "</b>"
+                            prev_is_star = False
                         else:
-                            in_italics = False
-                            proc_line += "</i>"
+                            prev_is_star = True
+                    elif c == '#':   #headers. # = h1, ## = h2, etc.
+                        if not in_header:
+                            num_hashtags += 1
+                        else:
+                            num_hashtags -= 1
+                            if num_hashtags == 0:
+                                proc_line += "</h" + str(header_num) + ">"
+                                in_header = False
+                                header_num = 0
                     else:
+                        if not in_header:
+                            if num_hashtags > 0:
+                                proc_line += "<h" + str(num_hashtags) + ">"
+                                in_header = True
+                                header_num = num_hashtags
+                        if prev_is_star:
+                            if not in_italics:
+                                in_italics = True
+                                proc_line += "<i>"
+                            else:
+                                in_italics = False
+                                proc_line += "</i>"
+                            prev_is_star = False
                         proc_line += c
                 line = proc_line
             else:
@@ -95,7 +126,7 @@ def main():
                     continue
             if not in_reg_text:
                 line = pygments.highlight(line, cpp_lexer,
-                                   InlineHtmlFormatter())
+                                          InlineHtmlFormatter())
             text += line
 
         if len(text):
