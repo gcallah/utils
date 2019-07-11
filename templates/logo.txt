@@ -1,16 +1,6 @@
         <div style="text-align:center">
-            <p>
-            <img
-             src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Theo_van_Doesburg_Composition_VII_%28the_three_graces%29.jpg/170px-Theo_van_Doesburg_Composition_VII_%28the_three_graces%29.jpg"
-				width="8%"><img
-             src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Theo_van_Doesburg_Composition_VII_%28the_three_graces%29.jpg/170px-Theo_van_Doesburg_Composition_VII_%28the_three_graces%29.jpg"
-				width="8%"><img
-             src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Theo_van_Doesburg_Composition_VII_%28the_three_graces%29.jpg/170px-Theo_van_Doesburg_Composition_VII_%28the_three_graces%29.jpg"
-				width="8%"><img
-             src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Theo_van_Doesburg_Composition_VII_%28the_three_graces%29.jpg/170px-Theo_van_Doesburg_Composition_VII_%28the_three_graces%29.jpg"
-				width="8%"><img
-             src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Theo_van_Doesburg_Composition_VII_%28the_three_graces%29.jpg/170px-Theo_van_Doesburg_Composition_VII_%28the_three_graces%29.jpg"
-				width="8%">
-            </p>
+            <figure class="logo">
+				<img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Dewy_spider_web.jpg" width="5%"><img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Dewy_spider_web.jpg" width="5%"><img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Dewy_spider_web.jpg" width="5%"><img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Dewy_spider_web.jpg" width="5%"><img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Dewy_spider_web.jpg" width="5%"><img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Dewy_spider_web.jpg" width="5%"><img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Dewy_spider_web.jpg" width="5%"><img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Dewy_spider_web.jpg" width="5%"><img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Dewy_spider_web.jpg" width="5%"><img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Dewy_spider_web.jpg" width="5%"><img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Dewy_spider_web.jpg" width="5%"><img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Dewy_spider_web.jpg" width="5%"><img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Dewy_spider_web.jpg" width="5%"><img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Dewy_spider_web.jpg" width="5%"><img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Dewy_spider_web.jpg" width="5%"><img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Dewy_spider_web.jpg" width="5%"><img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Dewy_spider_web.jpg" width="5%"><img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Dewy_spider_web.jpg" width="5%"><img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Dewy_spider_web.jpg" width="5%"><img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Dewy_spider_web.jpg" width="5%">
+            </figure>
         </div>
 
