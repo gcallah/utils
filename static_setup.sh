@@ -23,6 +23,9 @@ echo "Dir name = $newdir"
 echo "going to clone $1"
 git clone $1 
 
+echo "We are going to add utils as a submodule."
+git submodule add https://github.com/gcallah/utils.git
+
 echo "we are going to try to make: $newdir/html_src "
 mkdir $newdir/html_src
 mkdir $newdir/docker 
