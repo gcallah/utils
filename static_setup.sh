@@ -38,7 +38,7 @@ if [ -n "$2" ]; then
 fi
 echo "utils dir is $utilsdir"
 
-add_file $utilsdir style.css $newdir
+add_file "$utilsdir/templates" style.css $newdir
 add_file "$utilsdir/templates" index.ptml "$newdir/html_src"
 add_file "$utilsdir/templates" about.ptml "$newdir/html_src"
 add_file "$utilsdir/templates" makefile "$newdir"
@@ -47,4 +47,4 @@ add_file "$utilsdir/templates" menu.txt "$newdir/templates"
 add_file "$utilsdir/templates" logo.txt "$newdir/templates"
 
 # make cloning utils an option!
-# cd $newdir; git submodule add https://github.com/gcallah/utils
+cd $newdir; git submodule add https://github.com/gcallah/utils
