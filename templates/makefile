@@ -1,9 +1,10 @@
 # A template makefile that works for static websites.
-# Need to export as ENV var
+# Need to export TEMPLATE_DIR as ENV var
 export TEMPLATE_DIR = templates
 PTML_DIR = html_src
 UTILS_DIR = utils
 DOCKER_DIR = docker
+# REPO = this repo!
 
 INCS = $(TEMPLATE_DIR)/head.txt $(TEMPLATE_DIR)/logo.txt $(TEMPLATE_DIR)/menu.txt
 
