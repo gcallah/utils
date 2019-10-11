@@ -8,8 +8,8 @@ export DATA_DIR = $(CODE_DIR)/data
 export DOCKER_DIR = docker
 PYTHONFILES = $(shell ls *.py)
 PYTHONFILES += $(shell ls $(LIB_DIR)/*.py)
-PSHELL_SCRIPTS = $(shell ls *.sh | sed -e 's/.sh/.ps1')
-PSHELL_SCRIPTS += $(shell ls $(TEST_DIR)/*.sh | sed -e 's/.sh/.ps1')
+PSHELL_SCRIPTS = $(shell ls *.sh | sed -e 's/.sh/.ps1/')
+PSHELL_SCRIPTS += $(shell ls $(TEST_DIR)/*.sh | sed -e 's/.sh/.ps1/')
 BASH2PS = python bash_to_powershell.py
 
 FORCE:

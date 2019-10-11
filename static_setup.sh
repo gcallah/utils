@@ -20,14 +20,24 @@ newdir=$(echo $1 | sed 's/.*\/\([^\/]*\)\.git/\1/')
 
 echo "Dir name = $newdir"
 
-echo "going to clone $1"
-git clone $1 
+if [ -d $newdir ]
+then
+    echo "Directory already exists; not cloning."
+else
+    echo "going to clone $1"
+    git clone $1 
+fi
 
 echo "We are going to add utils as a submodule."
 git submodule add https://github.com/gcallah/utils.git
 
-echo "we are going to try to make: $newdir/html_src "
-mkdir $newdir/html_src
+if [ -d "$newdir/html_src" ]
+then
+    echo "$newdir/html_src exists."
+else
+    echo "we are going to try to make: $newdir/html_src "
+    mkdir $newdir/html_src
+fi
 mkdir $newdir/docker 
 mkdir $newdir/templates
 mkdir $newdir/tests
