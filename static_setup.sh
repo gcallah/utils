@@ -37,12 +37,9 @@ echo "Dir name = $newdir"
 if [ -d $newdir ]; then
     echo "Directory already exists; not cloning."
 else
-    echo "going to clone $1"
+    echo "We are going to clone $1"
     git clone $1 
 fi
-
-echo "We are going to add utils as a submodule."
-git submodule add https://github.com/gcallah/utils.git
 
 add_dir $newdir/html_src
 add_dir $newdir/templates
@@ -66,4 +63,9 @@ add_file "$utilsdir/docker" Dockerfile $newdir/docker
 add_file "$utilsdir/docker" requirements.txt $newdir/docker
 
 # make cloning utils an option!
-cd $newdir; git submodule add https://github.com/gcallah/utils
+cd $newdir; 
+echo "We are going to add utils as a submodule."
+git submodule add https://github.com/gcallah/utils
+echo "We are going to update utils."
+git submodule update --init --recursive
+
