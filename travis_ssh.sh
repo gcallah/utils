@@ -15,7 +15,7 @@ org_or_com=$4
 repo=$5
 
 echo "Generating ssh key."
-ssh-keygen -t rsa -b 2048 -C 'build@travis-ci.org' -f $key
+ssh-keygen -t rsa -b 2048 -C 'build@travis-ci.$org_or_com' -f $key
 
 echo "Registering key with Travis -- you may need to login to Travis first!"
 travis login --$org_or_com
