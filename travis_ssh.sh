@@ -5,6 +5,7 @@
 if [[ -z "$1" || -z "$2" || -z "$3" || -z "$4" || -z "$5" ]]
 then
     echo "Usage: travis-ssh.sh [keyfile] [ssh_user] [deploy_host] [org or com] [repo]."
+    echo "keyfile without .pub; repo as [user_name]/[repo_name]."
     exit 1
 fi
 
@@ -21,7 +22,7 @@ echo "Registering key with Travis -- you may need to login to Travis first!"
 travis login --$org_or_com
 # encryption is different on travis-ci.com and .org!
 travis encrypt-file $key -r $repo --add --$org_or_com
-git add $1.enc
+git add $key.enc
 
 echo "Deploying key to server host."
 ssh-copy-id -i $key.pub $user@$host
