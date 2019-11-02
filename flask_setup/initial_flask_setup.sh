@@ -27,7 +27,7 @@ sudo apt-get install python3-pip
 #should we use virtual environments
 echo "attempting to install virtualenv & dependencies from requirements.txt"
 sudo apt-get install virtualenv
-sudo pip install -r requirements.txt
+sudo pip3 install -r requirements.txt
 
 #Copies our generic project folder structure to project directory
-cp $scriptDir/flash_project_layout/* $projectDir
+cp -r $scriptDir/flash_project_layout/* $projectDir
