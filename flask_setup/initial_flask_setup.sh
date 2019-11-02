@@ -32,7 +32,6 @@ sudo pip install -r requirements.txt
 #Copies our generic project folder structure to project directory
 cp -r $scriptDir/flash_project_layout/* $projectDir
 
-echo "$FLASK_APP"
 #Append flask environment variables to ~/.bashrc
 while IFS="=" read -r key val
 do
