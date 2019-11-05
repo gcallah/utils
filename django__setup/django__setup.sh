@@ -18,11 +18,11 @@ sudo pip install -r requirements.txt
 # Set up django project.
 echo "Setting up django project..."
 if [ ! -d "$DIRECTORY" ]; then
-    # Control will enter here if $DIRECTORY doesn't exist.
-    django-admin startproject mysite_tmp
-    cp mysite_tmp/manage.py .
-    mv mysite_tmp/mysite_tmp/ mysite
-    rm -rf mysite_tmp
+    # Moves mysite contents up one directory
+    django-admin startproject mysite
+    mv mysite/mysite/* mysite
+    mv mysite/manage.py .
+    rm -rf mysite/mysite
     git add manage.py
     git add mysite/*.py
 else
