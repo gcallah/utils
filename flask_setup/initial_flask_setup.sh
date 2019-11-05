@@ -11,13 +11,17 @@ copyFileToDir()
 	cp $scriptDir/$1 $2
 }
 
-# should probably say something if directory already exists
+# if directory does not exist
+if [ -d $1 ]; then
+	echo "name of this directory already exists"
+	exit 1
+
 if [[ -n $1 ]]; then
 	mkdir -p "$1"
 	projectDir=$1
 else
 	echo "must enter in directory name"
-	exit 1
+	exit 2
 fi
 
 echo "attempting to install python and pip"
