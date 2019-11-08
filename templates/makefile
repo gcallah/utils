@@ -1,6 +1,8 @@
 # A template makefile that works for static websites.
 # Need to export TEMPLATE_DIR as ENV var
 export TEMPLATE_DIR = templates
+# Export MARKDOWN_DIR
+export MARKDOWN_DIR = markdown_files
 PTML_DIR = html_src
 UTILS_DIR = utils
 DOCKER_DIR = docker
@@ -16,7 +18,9 @@ tests: FORCE
 	echo "Here is where you should run your tests."
 
 %.html: $(PTML_DIR)/%.ptml $(INCS)
-	python3 $(UTILS_DIR)/html_checker.py $< 
+	python3 $(UTILS_DIR)/html_checker.py $<
+	# Optionally use render_md.awk to render makrdown files.(Require Mistune)
+#	$(UTILS_DIR)/render_md.awk <$< | $(UTILS_DIR)/html_include.awk >$@
 	$(UTILS_DIR)/html_include.awk <$< >$@
 	git add $@
 
