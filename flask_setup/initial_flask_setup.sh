@@ -4,13 +4,6 @@
 projectDir=
 scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-# ================= Helper Functions
-# copies file from script directory to a destination
-copyFileToDir() 
-{
-	cp $scriptDir/$1 $2
-}
-
 # should probably say something if directory already exists
 if [[ -n $1 ]]; then
 	mkdir -p "$1"
