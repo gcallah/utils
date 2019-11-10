@@ -5,12 +5,26 @@
 
 add_file()
 {
-    cp $1/$2 $3/$2
-    cd $3; git add $2; cd -
+    if [ -f $3/$2 ]; then
+        echo "$3/$2 exists."
+    else
+        echo "We are going to add" $2
+        cp $1/$2 $3/$2
+        cd $3; git add $2; cd - > /dev/null 
+    fi
 }
 
-if [[ -z "$1" ]]
-then
+add_dir()
+{
+    if [ -d $1 ]; then
+        echo "$1 exists."
+    else
+        echo "We are going to make directory" $1
+        mkdir $1
+    fi
+}
+
+if [[ -z "$1" ]]; then
     echo "Usage: static_setup.sh [repo]."
     exit 1
 fi
@@ -20,17 +34,17 @@ newdir=$(echo $1 | sed 's/.*\/\([^\/]*\)\.git/\1/')
 
 echo "Dir name = $newdir"
 
-echo "going to clone $1"
-git clone $1 
+if [ -d $newdir ]; then
+    echo "Directory already exists; not cloning."
+else
+    echo "We are going to clone $1"
+    git clone $1 
+fi
 
-echo "We are going to add utils as a submodule."
-git submodule add https://github.com/gcallah/utils.git
-
-echo "we are going to try to make: $newdir/html_src "
-mkdir $newdir/html_src
-mkdir $newdir/docker 
-mkdir $newdir/templates
-mkdir $newdir/tests
+add_dir $newdir/html_src
+add_dir $newdir/templates
+add_dir $newdir/docker
+add_dir $newdir/tests
 
 utilsdir=utils
 if [ -n "$2" ]; then
@@ -39,12 +53,19 @@ fi
 echo "utils dir is $utilsdir"
 
 add_file "$utilsdir/templates" style.css $newdir
-add_file "$utilsdir/templates" index.ptml "$newdir/html_src"
-add_file "$utilsdir/templates" about.ptml "$newdir/html_src"
-add_file "$utilsdir/templates" makefile "$newdir"
-add_file "$utilsdir/templates" head.txt "$newdir/templates"
-add_file "$utilsdir/templates" menu.txt "$newdir/templates"
-add_file "$utilsdir/templates" logo.txt "$newdir/templates"
+add_file "$utilsdir/templates" index.ptml $newdir/html_src
+add_file "$utilsdir/templates" about.ptml $newdir/html_src
+add_file "$utilsdir/templates" makefile $newdir
+add_file "$utilsdir/templates" head.txt $newdir/templates
+add_file "$utilsdir/templates" menu.txt $newdir/templates
+add_file "$utilsdir/templates" logo.txt $newdir/templates
+add_file "$utilsdir/docker" Dockerfile $newdir/docker
+add_file "$utilsdir/docker" requirements.txt $newdir/docker
 
 # make cloning utils an option!
-cd $newdir; git submodule add https://github.com/gcallah/utils
+cd $newdir; 
+echo "We are going to add utils as a submodule."
+git submodule add https://github.com/gcallah/utils
+echo "We are going to update utils."
+git submodule update --init --recursive
+

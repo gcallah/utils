@@ -1,0 +1,9 @@
+flask 
+flake8
+pytest
+flask-cors
+flask-restplus
+#Flask-SQLAlchemy
+#Flask-WTF
+#Flask-Login
+
