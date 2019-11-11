@@ -58,3 +58,8 @@ prod: $(INCS) $(HTMLFILES) lint tests
 	-git commit -a 
 	git pull origin master
 	git push origin master
+
+local: $(INCS) $(HTMLFILES) lint tests
+	-git commit -a
+	git pull origin master
+	git push origin master
