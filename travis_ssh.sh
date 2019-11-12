@@ -6,6 +6,7 @@ if [[ -z "$1" || -z "$2" || -z "$3" || -z "$4" || -z "$5" ]]
 then
     echo "Usage: travis-ssh.sh [keyfile] [ssh_user] [deploy_host] [org or com] [repo]."
     echo "keyfile without .pub; repo as [user_name]/[repo_name]."
+    echo "For PA, server is ssh.pythonanywhere.com."
     exit 1
 fi
 
