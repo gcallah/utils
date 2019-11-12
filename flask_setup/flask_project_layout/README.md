@@ -8,7 +8,11 @@
 
     Prerequisites:
     1.) The user has the utils repo or at least the flask_setup folder in the utils repo on their machine.
-
+    
+    To execute this script:
+    1.) cd into the project directory
+    2.) Run bash initial_flask_setup.sh (filename)
+    
     Script Behavior:
     1.) Creates flask project directory (target directory) indicated by the user.
     2.) Installs python and pip if not on machine

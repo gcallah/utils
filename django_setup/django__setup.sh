@@ -4,6 +4,9 @@
 # Variables
 DIRECTORY="mysite"
 
+# Refresh package cache
+sudo apt update
+
 # First install Python and pip if they are not already installed.
 echo "Installing python if not installed..."
 sudo apt-get install python3.6
@@ -25,6 +28,11 @@ if [ ! -d "$DIRECTORY" ]; then
     rm -rf mysite/mysite
     git add manage.py
     git add mysite/*.py
+
+    mkdir -p mysite/static/admin/css
+    mkdir -p mysite/static/admin/fonts
+    mkdir -p mysite/static/admin/img
+    mkdir -p mysite/static/admin/js
 else
     echo "Directory /mysite already exists."
 fi
