@@ -7,7 +7,7 @@ This script sets up a generic django project.
 2) Run `bash django__setup.sh`
 
 **Script Behavior:**
-1) The script will install python 3.6 and pip if not already installed.
+1) Refreshes the package cache and installs python 3.6 and pip if not already installed.
 2) The script will install all dependencies listed in `requirements.txt`
 3) If `/mysite` directory does not already exist, starts a new django project. Moves `/mysite` contents up one directory level.
 Resulting file structure:

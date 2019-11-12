@@ -4,6 +4,9 @@
 # Variables
 DIRECTORY="mysite"
 
+# Refresh package cache
+sudo apt update
+
 # First install Python and pip if they are not already installed.
 echo "Installing python if not installed..."
 sudo apt-get install python3.6
