@@ -26,11 +26,11 @@ sudo apt-get install python-pip
 
 #should we use virtual environments
 echo "attempting to install virtualenv & dependencies from requirements.txt"
-sudo apt-get install virtualenv
+sudo apt-get install python-virtualenv
 sudo pip install -r requirements.txt
 
 #Copies our generic project folder structure to project directory
-cp -r $scriptDir/flash_project_layout/* $projectDir
+cp -r $scriptDir/flask_project_layout/* $projectDir
 
 #Append flask environment variables to ~/.bashrc
 while IFS="=" read -r key val
