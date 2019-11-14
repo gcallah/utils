@@ -1,43 +1,55 @@
 #!/bin/bash
 
+# python3 comes with venv preinstalled
+# Note: python3 is the default for python version 3+
+
 # Variables
-projectDir=
 scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-# if directory does not exist
-if [ -d $1 ]; then
-	echo "name of this directory already exists"
-	exit 1;
-fi
+# run sed on $1 to get dir name from git 
+projectDir=$(echo $1 | sed 's/.*\/\([^\/]*\)\.git/\1/')
 
-if [[ -n $1 ]]; then
-	mkdir -p "$1"
-	projectDir=$1
+echo "Project Directory Name = $projectDir"
+
+if [[ -z $1 ]]; then
+	echo "This script requires a github repo url"
+	exit 1
+elif [[ -d $projectDir ]]; then
+    echo "Directory already exists; not cloning."
 else
-	echo "must enter in directory name"
-	exit 2;
+    echo "We are going to clone $1"
+    git clone $1 
+	if [[ $? -ne 0 ]]; then
+		echo "Trouble cloning $1, exiting script"
+		exit 2
+	fi
 fi
 
-sudo apt-get update
+# Install Virtual Environment. This is a requirement
+echo "Installing python3-venv. Requires sudo"
+sudo apt-get install python3-venv
 
-echo "attempting to install python and pip"
-sudo apt-get install python
-sudo apt-get install python-pip
+# Create a virtual environment for flask project
+echo "Creating virtual environment in $projectDir"
+python3 -m venv $projectDir
 
-# should we use virtual environments
-echo "attempting to install virtualenv & dependencies from requirements.txt"
-sudo apt-get install python-virtualenv
-sudo pip install -r requirements.txt
+# Activate the virtual enviroment we just created
+echo "Activating the virtual environment in $projectDir"
+source $projectDir/bin/activate
 
 # Copies our generic project folder structure to project directory
-cp -r $scriptDir/flask_project_layout/* $projectDir
+rsync -r --ignore-existing $scriptDir/flask_project_layout/* $projectDir
+
+# Installing dependencies
+echo "Attempting to install dependencies from requirements.txt within virtual environment"
+pip install -r $projectDir/requirements.txt
 
 # Append flask environment variables to ~/.bashrc
-while IFS="=" read -r key val
-do
-	varExists="$( cat ~/.bashrc | grep "export $key=")"
-	if [[ -z "${varExists}" ]]; then
-		echo "Setting $key"
-		echo "export $key=$val" >> ~/.bashrc
-	fi
-done < "$scriptDir/env.txt"
+# while IFS="=" read -r key val
+# do
+# 	varExists="$( cat ~/.bashrc | grep "export $key=")"
+# 	if [[ -z "${varExists}" ]]; then
+# 		echo "Setting $key"
+# 		echo "export $key=$val" >> ~/.bashrc
+# 	fi
+# done < "$scriptDir/env.txt"
