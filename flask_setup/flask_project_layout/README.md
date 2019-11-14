@@ -8,24 +8,24 @@
 
     Prerequisites:
     1.) The user has the utils repo or at least the flask_setup folder in the utils repo on their machine.
-    
-    To execute this script:
-    1.) cd into the project directory
-    2.) Run bash initial_flask_setup.sh (filename)
-    
+    2.) The user has python 3.x preinstalled on their machine
+
     Script Behavior:
-    1.) Creates flask project directory (target directory) indicated by the user.
-    2.) Installs python and pip if not on machine
-    3.) Installs virtualenv and any flask dependencies from requirements.txt
-    4.) Then copies a generic flask project structure from the script directory into the project / target directory.
+    1.) Clones existing directory that user inputs
+    2.) Installs flask dependencies from requirements.txt
+    3.) Then copies a generic flask project structure from the script directory into the project / target directory.
         - This comes with a default setup that allows you to immediately run a development flask server to test the setup
           by following the directions to run the flask project
-    5.) Setups the flask environment variables if they haven't been set. It writes the environment to bashrc file.
+    4.) Setups the flask environment variables if they haven't been set. It writes the environment variables to bashrc file.
 
 
     ENV variables that were set
     1.) FLASK_APP, default val = flaskr
     2.) FLASK_ENV, default val = development
+
+    To run script,
+    1.) run the following line in your shell: 
+	source ./initial_flask_setup (link to clone github repo)
 
     To run flask project,
     1.) cd into project directory
