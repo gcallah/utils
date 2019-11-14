@@ -24,15 +24,15 @@ echo "attempting to install python and pip"
 sudo apt-get install python
 sudo apt-get install python-pip
 
-#should we use virtual environments
+# should we use virtual environments
 echo "attempting to install virtualenv & dependencies from requirements.txt"
 sudo apt-get install python-virtualenv
 sudo pip install -r requirements.txt
 
-#Copies our generic project folder structure to project directory
+# Copies our generic project folder structure to project directory
 cp -r $scriptDir/flask_project_layout/* $projectDir
 
-#Append flask environment variables to ~/.bashrc
+# Append flask environment variables to ~/.bashrc
 while IFS="=" read -r key val
 do
 	varExists="$( cat ~/.bashrc | grep "export $key=")"
