@@ -26,8 +26,9 @@ else
 fi
 
 # Install Virtual Environment. This is a requirement
-#echo "Installing python3-venv. Requires sudo"
-#sudo apt-get install python3-venv
+# Might need to have this as a preqrequiste to using the script
+echo "Installing python3-venv. Requires sudo"
+sudo apt-get install python3-venv
 
 # Create a virtual environment for flask project
 echo "Creating virtual environment in $projectDir"
@@ -37,8 +38,9 @@ python3 -m venv $projectDir
 echo "Activating the virtual environment in $projectDir"
 source $projectDir/bin/activate
 
-sudo apt-get update
-sudo apt-get install python-pip
+# This is not needed since the virtual environment created has pip installed by default
+# sudo apt-get update
+# sudo apt-get install python-pip
 
 # Copies our generic project folder structure to project directory
 rsync -r --ignore-existing $scriptDir/flask_project_layout/* $projectDir
