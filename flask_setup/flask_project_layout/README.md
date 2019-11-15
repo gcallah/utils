@@ -9,6 +9,7 @@
     Prerequisites:
     1.) The user has the utils repo or at least the flask_setup folder in the utils repo on their machine.
     2.) The user has python 3.x preinstalled on their machine
+    3.) The user has python3-venv preinstalled on their machine
 
     Script Behavior:
     1.) Clones existing directory that user inputs

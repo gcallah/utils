@@ -27,8 +27,8 @@ fi
 
 # Install Virtual Environment. This is a requirement
 # Might need to have this as a preqrequiste to using the script
-echo "Installing python3-venv. Requires sudo"
-sudo apt-get install python3-venv
+# echo "Installing python3-venv. Requires sudo"
+# sudo apt-get install python3-venv
 
 # Create a virtual environment for flask project
 echo "Creating virtual environment in $projectDir"
@@ -49,6 +49,7 @@ rsync -r --ignore-existing $scriptDir/flask_project_layout/* $projectDir
 echo "Attempting to install dependencies from requirements.txt within virtual environment"
 pip install -r $projectDir/requirements.txt
 
+export FLASK_APP=flaskr
 # Append flask environment variables to ~/.bashrc
 # while IFS="=" read -r key val
 # do

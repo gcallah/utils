@@ -5,7 +5,7 @@ export LIB_DIR = pylib
 export CODE_DIR = .
 export HTML_DIR = .
 export DATA_DIR = $(CODE_DIR)/data
-export DOCKER_DIR = docker
+export REQUIREMENTS_DIR = requirements
 PYTHONFILES = $(shell ls *.py)
 PYTHONFILES += $(shell ls $(LIB_DIR)/*.py)
 PSHELL_SCRIPTS = $(shell ls *.sh | sed -e 's/.sh/.ps1/')
@@ -14,7 +14,7 @@ BASH2PS = python bash_to_powershell.py
 
 FORCE:
 
-container: $(DOCKER_DIR)/Dockerfile  $(DOCKER_DIR)/requirements.txt
+container: $(REQUIREMENTS_DIR)/Dockerfile  $(REQUIREMENTS_DIR)/requirements.txt
 	docker build -t utils docker
 
 html_tests: FORCE
