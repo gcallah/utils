@@ -17,7 +17,6 @@
         - This comes with a default setup that allows you to immediately run a development flask server to test the setup
           by following the directions to run the flask project
     4.) Installs flask dependencies from requirements.txt
-    5.) Writes into bin/activate within project directory to setup environment variables
 
 ## Environment
     The flask project runs within a virtual environment
@@ -27,10 +26,7 @@
     2.) FLASK_ENV, default val = development
 
     To change or add environment variables for virtual environment
-    1.) cd into bin/app within your project directory
-    2.) modified the "activate" file acccordingly by inserting "export <var_name>=<var_value>"
-        Warning: this file is used by venv to setup the virtual environment when it is activated.
-		Do not delete or heavily modify code that you are unsure of.
+    1.) modify the "run.sh" to change or include new variables
 
 ## Running project / script
     To run script
