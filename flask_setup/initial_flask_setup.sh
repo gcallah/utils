@@ -52,7 +52,7 @@ pip install -r $projectDir/requirements.txt
 # Append flask environment variables to ~/.bashrc
 while IFS="=" read -r key val
 do
-	varExists="$( cat ~/.bashrc | grep "export $key=")"
+	varExists="$( cat $projectDir/bin/activate | grep "export $key=")"
 	if [[ -z "${varExists}" ]]; then
 		echo "Setting $key"
 		echo "export $key=$val" >> $projectDir/bin/activate
