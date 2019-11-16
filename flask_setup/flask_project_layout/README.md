@@ -13,22 +13,29 @@
 
     Script Behavior:
     1.) Clones existing directory that user inputs
-    2.) Installs flask dependencies from requirements.txt
+    2.) Creates a python virtual environment with the project name, extracted from the github URL
     3.) Then copies a generic flask project structure from the script directory into the project / target directory.
         - This comes with a default setup that allows you to immediately run a development flask server to test the setup
           by following the directions to run the flask project
-    4.) Setups the flask environment variables if they haven't been set. It writes the environment variables to bashrc file.
+    4.) Installs flask dependencies from requirements.txt
+    5.) Writes into bin/activate within project directory to setup environment variables
 
 
     ENV variables that were set
-    1.) FLASK_APP, default val = flaskr
+    1.) FLASK_APP, default val = source
     2.) FLASK_ENV, default val = development
+
+    To change or add environment variables for virtual environment
+    1.) cd into bin/app within your project directory
+    2.) modified the "activate" file acccordingly by inserting "export <var_name>=<var_value>"
+        Warning: this file is used by venv to setup the virtual environment when it is activated.
 
     To run script,
     1.) run the following line in your shell: 
-	source ./initial_flask_setup (link to clone github repo)
+	source ./initial_flask_setup <link to clone github repo>
 
     To run flask project,
-    1.) cd into project directory
-    2.) run "flask run" to start the development server
+    1.) cd into the cloned git repo
+    2.) activate the virtual environment, "source ./bin/activate"
+    3.) run "flask run" to start the development server
 '''

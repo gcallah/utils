@@ -49,13 +49,12 @@ rsync -r --ignore-existing $scriptDir/flask_project_layout/* $projectDir
 echo "Attempting to install dependencies from requirements.txt within virtual environment"
 pip install -r $projectDir/requirements.txt
 
-export FLASK_APP=flaskr
 # Append flask environment variables to ~/.bashrc
-# while IFS="=" read -r key val
-# do
-# 	varExists="$( cat ~/.bashrc | grep "export $key=")"
-# 	if [[ -z "${varExists}" ]]; then
-# 		echo "Setting $key"
-# 		echo "export $key=$val" >> ~/.bashrc
-# 	fi
-# done < "$scriptDir/env.txt"
+while IFS="=" read -r key val
+do
+	varExists="$( cat ~/.bashrc | grep "export $key=")"
+	if [[ -z "${varExists}" ]]; then
+		echo "Setting $key"
+		echo "export $key=$val" >> $projectDir/bin/activate
+	fi
+done < "$projectDir/env.txt"
