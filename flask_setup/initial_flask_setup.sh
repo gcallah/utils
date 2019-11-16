@@ -50,11 +50,11 @@ echo "Attempting to install dependencies from requirements.txt within virtual en
 pip install -r $projectDir/requirements.txt
 
 # Append flask environment variables to ~/.bashrc
-while IFS="=" read -r key val
-do
-	varExists="$( cat $projectDir/bin/activate | grep "export $key=")"
-	if [[ -z "${varExists}" ]]; then
-		echo "Setting $key"
-		echo "export $key=$val" >> $projectDir/bin/activate
-	fi
-done < "$projectDir/env.txt"
+# while IFS="=" read -r key val
+# do
+# 	varExists="$( cat $projectDir/bin/activate | grep "export $key=")"
+# 	if [[ -z "${varExists}" ]]; then
+# 		echo "Setting $key"
+# 		echo "export $key=$val" >> $projectDir/bin/activate
+# 	fi
+# done < "$projectDir/env.txt"

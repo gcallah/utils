@@ -39,8 +39,7 @@
 
     To run flask project,
     1.) cd into the cloned git repo
-    2.) activate the virtual environment, "source ./bin/activate"
-    3.) run "flask run" to start the development server
+    2.) run the "run.sh" script to start the flask app
 
     To deactivate virtual environment
     Run "deactivate"

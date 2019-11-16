@@ -1,13 +1,11 @@
 # Need to export as ENV var
 export TEST_DIR = tests
 export TEST_DATA = test_data
-export LIB_DIR = pylib
 export CODE_DIR = .
 export HTML_DIR = .
 export DATA_DIR = $(CODE_DIR)/data
 export REQUIREMENTS_DIR = requirements
-PYTHONFILES = $(shell ls *.py)
-PYTHONFILES += $(shell ls $(LIB_DIR)/*.py)
+PYTHONFILES = $(cd source && shell ls *.py)
 PSHELL_SCRIPTS = $(shell ls *.sh | sed -e 's/.sh/.ps1/')
 PSHELL_SCRIPTS += $(shell ls $(TEST_DIR)/*.sh | sed -e 's/.sh/.ps1/')
 BASH2PS = python bash_to_powershell.py
