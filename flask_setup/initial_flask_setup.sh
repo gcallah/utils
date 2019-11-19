@@ -47,7 +47,7 @@ rsync -r --ignore-existing $scriptDir/flask_project_layout/* $projectDir
 
 # Installing dependencies
 echo "Attempting to install dependencies from requirements.txt within virtual environment"
-#pip install -r $projectDir/requirements.txt
+pip install -r $projectDir/requirements.txt
 
 # Append flask environment variables to ~/.bashrc
 # while IFS="=" read -r key val
