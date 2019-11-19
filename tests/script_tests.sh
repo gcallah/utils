@@ -87,6 +87,7 @@ run_diff_test_file create_gloss
 #run_gloss_links_file gloss_links "$key" "$key_word"
 run_diff_test_file create_menu
 run_diff_test_file html_checker
+run_diff_test_file render_md
 run_sieve_test sieve
 # run_quiz_test_work qexport "$title2"
 run_url_checker url_checker $page

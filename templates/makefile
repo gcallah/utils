@@ -19,7 +19,7 @@ tests: FORCE
 
 %.html: $(PTML_DIR)/%.ptml $(INCS)
 	python3 $(UTILS_DIR)/html_checker.py $<
-	# Optionally use render_md.awk to render makrdown files.(Require Mistune)
+	# Optionally use render_md.awk to render makrdown files.(Requires Mistune)
 #	$(UTILS_DIR)/render_md.awk <$< | $(UTILS_DIR)/html_include.awk >$@
 	$(UTILS_DIR)/html_include.awk <$< >$@
 	git add $@
