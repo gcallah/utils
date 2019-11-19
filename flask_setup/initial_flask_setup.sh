@@ -47,7 +47,7 @@ rsync -r --ignore-existing $scriptDir/flask_project_layout/* $projectDir
 
 # Installing dependencies
 echo "Attempting to install dependencies from requirements.txt within virtual environment"
-pip install -r $projectDir/requirements.txt
+#pip install -r $projectDir/requirements.txt
 
 # Append flask environment variables to ~/.bashrc
 # while IFS="=" read -r key val
@@ -59,6 +59,11 @@ pip install -r $projectDir/requirements.txt
 # 	fi
 # done < "$projectDir/env.txt"
 
-# Add, commit, and push changes
-git commit -am "adding in generic flask project folders"
+# Add and push files to repo
+echo "Pushing changes to repo"
+cd $projectDir
+git add --all
+git commit -am "adding in generic flask project files"
 git push
+
+
