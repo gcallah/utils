@@ -58,3 +58,7 @@ pip install -r $projectDir/requirements.txt
 # 		echo "export $key=$val" >> $projectDir/bin/activate
 # 	fi
 # done < "$projectDir/env.txt"
+
+# Add, commit, and push changes
+git commit -am "adding in generic flask project folders"
+git push
