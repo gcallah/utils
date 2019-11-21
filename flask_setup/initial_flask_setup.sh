@@ -9,6 +9,8 @@ scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 # run sed on $1 to get dir name from git 
 projectDir=$(echo $1 | sed 's/.*\/\([^\/]*\)\.git/\1/')
 
+set -e
+
 echo "Project Directory Name = $projectDir"
 
 if [[ -z $1 ]]; then
