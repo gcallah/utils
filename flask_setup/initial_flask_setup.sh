@@ -6,25 +6,40 @@
 # Variables
 scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-# run sed on $1 to get dir name from git 
-projectDir=$(echo $1 | sed 's/.*\/\([^\/]*\)\.git/\1/')
+# Check for input
+if [[ -z $1 ]]; then
+	echo "This script requires a github repo url or directory name"
+	exit 1;
+fi
+# run sed on $1 to get dir name from git or get directory name
+if [[ $1 == *"https://github.com/"* ]]; then
+	projectDir=$(echo $1 | sed 's/.*\/\([^\/]*\)\.git/\1/')
+	directoryType="github"
+
+else
+	projectDir=$1
+	directoryType="local"
+fi
 
 set -e
 
 echo "Project Directory Name = $projectDir"
 
-if [[ -z $1 ]]; then
-	echo "This script requires a github repo url"
-	exit 1
-elif [[ -d $projectDir ]]; then
+if [[ -d $projectDir ]]; then
     echo "Directory already exists; not cloning."
-else
+    exit 2;
+
+elif [[ $directoryType == "github" ]]; then
     echo "We are going to clone $1"
     git clone $1 
 	if [[ $? -ne 0 ]]; then
 		echo "Trouble cloning $1, exiting script"
-		exit 2
+		exit 3;
 	fi
+else
+    echo "Creating local repository: $1"
+    mkdir -p "$1"
+    cp -r $scriptDir/flask_project_layout/* $projectDir
 fi
 
 # Install Virtual Environment. This is a requirement
