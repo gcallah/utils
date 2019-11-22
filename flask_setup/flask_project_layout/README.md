@@ -31,7 +31,7 @@
 ## Running project / script
     To run script
     1.) run the following line in your shell: 
-	source ./initial_flask_setup <link to clone github repo>
+	source ./initial_flask_setup <link to clone github repo / project directory name>
 
     To run flask project,
     1.) cd into the cloned git repo
