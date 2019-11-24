@@ -3,6 +3,8 @@
 # python3 comes with venv preinstalled
 # Note: python3 is the default for python version 3+
 
+set -e
+
 # Variables
 scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
@@ -15,19 +17,16 @@ fi
 if [[ $1 == *"https://github.com/"* ]]; then
 	projectDir=$(echo $1 | sed 's/.*\/\([^\/]*\)\.git/\1/')
 	directoryType="github"
-
 else
 	projectDir=$1
 	directoryType="local"
 fi
 
-set -e
-
 echo "Project Directory Name = $projectDir"
 
-if [[ -d $projectDir ]]; then
-    echo "Directory already exists; not cloning."
-    exit 2;
+# We shouldn't clone if directory already exists, but we can still proceed with the script
+if  [[ -d $projectDir ]]; then
+    echo "Directory already exists; No need to create directory / clone."
 
 elif [[ $directoryType == "github" ]]; then
     echo "We are going to clone $1"
@@ -37,9 +36,8 @@ elif [[ $directoryType == "github" ]]; then
 		exit 3;
 	fi
 else
-    echo "Creating local repository: $1"
-    mkdir -p "$1"
-    cp -r $scriptDir/flask_project_layout/* $projectDir
+    echo "Creating local repository: $projectDir"
+    mkdir -p "$projectDir"
 fi
 
 # Install Virtual Environment. This is a requirement
@@ -60,7 +58,7 @@ source $projectDir/bin/activate
 # sudo apt-get install python-pip
 
 # Copies our generic project folder structure to project directory
-rsync -r --ignore-existing $scriptDir/flask_project_layout/* $projectDir
+rsync -r --ignore-existing $scriptDir/project_layout/* $projectDir
 
 # Installing dependencies
 echo "Attempting to install dependencies from requirements.txt within virtual environment"

@@ -1,36 +1,26 @@
-import os
+import logging
 
 from flask import Flask, render_template
+from flask_cors import CORS
+from flask_restplus import Resource, Api
+
+app = Flask(__name__)
+CORS(app)
+api = Api(app)
+
+# a simple page that says hello
+@api.route('/hello')
+class Hello(Resource):
+    def get(self):
+        return "Hello, World!"
 
 
-def create_app(test_config=None):
-    # create and configure the app
-    app = Flask(__name__, instance_relative_config=True)
-    app.config.from_mapping(
-        SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
-    )
-
-    if test_config is None:
-        # load the instance config, if it exists, when not testing
-        app.config.from_pyfile('config.py', silent=True)
-    else:
-        # load the test config if passed in
-        app.config.from_mapping(test_config)
-
-    # ensure the instance folder exists
-    try:
-        os.makedirs(app.instance_path)
-    except OSError:
-        pass
-
-    # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
-
-    @app.route('/')
-    def home():
+@api.route('/Home')
+class Home(Resource):
+    def get(self):
         return render_template('index.html')
 
-    return app
+
+if __name__ == "__main__":
+    logging.warning("Warning: you should use api.sh to run the server.")
+    app.run(host="127.0.0.1", port=8000, debug=True)

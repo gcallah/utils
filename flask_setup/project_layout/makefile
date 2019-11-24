@@ -14,13 +14,13 @@ FORCE:
 container: $(REQUIREMENTS_DIR)/Dockerfile  $(REQUIREMENTS_DIR)/requirements.txt
 	docker build -t utils docker
 
-pytests: FORCE
-	$(LIB_DIR)/pytests.sh
-
-tests: 
-
 lint:
 	$(PYLINT) $(PYTHONFILES)
+
+pytests: $(PYTHONFILES)
+	./pytests.sh
+
+tests: lint pytests
 	
 
 prod: $(INCS) $(HTMLFILES) lint tests
