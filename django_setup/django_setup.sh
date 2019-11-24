@@ -23,7 +23,8 @@ sudo apt-get install python-pip
 
 # Install all requirements listed in requirements.txt.
 echo "Installing requirements..."
-sudo pip install -r requirements.txt
+sudo pip install -r requirements/requirements.txt
+sudo pip install -r requirements/requirements-dev.txt
 
 # Set up django project.
 echo "Setting up django project..."
