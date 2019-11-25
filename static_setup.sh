@@ -45,6 +45,7 @@ add_dir $newdir/html_src
 add_dir $newdir/templates
 add_dir $newdir/docker
 add_dir $newdir/tests
+add_dir $newdir/markdown_files
 
 utilsdir=utils
 if [ -n "$2" ]; then
