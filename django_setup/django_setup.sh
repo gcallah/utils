@@ -11,20 +11,33 @@ if [ ! -z "$1" ]
         DIRECTORY="$1"
 fi
 
+# No longer needed because of virtual env
 # Refresh package cache
-sudo apt update
+# sudo apt update
 
+# Python and pip are now prerequisites to running the script.
 # First install Python and pip if they are not already installed.
-echo "Installing python if not installed..."
-sudo apt-get install python3.6
+# echo "Installing python if not installed..."
+# sudo apt-get install python3.6
 
-echo "Installing pip if not installed..."
-sudo apt-get install python-pip
+# echo "Installing pip if not installed..."
+# sudo apt-get install python-pip
+
+# Create virtual environment. venv is a prerequisite.
+echo "Creating virtual environment in $DIRECTORY..."
+python3 -m venv $DIRECTORY
+
+# Activate the virtual enviroment we just created, make sure script is being called with source
+echo "Activating the virtual environment in $DIRECTORY..."
+source $DIRECTORY/bin/activate
+
+# Copies our generic project folder structure to project directory
+# rsync -r --ignore-existing $scriptDir/project_layout/* $projectDir
 
 # Install all requirements listed in requirements.txt.
 echo "Installing requirements..."
-sudo pip install -r requirements/requirements.txt
-sudo pip install -r requirements/requirements-dev.txt
+pip install -r requirements/requirements.txt
+pip install -r requirements/requirements-dev.txt
 
 # Set up django project.
 echo "Setting up django project..."
