@@ -2,6 +2,7 @@
 
 # python3 comes with venv preinstalled
 # Note: python3 is the default for python version 3+
+# sudo apt-get install python3-venv is needed prior
 
 set -e
 
@@ -40,11 +41,6 @@ else
     mkdir -p "$projectDir"
 fi
 
-# Install Virtual Environment. This is a requirement
-# Might need to have this as a preqrequiste to using the script
-# echo "Installing python3-venv. Requires sudo"
-# sudo apt-get install python3-venv
-
 # Create a virtual environment for flask project
 echo "Creating virtual environment in $projectDir"
 python3 -m venv $projectDir
@@ -53,25 +49,11 @@ python3 -m venv $projectDir
 echo "Activating the virtual environment in $projectDir"
 source $projectDir/bin/activate
 
-# This is not needed since the virtual environment created has pip installed by default
-# sudo apt-get update
-# sudo apt-get install python-pip
-
 # Copies our generic project folder structure to project directory
 rsync -r --ignore-existing $scriptDir/project_layout/* $projectDir
 
 # Installing dependencies
 echo "Attempting to install dependencies from requirements.txt within virtual environment"
 pip install -r $projectDir/requirements.txt --no-cache-dir
-
-# Append flask environment variables to ~/.bashrc
-# while IFS="=" read -r key val
-# do
-# 	varExists="$( cat $projectDir/bin/activate | grep "export $key=")"
-# 	if [[ -z "${varExists}" ]]; then
-# 		echo "Setting $key"
-# 		echo "export $key=$val" >> $projectDir/bin/activate
-# 	fi
-# done < "$projectDir/env.txt"
 
 
