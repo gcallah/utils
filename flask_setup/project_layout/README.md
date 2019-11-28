@@ -11,8 +11,8 @@
     3.) The user has python3-venv preinstalled on their machine
 
 ## Script Behavior
-    1.) Clones existing directory that user inputs
-    2.) Creates a python virtual environment with the project name, extracted from the github URL
+    1.) Clones an existing github directory that user provides / Creates a local directory for the user
+    2.) Creates a python virtual environment with the project name, extracted from the github URL / provided in directory name
     3.) Then copies a generic flask project structure from the script directory into the project / target directory.
         - This comes with a default setup that allows you to immediately run a development flask server to test the setup
           by following the directions to run the flask project
@@ -29,13 +29,17 @@
     1.) modify the "run.sh" to change or include new variables
 
 ## Running project / script
-    To run script
+    To run setup script
     1.) run the following line in your shell: 
 	source ./initial_flask_setup <link to clone github repo / project directory name>
 
     To run flask project,
     1.) cd into the cloned git repo
-    2.) run the "run.sh" script to start the flask app
+    2.) run the "run.sh" script to start the virtual environment and flask app
 
     To deactivate virtual environment
-    Run "deactivate"
+    Run "deactivate" in the terminal
+
+## Available Build Targets (pre-packaged)
+    1.) make tests
+    2.) make lint
