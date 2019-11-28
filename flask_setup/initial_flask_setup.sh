@@ -39,6 +39,7 @@ elif [[ $directoryType == "github" ]]; then
 else
     echo "Creating local repository: $projectDir"
     mkdir -p "$projectDir"
+	git init $projectDir
 fi
 
 # Create a virtual environment for flask project
