@@ -2,6 +2,11 @@
 
 This script sets up a generic django project.
 
+**Prerequisites**
+1) The user has the utils repo or at least the django_setup folder in the utils repo on their machine.
+2) The user has python 3.x preinstalled on their machine
+3) The user has python3-venv preinstalled on their machine
+
 **To run this script**
 1) cd into project directory
 2) Run `bash django_setup.sh`
