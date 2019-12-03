@@ -37,6 +37,9 @@
     1.) cd into the cloned git repo
     2.) run the "run.sh" script to start the virtual environment and flask app
 
+    To activate virtual environment
+    Run "source ./bin/activate" from the root of the project directory
+
     To deactivate virtual environment
     Run "deactivate" in the terminal
 

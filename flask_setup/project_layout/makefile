@@ -6,8 +6,8 @@ export HTML_DIR = ./source/template
 export REQUIREMENTS_DIR = .
 PYLINT = flake8
 PYLINTFLAGS =
-PYTHONFILES = $(shell find source -name *.py)
-PYTHONFILES += $(shell find tests -name *.py)
+PYTHONFILES = $(shell find source -name \*.py)
+PYTHONFILES += $(shell find tests -name \*.py)
 
 FORCE:
 
