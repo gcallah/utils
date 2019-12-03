@@ -13,7 +13,7 @@ This script sets up a generic django project.
     - Alternatively, run `bash django_setup.sh <directory name>` to create a project under given directory name. Leave blank to create project under `mysite/` by default.
 
 **Script Behavior:**
-1) Refreshes the package cache and installs python 3.6 and pip if not already installed.
+1) Creates a python virtual environment with the project name.
 2) The script will install all dependencies listed in `requirements.txt`
 3) If `/mysite` directory does not already exist, starts a new django project. Moves `/mysite` contents up one directory level. Creates generic `/static` folder structure.
 Resulting file structure:
