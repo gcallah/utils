@@ -46,3 +46,4 @@
 ## Available Build Targets (pre-packaged)
     1.) make tests
     2.) make lint
+    3.) make pytests
