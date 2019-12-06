@@ -3,3 +3,5 @@ flake8
 pytest
 flask-cors
 flask-restplus
+coverage
+nose
