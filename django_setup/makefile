@@ -3,29 +3,13 @@
 # Need to export as ENV var
 # export TEST_DIR = tests
 # export TEST_DATA = test_data
-# export LIB_DIR = pylib
-# export CODE_DIR = .
-# export HTML_DIR = .
 # export REQUIREMENTS_DIR = requirements
 # PYLINT = flake8
-# export DATA_DIR = $(CODE_DIR)/data
-# export DOCKER_DIR = docker
-# PYTHONFILES = $(shell ls *.py)
-# PYTHONFILES += $(shell ls $(LIB_DIR)/*.py)
-# PSHELL_SCRIPTS = $(shell ls *.sh | sed -e 's/.sh/.ps1/')
-# PSHELL_SCRIPTS += $(shell ls $(TEST_DIR)/*.sh | sed -e 's/.sh/.ps1/')
-# BASH2PS = python bash_to_powershell.py
+# PYLINTFLAGS =
+# PYTHONFILES = $(shell find source -name \*.py)
+# PYTHONFILES += $(shell find tests -name \*.py)
 
 # FORCE:
-
-# container: $(DOCKER_DIR)/Dockerfile  $(DOCKER_DIR)/requirements.txt
-# 	docker build -t utils docker
-
-# html_tests: FORCE
-# 	$(TEST_DIR)/html_tests.sh
-
-# script_tests: FORCE
-# 	$(TEST_DIR)/script_tests.sh
 
 # lint:
 # 	$(PYLINT) $(PYTHONFILES)
@@ -35,33 +19,12 @@
 
 # tests: lint pytests
 
-# download make for windows to run tests on powershell:
-# http://gnuwin32.sourceforge.net/packages/make.htm
-
-# the test can depend upon the ps1 files being built like this:
-# pshell_html_tests: $(TEST_DIR)/html_tests_powershell.ps1
-
-# pshell_html_tests: FORCE
-# 	$(info )
-# 	python bash_to_powershell.py ./tests/html_tests.sh -d=True
-# 	powershell -ExecutionPolicy ByPass $(TEST_DIR)/html_tests_powershell.ps1
-
-# %.ps1: %.sh
-# 	$(BASH2PS) $<
-
-# pshell_scripts: $(PSHELL_SCRIPTS)
-
-# pshell_script_tests: FORCE
-# 	$(info )
-# 	python bash_to_powershell.py ./tests/script_tests.sh -d=True
-# 	powershell -ExecutionPolicy ByPass $(TEST_DIR)/script_tests_powershell.ps1
-
-# pshell_tests: pshell_html_tests pshell_script_tests
-
-# lint: 
-# 	flake8 $(PYTHONFILES)
-
 # prod: $(INCS) $(HTMLFILES) lint tests
 # 	-git commit -a 
+# 	git pull origin master
+# 	git push origin master
+
+# local: $(INCS) $(HTMLFILES) lint tests
+# 	-git commit -a
 # 	git pull origin master
 # 	git push origin master
