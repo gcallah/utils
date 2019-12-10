@@ -25,6 +25,22 @@ fi
 
 echo "Project Directory Name = $DIRECTORY"
 
+# We shouldn't clone if directory already exists, but we can still proceed with the script
+if  [[ -d $DIRECTORY ]]; then
+    echo "Directory already exists; No need to create directory / clone."
+
+elif [[ $directoryType == "github" ]]; then
+    echo "We are going to clone $1"
+    git clone $1 
+	if [[ $? -ne 0 ]]; then
+		echo "Trouble cloning $1, exiting script"
+		exit 3;
+	fi
+else
+    echo "Creating local repository: $DIRECTORY"
+    mkdir -p "$DIRECTORY"
+	git init $DIRECTORY
+fi
 
 # No longer needed because of virtual env
 # Refresh package cache
