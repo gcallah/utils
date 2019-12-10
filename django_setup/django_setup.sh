@@ -55,38 +55,38 @@ fi
 # sudo apt-get install python-pip
 
 # Create virtual environment. venv is a prerequisite.
-# echo "Creating virtual environment in $DIRECTORY..."
-# python3 -m venv $DIRECTORY
+echo "Creating virtual environment in $DIRECTORY..."
+python3 -m venv $DIRECTORY
 
-# # Activate the virtual enviroment we just created, make sure script is being called with source
-# echo "Activating the virtual environment in $DIRECTORY..."
-# source $DIRECTORY/bin/activate
+# Activate the virtual enviroment we just created, make sure script is being called with source
+echo "Activating the virtual environment in $DIRECTORY..."
+source $DIRECTORY/bin/activate
 
-# # Copies our generic project folder structure to project directory
-# # rsync -r --ignore-existing $scriptDir/project_layout/* $projectDir
+# Copies our generic project folder structure to project directory
+# rsync -r --ignore-existing $scriptDir/project_layout/* $DIRECTORY
 
-# # Install all requirements listed in requirements.txt.
-# echo "Installing requirements..."
-# pip install -r requirements/requirements.txt
-# pip install -r requirements/requirements-dev.txt
+# Install all requirements listed in requirements.txt.
+echo "Installing requirements..."
+pip install -r requirements/requirements.txt
+pip install -r requirements/requirements-dev.txt
 
-# # Set up django project.
-# echo "Setting up django project..."
-# if [ ! -d "$DIRECTORY" ]; then
-#     # Moves $DIRECTORY contents up one directory
-#     django-admin startproject "$DIRECTORY"
-#     mv "$DIRECTORY"/"$DIRECTORY"/* "$DIRECTORY"
-#     mv "$DIRECTORY"/manage.py .
-#     rm -rf "$DIRECTORY"/"$DIRECTORY"
-#     git add manage.py
-#     git add "$DIRECTORY"/*.py
-#     # Creates generic static directory
-#     mkdir -p "$DIRECTORY"/static/admin/css
-#     mkdir -p "$DIRECTORY"/static/admin/fonts
-#     mkdir -p "$DIRECTORY"/static/admin/img
-#     mkdir -p "$DIRECTORY"/static/admin/js
-# else
-#     echo "Directory /$DIRECTORY already exists."
-# fi
+# Set up django project.
+echo "Setting up django project..."
+if [ ! -d "$DIRECTORY" ]; then
+    # Moves $DIRECTORY contents up one directory
+    django-admin startproject "$DIRECTORY"
+    mv "$DIRECTORY"/"$DIRECTORY"/* "$DIRECTORY"
+    mv "$DIRECTORY"/manage.py .
+    rm -rf "$DIRECTORY"/"$DIRECTORY"
+    git add manage.py
+    git add "$DIRECTORY"/*.py
+    # Creates generic static directory
+    mkdir -p "$DIRECTORY"/static/admin/css
+    mkdir -p "$DIRECTORY"/static/admin/fonts
+    mkdir -p "$DIRECTORY"/static/admin/img
+    mkdir -p "$DIRECTORY"/static/admin/js
+else
+    echo "Directory /$DIRECTORY already exists."
+fi
 
 echo "Script complete."
