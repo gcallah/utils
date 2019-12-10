@@ -1,15 +1,30 @@
 #!/bin/sh
 # Work in progress django setup script. Do not use this version.
 
+set -e
+
 # Variables
 # If no argument passed to script, use "mysite" as default directory name.
 DIRECTORY="mysite"
+scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-# Use first argument as directory name
-if [ ! -z "$1" ]
-    then
-        DIRECTORY="$1"
+# Check for input
+if [[ -z $1 ]]; then
+	echo "This script requires a github repo url or directory name"
+	exit 1;
 fi
+
+# run sed on $1 to get dir name from git or get directory name
+if [[ $1 == *"https://github.com/"* ]]; then
+	DIRECTORY=$(echo $1 | sed 's/.*\/\([^\/]*\)\.git/\1/')
+	directoryType="github"
+else
+	DIRECTORY=$1
+	directoryType="local"
+fi
+
+echo "Project Directory Name = $DIRECTORY"
+
 
 # No longer needed because of virtual env
 # Refresh package cache
@@ -24,38 +39,38 @@ fi
 # sudo apt-get install python-pip
 
 # Create virtual environment. venv is a prerequisite.
-echo "Creating virtual environment in $DIRECTORY..."
-python3 -m venv $DIRECTORY
+# echo "Creating virtual environment in $DIRECTORY..."
+# python3 -m venv $DIRECTORY
 
-# Activate the virtual enviroment we just created, make sure script is being called with source
-echo "Activating the virtual environment in $DIRECTORY..."
-source $DIRECTORY/bin/activate
+# # Activate the virtual enviroment we just created, make sure script is being called with source
+# echo "Activating the virtual environment in $DIRECTORY..."
+# source $DIRECTORY/bin/activate
 
-# Copies our generic project folder structure to project directory
-# rsync -r --ignore-existing $scriptDir/project_layout/* $projectDir
+# # Copies our generic project folder structure to project directory
+# # rsync -r --ignore-existing $scriptDir/project_layout/* $projectDir
 
-# Install all requirements listed in requirements.txt.
-echo "Installing requirements..."
-pip install -r requirements/requirements.txt
-pip install -r requirements/requirements-dev.txt
+# # Install all requirements listed in requirements.txt.
+# echo "Installing requirements..."
+# pip install -r requirements/requirements.txt
+# pip install -r requirements/requirements-dev.txt
 
-# Set up django project.
-echo "Setting up django project..."
-if [ ! -d "$DIRECTORY" ]; then
-    # Moves $DIRECTORY contents up one directory
-    django-admin startproject "$DIRECTORY"
-    mv "$DIRECTORY"/"$DIRECTORY"/* "$DIRECTORY"
-    mv "$DIRECTORY"/manage.py .
-    rm -rf "$DIRECTORY"/"$DIRECTORY"
-    git add manage.py
-    git add "$DIRECTORY"/*.py
-    # Creates generic static directory
-    mkdir -p "$DIRECTORY"/static/admin/css
-    mkdir -p "$DIRECTORY"/static/admin/fonts
-    mkdir -p "$DIRECTORY"/static/admin/img
-    mkdir -p "$DIRECTORY"/static/admin/js
-else
-    echo "Directory /$DIRECTORY already exists."
-fi
+# # Set up django project.
+# echo "Setting up django project..."
+# if [ ! -d "$DIRECTORY" ]; then
+#     # Moves $DIRECTORY contents up one directory
+#     django-admin startproject "$DIRECTORY"
+#     mv "$DIRECTORY"/"$DIRECTORY"/* "$DIRECTORY"
+#     mv "$DIRECTORY"/manage.py .
+#     rm -rf "$DIRECTORY"/"$DIRECTORY"
+#     git add manage.py
+#     git add "$DIRECTORY"/*.py
+#     # Creates generic static directory
+#     mkdir -p "$DIRECTORY"/static/admin/css
+#     mkdir -p "$DIRECTORY"/static/admin/fonts
+#     mkdir -p "$DIRECTORY"/static/admin/img
+#     mkdir -p "$DIRECTORY"/static/admin/js
+# else
+#     echo "Directory /$DIRECTORY already exists."
+# fi
 
 echo "Script complete."
