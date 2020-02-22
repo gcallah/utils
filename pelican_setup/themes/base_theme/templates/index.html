@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+    <h3>List of Articles</h3>
+    <!-- List of "articles" -->
+    <ol>
+        {% if articles %}
+            {% for article in articles %}
+                <li><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></li>
+            {% endfor %}
+        {% else %}
+            <p>No articles listed</p>
+        {% endif %}
+    </ol>
+
+    <h3>List of Pages</h3>
+    <!-- List of "pages" -->
+    <ol>
+        {% if pages %}
+            {% for page in pages %}
+                <li><a href="{{ SITEURL }}/{{ page.url }}">{{ page.title }}</a></li>
+            {% endfor %}
+        {% else %}
+            <p>No page listed</p>
+        {% endif %}
+    </ol>
+
+</div>
+
+{% endblock content %}
