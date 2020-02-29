@@ -27,19 +27,28 @@
 
 set -e
 
+# Function
+usage() { 	
+	printf "Usage: ./pelican_setup [directory / github repo url] [-i] [-t] <name of theme (case sensitive)>\n\n"
+	printf "Use --help for more info" 
+}
+
 # Variables
 # Gets the current location of the script we are running
 scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 INTERACTIVE_MODE=0
+PELICAN_THEME_DIR=$scriptDir/pelican-themes
+SELECTED_THEME=base_theme
 
 # import common functions
 source $(dirname $scriptDir)/common_functions.sh
 
 # Help output
-if [[ $1 == "--help" || $# -gt 2 ]]; then
-	printf "Usage: ./pelican_setup [directory / github repo url] [-i]\n"
+if [[ $1 == "--help" || $# -gt 5 ]]; then
+	usage
 	printf "Options: \n"
-	printf "\t-i : enable the use of pelican-quickstart (interactive)\n\n\n"
+	printf "\t-i : enable the use of pelican-quickstart (interactive)\n\n"
+	printf "\t-t : allows you to select a theme from the pelican-themes repo for your project\n\n\n"
 	printf "By default: pelican_setup.sh will provide you with a template pelican project\n"
 	printf "pelican-quickstart allows for more customizations during setup.\n"
 	exit 0;
@@ -48,17 +57,9 @@ fi
 # Check for required input
 if [[ -z $1 ]]; then
 	printf "This script requires a github repo url or target directory name\n"
-	printf "Usage: ./pelican_setup [directory / github repo url] [-i]\n\n"
+	usage
 	printf "Use --help for more info.\n"
 	exit 1;
-fi
-
-# Makes sure the user intented to use interactive mode
-if [[ -n $2 && $2 != "-i" ]]; then
-	printf "Unknown flag. Please check --help for help.\n"
-	exit 2;
-elif [[ $2 == "-i" ]]; then
-	INTERACTIVE_MODE=1
 fi
 
 # run sed on $1 to get dir name from git or get directory name
@@ -90,6 +91,33 @@ else
 	git init $projectDir
 fi
 
+# Look through the flags / options if any
+for ((i=2; i<=$#; i++)); do
+	# turn interactive mode on
+  if [[ ${!i} == "-i" ]]; then
+	INTERACTIVE_MODE=1
+
+  elif [[ ${!i} == "-t" ]]; then
+
+	#increment i to see what the theme is potentially
+	i=$((i+1))
+
+	if [[ ${!i} != "-*" && -n ${!i} ]]; then
+		SELECTED_THEME=${!i}
+
+		# Check if we have a valid theme in pelican-themes
+		if [[ ! -d $PELICAN_THEME_DIR/$SELECTED_THEME ]]; then
+			printf "$SELECTED_THEME is not a part of the known pelican-themes\n. --help for more info\n"
+			exit 3
+		fi
+
+	else
+		printf "[-t] expects a theme directory from pelican-themes\n"
+		exit 2
+	fi
+  fi
+done
+
 # Create a virtual environment for flask project
 printf "Creating virtual environment in %s\n" $projectDir
 python3 -m venv $projectDir
@@ -112,26 +140,6 @@ if [[ INTERACTIVE_MODE -eq 1 ]]; then
 	# Makes additional directories for custom themes
 	mkdir -p "$projectDir/content/pages"
 	mkdir -p "$projectDir/themes"
-
-	# Copies some basic themes
-	rsync -r --ignore-existing $scriptDir/themes/* $projectDir/themes
-
-	# Set theme to base_theme
-	chmod o+w $projectDir/pelicanconf.py
-
-	# Note: you need at least one new line between the command
-	# and the start of the heredoc
-	cat << EOI >> $projectDir/pelicanconf.py
-
-
-	# Inserted by pelican_setup.sh
-
-	THEME='themes/base_theme'
-	OUTPUT_PATH='docs' # Github Pages Standard
-EOI
-
-	# Reset file permissions
-	chmod o-w $projectDir/pelicanconf.py
 	
 	if [[ -e $projectDir/Makefile ]]; then
 		# Changing the output dir in the makefile
@@ -145,6 +153,34 @@ else
 	printf "\nCopying base project from utils\n\n"
 	# Copies base project
 	rsync -r --ignore-existing $scriptDir/base_project/* $projectDir/
-
-	printf "\n\nYour project is now available at: %s\n" $projectDir/
 fi
+
+# Sets up themes for the new project
+
+# Default theme
+if [[ $SELECTED_THEME == "base_theme" ]]; then
+	# Copies basic theme from our own library
+	rsync -r --ignore-existing $scriptDir/custom_themes/$SELECTED_THEME $projectDir/themes
+else
+	# Copies theme from offical pelican-themes repo
+	rsync -r --ignore-existing $scriptDir/pelican-themes/$SELECTED_THEME $projectDir/themes
+fi
+
+# Set theme to base_theme
+chmod o+w $projectDir/pelicanconf.py
+
+# Note: you need at least one new line between the command
+# and the start of the heredoc
+cat << EOI >> $projectDir/pelicanconf.py
+
+
+# Inserted by pelican_setup.sh
+
+THEME="themes/$SELECTED_THEME"
+OUTPUT_PATH="docs" # Github Pages Standard
+EOI
+
+# Reset file permissions
+chmod o-w $projectDir/pelicanconf.py
+
+printf "\n\nYour project is now available at: %s\n" $projectDir/
