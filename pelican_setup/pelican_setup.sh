@@ -28,8 +28,12 @@
 set -e
 
 # Variables
+# Gets the current location of the script we are running
 scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 INTERACTIVE_MODE=0
+
+# import common functions
+source $(dirname $scriptDir)/common_functions.sh
 
 # Help output
 if [[ $1 == "--help" || $# -gt 2 ]]; then
@@ -59,7 +63,7 @@ fi
 
 # run sed on $1 to get dir name from git or get directory name
 if [[ $1 == *"https://github.com/"* ]]; then
-	projectDir=$(echo $1 | sed 's/.*\/\([^\/]*\)\.git/\1/')
+	extract_github_url projectDir $1
 	directoryType="github"
 else
 	projectDir=$1
