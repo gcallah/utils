@@ -50,7 +50,9 @@ if [[ $1 == "--help" || $# -gt 5 ]]; then
 	printf "\t-i : enable the use of pelican-quickstart (interactive)\n\n"
 	printf "\t-t : allows you to select a theme from the pelican-themes repo for your project\n\n\n"
 	printf "By default: pelican_setup.sh will provide you with a template pelican project\n"
-	printf "pelican-quickstart allows for more customizations during setup.\n"
+	printf "pelican-quickstart allows for more customizations during setup.\n\n"
+
+	printf "Please note: pelican-themes is a submodule and should be initialzed and cloned upon first use\n"
 	exit 0;
 fi
 
