@@ -53,6 +53,11 @@ source $projectDir/bin/activate
 # Copies our generic project folder structure to project directory
 rsync -r --ignore-existing $scriptDir/project_layout/* $projectDir
 
+# Copy the gitignore file (if doesn't already exit)
+if [[ ! -f $projectDir/.gitignore ]]; then
+	cp $scriptDir/project_layout/.gitignore $projectDir
+fi
+
 # Installing dependencies
 echo "Attempting to install dependencies from requirements.txt within virtual environment"
 pip install -r $projectDir/requirements.txt --no-cache-dir
