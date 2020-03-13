@@ -30,7 +30,7 @@ set -e
 # Function
 usage() { 	
 	printf "Usage: ./pelican_setup [directory / github repo url] [-i] [-t] <name of theme (case sensitive)>\n\n"
-	printf "Use --help for more info" 
+	printf "Use --help for more info\n" 
 }
 
 # Variables
@@ -67,6 +67,8 @@ fi
 # run sed on $1 to get dir name from git or get directory name
 if [[ $1 == *"https://github.com/"* ]]; then
 	extract_github_url projectDir $1
+	#Back up (temp if first one doesn't work)
+	#projectDir=$(extract_github_url $1
 	directoryType="github"
 else
 	projectDir=$1
@@ -109,7 +111,7 @@ for ((i=2; i<=$#; i++)); do
 
 		# Check if we have a valid theme in pelican-themes
 		if [[ ! -d $PELICAN_THEME_DIR/$SELECTED_THEME ]]; then
-			printf "$SELECTED_THEME is not a part of the known pelican-themes\n. --help for more info\n"
+			printf "$SELECTED_THEME is not a part of the known pelican-themes\n\nUse --help for more info\n"
 			exit 3
 		fi
 
@@ -161,9 +163,11 @@ fi
 
 # Default theme
 if [[ $SELECTED_THEME == "base_theme" ]]; then
+	printf "No theme selected, falling back to base_theme\n"
 	# Copies basic theme from our own library
 	rsync -r --ignore-existing $scriptDir/custom_themes/$SELECTED_THEME $projectDir/themes
 else
+	printf "Selected Theme: %s\n" $SELECTED_THEME
 	# Copies theme from offical pelican-themes repo
 	rsync -r --ignore-existing $scriptDir/pelican-themes/$SELECTED_THEME $projectDir/themes
 fi
@@ -184,5 +188,15 @@ EOI
 
 # Reset file permissions
 chmod o-w $projectDir/pelicanconf.py
+
+# Add gitignore to projectdir
+# Copy the gitignore file (if doesn't already exit)
+if [[ ! -f $projectDir/.gitignore ]]; then
+	cp $scriptDir/base_project/.gitignore $projectDir
+fi
+
+# Git add all files
+cd $projectDir
+git add .
 
 printf "\n\nYour project is now available at: %s\n" $projectDir/

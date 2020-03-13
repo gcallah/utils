@@ -62,4 +62,7 @@ fi
 echo "Attempting to install dependencies from requirements.txt within virtual environment"
 pip install -r $projectDir/requirements.txt --no-cache-dir
 
+# Git add all files
+cd $projectDir
+git add .
 

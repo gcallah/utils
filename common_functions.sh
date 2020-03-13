@@ -14,7 +14,7 @@
 extract_github_url()
 {
     # nameref to variable pointed to by $1
-    local -n output=$1
+    declare -n output=$1
 
     # Check if its a github url
     if [[ $2 == *"https://github.com/"* ]]; then
@@ -22,6 +22,19 @@ extract_github_url()
         output="$(echo $2 | sed 's/.*\/\([^\/]*\)\.git/\1/')"
     else
         echo "extract_github_url(): non-github url given"
-        return -1
+        return 1
     fi
 }
+
+# # Version 2 in case declare with nameref doesn't work
+# extract_github_url()
+# {
+#     # Check if its a github url
+#     if [[ $1 == *"https://github.com/"* ]]; then
+#         # Set the extracted result
+#         echo "$(echo $1 | sed 's/.*\/\([^\/]*\)\.git/\1/')"
+#     else
+#         echo "extract_github_url(): non-github url given"
+#         return 1
+#     fi
+# }
