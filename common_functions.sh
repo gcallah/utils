@@ -11,6 +11,7 @@
 # Parameters:
 #   $1 = the variable you would like the function to set
 #   $2 = the github url you would like to extract from
+# Note: nameref variables require bash 4.3 or later
 extract_github_url()
 {
     # nameref to variable pointed to by $1
