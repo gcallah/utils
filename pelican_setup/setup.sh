@@ -25,6 +25,9 @@
 # Note: python3 is the default for python version 3+
 # sudo apt-get install python3-venv is needed prior
 
+# this script should be run from the level above utils:
+# it will create the new repo at the same level as utils
+
 set -e
 
 # Function
@@ -40,10 +43,8 @@ INTERACTIVE_MODE=0
 PELICAN_THEME_DIR=$scriptDir/pelican-themes
 SELECTED_THEME=base_theme
 
-# import common functions
-source $(dirname $scriptDir)/common_functions.sh
+source utils/lib/common_functions.sh
 
-# Help output
 if [[ $1 == "--help" || $# -gt 5 ]]; then
 	usage
 	printf "Options: \n"
@@ -66,9 +67,7 @@ fi
 
 # run sed on $1 to get dir name from git or get directory name
 if [[ $1 == *"https://github.com/"* ]]; then
-	extract_github_url projectDir $1
-	#Back up (temp if first one doesn't work)
-	#projectDir=$(extract_github_url $1
+    projectDir=$(extract_github_url $1)
 	directoryType="github"
 else
 	projectDir=$1
