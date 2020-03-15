@@ -43,7 +43,27 @@ INTERACTIVE_MODE=0
 PELICAN_THEME_DIR=$scriptDir/pelican-themes
 SELECTED_THEME=base_theme
 
-source utils/lib/common_functions.sh
+# Update / init pelican-themes
+
+source ../lib/common_functions.sh
+
+SPIN_PID=-1
+printf 'Processing: Init and updating pelican-themes\n'
+# Start the spinner in the background.
+# The background job's PID is stored in special variable `$!`.
+(while :; do for c in / - \\ \|; do printf '%s\b' "$c"; sleep 1; done; done) &
+
+SPIN_PID=$!
+# trap "kill -9 $SPIN_PID" `seq 0 15`
+# Run the synchronous (blocking) command.
+# In this example we simply sleep for a few seconds.
+git submodule update --init --recursive
+
+# The blocking command has finished:
+# Print a newline and kill the spinner job.
+kill -9 $SPIN_PID && wait 2>/dev/null
+
+printf "HELLO?"
 
 if [[ $1 == "--help" || $# -gt 5 ]]; then
 	usage
