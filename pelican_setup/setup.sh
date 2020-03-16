@@ -27,13 +27,30 @@
 
 # this script should be run from the level above utils:
 # it will create the new repo at the same level as utils
+# (No longer needed or required)
 
 set -e
 
-# Function
-usage() { 	
-	printf "Usage: ./pelican_setup [directory / github repo url] [-i] [-t] <name of theme (case sensitive)>\n\n"
-	printf "Use --help for more info\n" 
+# Functions
+usageMessage() { 	
+	printf "Usage: ./setup.sh <directory / github repo url> [-i] [-t]\n\n"
+}
+
+helpMessage() {
+	usageMessage
+	printf "Options: \n"
+	printf "\t-i : enable the use of pelican-quickstart (interactive)\n\n"
+	printf "\t-t : allows you to select a theme from the pelican-themes repo for your project.\n"
+	printf "\t\t You need to give the exact directory name as shown in the pelican-themes repository.\n\n"
+	printf "\t\t Example: If \"blue-penguin\" is the directory name in pelican-themes repo,\n\n"
+	printf "\t\t Then the command would be: \"setup.h <your project directory> -t blue-penguin\"\n\n"
+	printf "By default: setup.sh will provide you with a template pelican project\n"
+	printf "pelican-quickstart allows for more customizations during setup. (Enabled by -i flag)\n\n"
+
+	printf "Please note: pelican-themes is a submodule within 'utils/pelican_setup'\n"
+	printf "The official pelican-themes repository can be found at: ____\n\n"
+	printf "If you have recently clone a fresh utils repo, it might take a while for the script\n"
+	printf "to initialize and update pelican-themes.\n"
 }
 
 # Variables
@@ -43,45 +60,39 @@ INTERACTIVE_MODE=0
 PELICAN_THEME_DIR=$scriptDir/pelican-themes
 SELECTED_THEME=base_theme
 
-# Update / init pelican-themes
+# This lets you run the script from anywhere. Independent of the current working dir
+# the path is relative to this script's directory
+source $scriptDir/../lib/common_functions.sh
 
-source ../lib/common_functions.sh
+# # Update / init pelican-themes
+# SPIN_PID=-1
+# printf 'Processing: Init and updating pelican-themes\n'
+# # Start the spinner in the background.
+# # The background job's PID is stored in special variable `$!`.
+# (while :; do for c in / - \\ \|; do printf '%s\b' "$c"; sleep 1; done; done) &
 
-SPIN_PID=-1
-printf 'Processing: Init and updating pelican-themes\n'
-# Start the spinner in the background.
-# The background job's PID is stored in special variable `$!`.
-(while :; do for c in / - \\ \|; do printf '%s\b' "$c"; sleep 1; done; done) &
+# SPIN_PID=$!
+# # trap "kill -9 $SPIN_PID" `seq 0 15`
+# # Run the synchronous (blocking) command.
+# # In this example we simply sleep for a few seconds.
+# git submodule update --init --recursive
 
-SPIN_PID=$!
-# trap "kill -9 $SPIN_PID" `seq 0 15`
-# Run the synchronous (blocking) command.
-# In this example we simply sleep for a few seconds.
-git submodule update --init --recursive
+# # The blocking command has finished:
+# # Print a newline and kill the spinner job.
+# kill -9 $SPIN_PID && wait 2>/dev/null
 
-# The blocking command has finished:
-# Print a newline and kill the spinner job.
-kill -9 $SPIN_PID && wait 2>/dev/null
-
-printf "HELLO?"
+# printf "HELLO?"
 
 if [[ $1 == "--help" || $# -gt 5 ]]; then
-	usage
-	printf "Options: \n"
-	printf "\t-i : enable the use of pelican-quickstart (interactive)\n\n"
-	printf "\t-t : allows you to select a theme from the pelican-themes repo for your project\n\n\n"
-	printf "By default: pelican_setup.sh will provide you with a template pelican project\n"
-	printf "pelican-quickstart allows for more customizations during setup.\n\n"
-
-	printf "Please note: pelican-themes is a submodule and should be initialzed and cloned upon first use\n"
+	helpMessage
 	exit 0;
 fi
 
 # Check for required input
 if [[ -z $1 ]]; then
-	printf "This script requires a github repo url or target directory name\n"
-	usage
-	printf "Use --help for more info.\n"
+	printf "This script requires a github repo url or target directory name\n\n"
+	usageMessage
+	printf "Use --help for more info to see how this script is used.\n"
 	exit 1;
 fi
 
@@ -115,30 +126,85 @@ else
 fi
 
 # Look through the flags / options if any
-for ((i=2; i<=$#; i++)); do
-	# turn interactive mode on
-  if [[ ${!i} == "-i" ]]; then
-	INTERACTIVE_MODE=1
+# for ((i=2; i<=$#; i++)); do
+# 	# turn interactive mode on
+#   if [[ ${!i} == "-i" ]]; then
+# 	INTERACTIVE_MODE=1
 
-  elif [[ ${!i} == "-t" ]]; then
+#   elif [[ ${!i} == "-t" ]]; then
 
-	#increment i to see what the theme is potentially
-	i=$((i+1))
+# 	#increment i to see what the theme is potentially
+# 	i=$(( i+1 ))
 
-	if [[ ${!i} != "-*" && -n ${!i} ]]; then
-		SELECTED_THEME=${!i}
+# 	if [[ -n ${!i} ]]; then
+# 		SELECTED_THEME=${!i}
 
-		# Check if we have a valid theme in pelican-themes
-		if [[ ! -d $PELICAN_THEME_DIR/$SELECTED_THEME ]]; then
-			printf "$SELECTED_THEME is not a part of the known pelican-themes\n\nUse --help for more info\n"
-			exit 3
+# 		# Check if we have a valid theme in pelican-themes
+# 		if [[ ! -d $PELICAN_THEME_DIR/$SELECTED_THEME ]]; then
+# 			printf "\nTheme Not Found: $SELECTED_THEME is not a part of the pelican-themes repo\n"
+# 			printf "\nUse --help for more info\n"
+# 			exit 2;
+# 		fi
+
+# 	else
+# 		printf "[-t] expects a theme directory from pelican-themes\n"
+# 		printf "\nUse --help for more info\n"
+# 		exit 3;
+# 	fi
+
+#   elif [[ ${!i} == "--help" ]]; then
+# 	helpMessage
+# 	exit 4;
+
+#   else
+# 	printf "Unknown option: %s\n" ${!i}
+# 	exit 5;
+#   fi
+# done
+
+argv=("$@")
+argc=$#
+
+echo "${argv[1]}"
+echo "$#"
+
+# $@ starts right after the script name, (after $0)
+# This achives the same goal without the use of indirection parameter expansion
+for (( i = 1; i < argc; i++ )); do
+	param=${argv[i]}
+
+	if [[ $param == "-i" ]]; then
+		INTERACTIVE_MODE=1
+
+	elif [[ $param == "-t" ]]; then
+
+		#increment i to see what the theme is potentially
+		i=$(( i+1 ))
+
+		if [[ -n param ]]; then
+			SELECTED_THEME=$param
+
+			# Check if we have a valid theme in pelican-themes
+			if [[ ! -d $PELICAN_THEME_DIR/$SELECTED_THEME ]]; then
+				printf "\nTheme Not Found: $SELECTED_THEME is not a part of the pelican-themes repo\n"
+				printf "\nUse --help for more info\n"
+				exit 2;
+			fi
+
+		else
+			printf "[-t] expects a theme directory from pelican-themes\n"
+			printf "\nUse --help for more info\n"
+			exit 3;
 		fi
 
+	elif [[ $param == "--help" ]]; then
+		helpMessage
+		exit 4;
+
 	else
-		printf "[-t] expects a theme directory from pelican-themes\n"
-		exit 2
+		printf "Unknown option: %s\n" $param
+		exit 5;
 	fi
-  fi
 done
 
 # Create a virtual environment for flask project
