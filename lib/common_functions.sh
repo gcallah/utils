@@ -39,3 +39,18 @@ extract_github_url()
         return 1
     fi
 }
+
+# runs a spinner infinitely
+spin()
+{
+  spinner="/|\\-/|\\-"
+  while :
+  do
+    for i in `seq 0 7`
+    do
+      echo -n "${spinner:$i:1}"
+      echo -en "\010"
+      sleep 1
+    done
+  done
+}

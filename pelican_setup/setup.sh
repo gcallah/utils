@@ -25,32 +25,54 @@
 # Note: python3 is the default for python version 3+
 # sudo apt-get install python3-venv is needed prior
 
-# this script should be run from the level above utils:
-# it will create the new repo at the same level as utils
-# (No longer needed or required)
+# pelican-themes is a very large repo that has directories and other submodules
+# upon first run on this script on a fresh utils repo, it will take a while to initialize
+# Afterwhich, the script will be much faster.
+
+# Using themes
+
+# All themes gets placed into the themes folder of your respective project directory
+# If you wish to use this script to insert a pelican-theme, please note it will attempt 
+# to modify the THEME variable in your pelicanconf.py if it exists. 
+# Otherwise, it will append both THEME and OUTPUT_PATH to pelicanconf.py
+
+# Example of using the -t option (sensitive, must match theme name in pelican-themes repo)
+# 	./setup.sh <dir> -t Flex
+# 	./setup.sh <dir> -t blue-penguin
+
+# In the event that it seems no themes was added after successful completion of the script
+# please check if your pelicanconf.py has the THEME (case sensitive to pelican) 
+# is set to the directory of where the theme should be
+
+# Or also check if themes folder in your project directory has been populated with actual 
+# files in your selected theme.
+# I.E, if blue-penguin was your theme, there should be a folder called blue-penguin in 
+# your project/theme folder, which should contain files with used by the theme.
 
 set -e
 
 # Functions
 usageMessage() { 	
-	printf "Usage: ./setup.sh <directory / github repo url> [-i] [-t]\n\n"
+	printf "Usage: ./setup.sh <directory / github repo url> [-i] [-t] [--help]\n\n"
 }
 
 helpMessage() {
 	usageMessage
 	printf "Options: \n"
 	printf "\t-i : enable the use of pelican-quickstart (interactive)\n\n"
-	printf "\t-t : allows you to select a theme from the pelican-themes repo for your project.\n"
-	printf "\t\t You need to give the exact directory name as shown in the pelican-themes repository.\n\n"
-	printf "\t\t Example: If \"blue-penguin\" is the directory name in pelican-themes repo,\n\n"
-	printf "\t\t Then the command would be: \"setup.h <your project directory> -t blue-penguin\"\n\n"
+	printf "\t-t : allows you to select a theme from the pelican-themes repo\n"
+	printf "\t     for your project. (case-sensitive)\n\n"
+	printf "\t You need to give the exact directory name as shown in the\n"
+	printf "\t pelican-themes repository.\n\n"
+	printf "\t Example: If \"blue-penguin\" is the directory name in pelican-themes repo\n"
+	printf "\t Then the command would be: \n\t \"setup.h <your project directory> -t blue-penguin\"\n\n"
 	printf "By default: setup.sh will provide you with a template pelican project\n"
-	printf "pelican-quickstart allows for more customizations during setup. (Enabled by -i flag)\n\n"
+	printf "pelican-quickstart allows for more customizations during setup.\n(Enabled by -i flag)\n\n"
 
 	printf "Please note: pelican-themes is a submodule within 'utils/pelican_setup'\n"
-	printf "The official pelican-themes repository can be found at: ____\n\n"
-	printf "If you have recently clone a fresh utils repo, it might take a while for the script\n"
-	printf "to initialize and update pelican-themes.\n"
+	printf "The official pelican-themes repository can be found at: \nhttps://github.com/getpelican/pelican-themes\n\n"
+	printf "If you have recently clone a fresh utils repo,\nit might take a while for the script "
+	printf "to init and update pelican-themes.\n"
 }
 
 # Variables
@@ -64,25 +86,6 @@ SELECTED_THEME=base_theme
 # the path is relative to this script's directory
 source $scriptDir/../lib/common_functions.sh
 
-# # Update / init pelican-themes
-# SPIN_PID=-1
-# printf 'Processing: Init and updating pelican-themes\n'
-# # Start the spinner in the background.
-# # The background job's PID is stored in special variable `$!`.
-# (while :; do for c in / - \\ \|; do printf '%s\b' "$c"; sleep 1; done; done) &
-
-# SPIN_PID=$!
-# # trap "kill -9 $SPIN_PID" `seq 0 15`
-# # Run the synchronous (blocking) command.
-# # In this example we simply sleep for a few seconds.
-# git submodule update --init --recursive
-
-# # The blocking command has finished:
-# # Print a newline and kill the spinner job.
-# kill -9 $SPIN_PID && wait 2>/dev/null
-
-# printf "HELLO?"
-
 if [[ $1 == "--help" || $# -gt 5 ]]; then
 	helpMessage
 	exit 0;
@@ -95,6 +98,22 @@ if [[ -z $1 ]]; then
 	printf "Use --help for more info to see how this script is used.\n"
 	exit 1;
 fi
+
+# Update / init pelican-themes as needed
+SPIN_PID=-1
+printf "Running \"git submodule update --init --recursive\" on pelican-themes.\n"
+printf "Might take a while if your utils repo is fresh : "
+# Start the spinner in the background.
+# The background job's PID is stored in special variable `$!`.
+spin &
+
+SPIN_PID=$!
+# Run the synchronous (blocking) command.
+git submodule update --init --recursive &> /dev/null
+
+# The blocking command has finished:
+# Print a newline and kill the spinner job.
+kill -9 $SPIN_PID && wait 2>/dev/null && printf "\n"
 
 # run sed on $1 to get dir name from git or get directory name
 if [[ $1 == *"https://github.com/"* ]]; then
@@ -126,47 +145,8 @@ else
 fi
 
 # Look through the flags / options if any
-# for ((i=2; i<=$#; i++)); do
-# 	# turn interactive mode on
-#   if [[ ${!i} == "-i" ]]; then
-# 	INTERACTIVE_MODE=1
-
-#   elif [[ ${!i} == "-t" ]]; then
-
-# 	#increment i to see what the theme is potentially
-# 	i=$(( i+1 ))
-
-# 	if [[ -n ${!i} ]]; then
-# 		SELECTED_THEME=${!i}
-
-# 		# Check if we have a valid theme in pelican-themes
-# 		if [[ ! -d $PELICAN_THEME_DIR/$SELECTED_THEME ]]; then
-# 			printf "\nTheme Not Found: $SELECTED_THEME is not a part of the pelican-themes repo\n"
-# 			printf "\nUse --help for more info\n"
-# 			exit 2;
-# 		fi
-
-# 	else
-# 		printf "[-t] expects a theme directory from pelican-themes\n"
-# 		printf "\nUse --help for more info\n"
-# 		exit 3;
-# 	fi
-
-#   elif [[ ${!i} == "--help" ]]; then
-# 	helpMessage
-# 	exit 4;
-
-#   else
-# 	printf "Unknown option: %s\n" ${!i}
-# 	exit 5;
-#   fi
-# done
-
 argv=("$@")
 argc=$#
-
-echo "${argv[1]}"
-echo "$#"
 
 # $@ starts right after the script name, (after $0)
 # This achives the same goal without the use of indirection parameter expansion
@@ -179,7 +159,9 @@ for (( i = 1; i < argc; i++ )); do
 	elif [[ $param == "-t" ]]; then
 
 		#increment i to see what the theme is potentially
-		i=$(( i+1 ))
+		i=$((i+1))
+
+		param=${argv[i]}
 
 		if [[ -n param ]]; then
 			SELECTED_THEME=$param
@@ -190,6 +172,8 @@ for (( i = 1; i < argc; i++ )); do
 				printf "\nUse --help for more info\n"
 				exit 2;
 			fi
+
+			printf "THEME SELECTED: %s\n" $SELECTED_THEME
 
 		else
 			printf "[-t] expects a theme directory from pelican-themes\n"
@@ -260,9 +244,13 @@ fi
 # Set theme to base_theme
 chmod o+w $projectDir/pelicanconf.py
 
-# Note: you need at least one new line between the command
-# and the start of the heredoc
-cat << EOI >> $projectDir/pelicanconf.py
+# Check if there was already a THEME variable, modify it if exists
+if grep -q "THEME[  ]*=[  ]*" $projectDir/pelicanconf.py; then
+	sed -i "s/THEME[  ]*=[  ]*[\'|\"].*[\'|\"]/THEME=\"themes\/$SELECTED_THEME\"/" $projectDir/pelicanconf.py 
+else
+	# Note: you need at least one new line between the command
+	# and the start of the heredoc
+	cat << EOI >> $projectDir/pelicanconf.py
 
 
 # Inserted by pelican_setup.sh
@@ -270,6 +258,8 @@ cat << EOI >> $projectDir/pelicanconf.py
 THEME="themes/$SELECTED_THEME"
 OUTPUT_PATH="docs" # Github Pages Standard
 EOI
+
+fi
 
 # Reset file permissions
 chmod o-w $projectDir/pelicanconf.py
