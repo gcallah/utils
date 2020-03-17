@@ -1,7 +1,0 @@
-bin
-lib
-lib64
-share
-pyvenv.cfg
-include
-__pycache__

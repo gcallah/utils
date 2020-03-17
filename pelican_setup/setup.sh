@@ -81,6 +81,7 @@ scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 INTERACTIVE_MODE=0
 PELICAN_THEME_DIR=$scriptDir/pelican-themes
 SELECTED_THEME=base_theme
+CURRENT_DIR="$(pwd)"
 
 # This lets you run the script from anywhere. Independent of the current working dir
 # the path is relative to this script's directory
@@ -117,6 +118,8 @@ git submodule update --init --recursive &> /dev/null
 # The blocking command has finished:
 # Print a newline and kill the spinner job.
 kill -9 $SPIN_PID && wait 2>/dev/null && printf "\n"
+
+cd $CURRENT_DIR
 
 # run sed on $1 to get dir name from git or get directory name
 if [[ $1 == *"https://github.com/"* ]]; then
