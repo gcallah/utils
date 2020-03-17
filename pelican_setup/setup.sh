@@ -108,6 +108,9 @@ printf "Might take a while if your utils repo is fresh : "
 spin &
 
 SPIN_PID=$!
+
+# Go into the directory of the script to run git
+cd $scriptDir
 # Run the synchronous (blocking) command.
 git submodule update --init --recursive &> /dev/null
 

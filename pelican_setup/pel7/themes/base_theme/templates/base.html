@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{SITENAME}}</title>
+
+        <meta charset="UTF-8">
+        <link href="{{SITEURL}}/theme/css/style.css" rel="stylesheet" type="text/css"/>
+        <link rel="icon" href="{{SITEURL}}/theme/images/favicon.ico" type="image/x-icon" />
+    </head>
+    <body>
+        {% include "menu.html" %}
+
+        {% block content %}
+        {% endblock content %}
+    </body>
+</html>
