@@ -175,6 +175,7 @@ for (( i = 1; i < argc; i++ )); do
 			# Check if we have a valid theme in pelican-themes
 			if [[ ! -d $PELICAN_THEME_DIR/$SELECTED_THEME ]]; then
 				printf "\nTheme Not Found: $SELECTED_THEME is not a part of the pelican-themes repo\n"
+				printf "\nCommon error: case sensitivity. The theme name must be exactly as show in pelican-themes\n"
 				printf "\nUse --help for more info\n"
 				exit 2;
 			fi
