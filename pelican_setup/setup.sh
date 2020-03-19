@@ -43,11 +43,14 @@
 # In the event that it seems no themes was added after successful completion of the script
 # please check if your pelicanconf.py has the THEME (case sensitive to pelican) 
 # is set to the directory of where the theme should be
+# The script will attempt its best to modify the THEME variable, but it could fail in unforeseen cases.
+# Should work most of the time.
 
 # Or also check if themes folder in your project directory has been populated with actual 
 # files in your selected theme.
 # I.E, if blue-penguin was your theme, there should be a folder called blue-penguin in 
 # your project/theme folder, which should contain files with used by the theme.
+# This could happen if the pelican-themes repo was not initialized by the script correctly.
 
 set -e
 
@@ -119,6 +122,7 @@ git submodule update --init --recursive &> /dev/null
 # Print a newline and kill the spinner job.
 kill -9 $SPIN_PID && wait 2>/dev/null && printf "\n"
 
+# return to original working directory
 cd $CURRENT_DIR
 
 # run sed on $1 to get dir name from git or get directory name
