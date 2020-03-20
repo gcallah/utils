@@ -104,23 +104,13 @@ if [[ -z $1 ]]; then
 fi
 
 # Update / init pelican-themes as needed
-SPIN_PID=-1
 printf "Running \"git submodule update --init --recursive\" on pelican-themes.\n"
-printf "Might take a while if your utils repo is fresh : "
-# Start the spinner in the background.
-# The background job's PID is stored in special variable `$!`.
-spin &
-
-SPIN_PID=$!
 
 # Go into the directory of the script to run git
 cd $scriptDir
-# Run the synchronous (blocking) command.
-git submodule update --init --recursive &> /dev/null
 
-# The blocking command has finished:
-# Print a newline and kill the spinner job.
-kill -9 $SPIN_PID && wait 2>/dev/null && printf "\n"
+# Run the synchronous (blocking) command.
+git submodule update --init --recursive
 
 # return to original working directory
 cd $CURRENT_DIR
