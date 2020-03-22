@@ -42,13 +42,13 @@ else
 	git init $projectDir
 fi
 
-# Create a virtual environment for flask project
-echo "Creating virtual environment in $projectDir"
-python3 -m venv $projectDir
+# # Create a virtual environment for flask project
+# echo "Creating virtual environment in $projectDir"
+# python3 -m venv $projectDir
 
-# Activate the virtual enviroment we just created, make sure script is being called with source
-echo "Activating the virtual environment in $projectDir"
-source $projectDir/bin/activate
+# # Activate the virtual enviroment we just created, make sure script is being called with source
+# echo "Activating the virtual environment in $projectDir"
+# source $projectDir/bin/activate
 
 # Copies our generic project folder structure to project directory
 rsync -r --ignore-existing $scriptDir/project_layout/* $projectDir
@@ -58,9 +58,9 @@ if [[ ! -f $projectDir/.gitignore ]]; then
 	cp $scriptDir/project_layout/.gitignore $projectDir
 fi
 
-# Installing dependencies
-echo "Attempting to install dependencies from requirements.txt within virtual environment"
-pip install -r $projectDir/requirements.txt --no-cache-dir
+# # Installing dependencies
+# echo "Attempting to install dependencies from requirements.txt within virtual environment"
+# pip install -r $projectDir/requirements.txt --no-cache-dir
 
 # Git add all files
 cd $projectDir
