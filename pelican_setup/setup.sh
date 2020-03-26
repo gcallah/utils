@@ -223,6 +223,10 @@ if [[ INTERACTIVE_MODE -eq 1 ]]; then
 	# Remove empty output dir created by pelican-quickstart
 	rm -r $projectDir/output
 
+	# Put some default content for user to test with
+	# copied from utils/pelican_setup/base_project
+	rsync -r --ignore-existing $scriptDir/base_project/content/* $projectDir/content
+
 else
 	printf "\nCopying base project from utils\n\n"
 	# Copies base project
