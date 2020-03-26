@@ -246,12 +246,18 @@ else
 	rsync -r --ignore-existing $scriptDir/pelican-themes/$SELECTED_THEME $projectDir/themes
 fi
 
+# Make a backup of the config file
+printf "Backing up pelicanconf.py\n"
+cp $projectDir/pelicanconf.py $projectDir/pelicanconf.py.backup
+
 # Set theme to base_theme
 chmod o+w $projectDir/pelicanconf.py
 
 # Check if there was already a THEME variable, modify it if exists
 if grep -q "THEME[  ]*=[  ]*" $projectDir/pelicanconf.py; then
-	sed -i "s/THEME[  ]*=[  ]*[\'|\"].*[\'|\"]/THEME=\"themes\/$SELECTED_THEME\"/" $projectDir/pelicanconf.py 
+	# note, must readin from the backup since redirection will truncate the file first
+	# Thus, when sed runs, it sees an empty file
+	sed "s/THEME[  ]*=[  ]*[\'|\"].*[\'|\"]/THEME=\"themes\/$SELECTED_THEME\"/" $projectDir/pelicanconf.py.backup > $projectDir/pelicanconf.py
 else
 	# Note: you need at least one new line between the command
 	# and the start of the heredoc
