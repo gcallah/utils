@@ -257,7 +257,7 @@ chmod o+w $projectDir/pelicanconf.py
 if grep -q "THEME[  ]*=[  ]*" $projectDir/pelicanconf.py; then
 	# note, must readin from the backup since redirection will truncate the file first
 	# Thus, when sed runs, it sees an empty file
-	sed "s/THEME[  ]*=[  ]*[\'|\"].*[\'|\"]/THEME=\"themes\/$SELECTED_THEME\"/" $projectDir/pelicanconf.py.backup > $projectDir/pelicanconf.py
+	cat $projectDir/pelicanconf.py.backup | sed "s/THEME[  ]*=[  ]*[\'|\"].*[\'|\"]/THEME=\"themes\/$SELECTED_THEME\"/" > $projectDir/pelicanconf.py
 else
 	# Note: you need at least one new line between the command
 	# and the start of the heredoc
