@@ -204,18 +204,18 @@ done
 
 # You may uncomment this section in the future for enabling the use of virtual env
 # It setups the virtual env with pelican[Markdown]
-# # Create a virtual environment for flask project
-# printf "Creating virtual environment in %s\n" $projectDir
-# python3 -m venv $projectDir
+# Create a virtual environment for flask project
+printf "Creating virtual environment in %s\n" $projectDir
+python3 -m venv $projectDir
 
-# # Activate the virtual enviroment we just created, make sure script is being called with source
-# printf "Activating the virtual environment in %s\n" $projectDir
-# # Source = running the command in the current shell
-# source $projectDir/bin/activate
+# Activate the virtual enviroment we just created, make sure script is being called with source
+printf "Activating the virtual environment in %s\n" $projectDir
+# Source = running the command in the current shell
+source $projectDir/bin/activate
 
-# # Installing dependencies
-# printf "Installing pelican with markdown support\n"
-# pip3 install pelican[Markdown] --no-cache-dir
+# Installing dependencies
+printf "Installing pelican with markdown support\n"
+pip3 install pelican[Markdown] --no-cache-dir
 
 # Runs pelican-quickstart if enabled, else copies a base project from utils
 if [[ INTERACTIVE_MODE -eq 1 ]]; then
