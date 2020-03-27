@@ -3,13 +3,21 @@
 # This script is designed to setup a base pelican project
 # It adds additional setup on top of the existing pelican-quickstart tool
 
-# The script has a slight bias towards github pages by changing output directory
-# to called "docs" since github pages reads from docs folder.
-# This is useful if you want to push the pelican project source code with the 
-# processed html output while keeping your files organized and separate.
+# Requirements
+# 1.) pelican[Markdown] is installed or use python virtual env (script can be setup to do that)
+# 2.) General idea of a generic pelican project and how pelican works
 
-# The pelican-quickstart provide an alternative (ghp-import) that might not be convenient
-# in comparison to pushing the whole project directory
+# Two ways to use pelican
+# 1.) using the pelican commands directly. (I.E., "pelican content", "pelican --listen")
+# - For building content, and then spinning up a local web server using pelican
+# 2.) using make, assuming you have makefile given by this script
+# - You can use "make content", "make serve"
+# For building content, and spinning up a local web server
+
+# Publishing
+# Note if you are deploying this project to production
+# Generally good idea to build your html files with production configurations (check publishconf.py)
+# Use "make publish". 
 
 # Default behavior: copies a base pelican project that we provide
 # Interactive behavior: Runs pelican-quickstart with additional modifications
@@ -21,6 +29,7 @@
 # Note: pelican-quickstart gives you a makefile as well
 # If you have an existing makefile, please handle accordingly
 
+# (Only if you need or want virtual env)
 # python3 comes with venv preinstalled
 # Note: python3 is the default for python version 3+
 # sudo apt-get install python3-venv is needed prior
