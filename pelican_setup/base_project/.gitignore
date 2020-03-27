@@ -6,3 +6,5 @@ pyvenv.cfg
 include
 __pycache__
 docs
+pelicanconf.pyc
+publishconf.pyc

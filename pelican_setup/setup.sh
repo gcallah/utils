@@ -70,7 +70,8 @@ helpMessage() {
 	printf "\t Example: If \"blue-penguin\" is the directory name in pelican-themes repo\n"
 	printf "\t Then the command would be: \n\t \"setup.h <your project directory> -t blue-penguin\"\n\n"
 	printf "By default: setup.sh will provide you with a template pelican project\n\n"
-	printf "pelican-quickstart allows for more customizations during setup.\n(Enabled by -i flag)\n\n"
+	printf "pelican-quickstart allows for more customizations during setup.\n(Enabled by -i flag)\n"
+	printf "You do need to have pelican[Markdown] installed to use this feature given by pelican\n\n"
 
 	printf "Please note: pelican-themes is a submodule within 'utils/pelican_setup'\n"
 	printf "The official pelican-themes repository can be found at: \nhttps://github.com/getpelican/pelican-themes\n\n"
@@ -192,32 +193,41 @@ for (( i = 1; i < argc; i++ )); do
 	fi
 done
 
-# Create a virtual environment for flask project
-printf "Creating virtual environment in %s\n" $projectDir
-python3 -m venv $projectDir
+# You may uncomment this section in the future for enabling the use of virtual env
+# It setups the virtual env with pelican[Markdown]
+# # Create a virtual environment for flask project
+# printf "Creating virtual environment in %s\n" $projectDir
+# python3 -m venv $projectDir
 
-# Activate the virtual enviroment we just created, make sure script is being called with source
-printf "Activating the virtual environment in %s\n" $projectDir
-# Source = running the command in the current shell
-source $projectDir/bin/activate
+# # Activate the virtual enviroment we just created, make sure script is being called with source
+# printf "Activating the virtual environment in %s\n" $projectDir
+# # Source = running the command in the current shell
+# source $projectDir/bin/activate
 
-# Installing dependencies
-printf "Installing pelican with markdown support\n"
-pip3 install pelican[Markdown] --no-cache-dir
+# # Installing dependencies
+# printf "Installing pelican with markdown support\n"
+# pip3 install pelican[Markdown] --no-cache-dir
 
 # Runs pelican-quickstart if enabled, else copies a base project from utils
 if [[ INTERACTIVE_MODE -eq 1 ]]; then
 	# Running pelican-quickstart
-	printf "\n\nStarting pelican-quickstart tool\n\n"
+	printf "\n\n========= WARNING =========\n\n"
+	printf "Please DO NOT change the following:\n"
+	printf "\"Where do you want to create your new web site?\"\n\n"
+	printf "It should match with the path you gave for the script\n"
+	printf "Changing this setting will cause undefined / unexpected behavior\n\n"
+	printf "Starting pelican-quickstart tool...\n"
+	printf "===========================\n\n"
+
 	pelican-quickstart -p $projectDir
 
 	# Makes additional directories for custom themes
 	mkdir -p "$projectDir/content/pages"
-	mkdir -p "$projectDir/themes"
+	mkdir -p "$projectDir/project_themes"
 	
 	if [[ -e $projectDir/Makefile ]]; then
-		# Changing the output dir in the makefile
-		sed -i 's/OUTPUTDIR=$(BASEDIR)\/.*/OUTPUTDIR=$(BASEDIR)\/docs/' $projectDir/Makefile
+		# Changing the output dir in the makefile to be the project root directory
+		sed -i 's/OUTPUTDIR=$(BASEDIR)\/.*/OUTPUTDIR=$(BASEDIR)\//' $projectDir/Makefile
 	fi
 
 	# Remove empty output dir created by pelican-quickstart
@@ -239,11 +249,11 @@ fi
 if [[ $SELECTED_THEME == "base_theme" ]]; then
 	printf "No theme selected, falling back to base_theme\n"
 	# Copies basic theme from our own library
-	rsync -r --ignore-existing $scriptDir/custom_themes/$SELECTED_THEME $projectDir/themes
+	rsync -r --ignore-existing $scriptDir/custom_themes/$SELECTED_THEME $projectDir/project_themes
 else
 	printf "Selected Theme: %s\n" $SELECTED_THEME
 	# Copies theme from offical pelican-themes repo
-	rsync -r --ignore-existing $scriptDir/pelican-themes/$SELECTED_THEME $projectDir/themes
+	rsync -r --ignore-existing $scriptDir/pelican-themes/$SELECTED_THEME $projectDir/project_themes
 fi
 
 # Make a backup of the config file
@@ -257,7 +267,7 @@ chmod o+w $projectDir/pelicanconf.py
 if grep -q "THEME[  ]*=[  ]*" $projectDir/pelicanconf.py; then
 	# note, must readin from the backup since redirection will truncate the file first
 	# Thus, when sed runs, it sees an empty file
-	cat $projectDir/pelicanconf.py.backup | sed "s/THEME[  ]*=[  ]*[\'|\"].*[\'|\"]/THEME=\"themes\/$SELECTED_THEME\"/" > $projectDir/pelicanconf.py
+	cat $projectDir/pelicanconf.py.backup | sed "s/THEME[  ]*=[  ]*[\'|\"].*[\'|\"]/THEME=\"project_themes\/$SELECTED_THEME\"/" > $projectDir/pelicanconf.py
 else
 	# Note: you need at least one new line between the command
 	# and the start of the heredoc
@@ -266,8 +276,8 @@ else
 
 # Inserted by pelican_setup.sh
 
-THEME="themes/$SELECTED_THEME"
-OUTPUT_PATH="docs" # Github Pages Standard
+THEME="project_themes/$SELECTED_THEME"
+OUTPUT_PATH="" # Relative to project root
 EOI
 
 fi

@@ -6,8 +6,8 @@ AUTHOR = u'John Doe'
 SITENAME = u'SITE_TITLE'
 SITEURL = ''
 
-THEME='themes/base_theme'
-OUTPUT_PATH='docs' # Github Pages Standard
+THEME="themes/base_theme"
+OUTPUT_PATH="" # output to project directory (if using pelican content)
 
 PATH = 'content'
 
