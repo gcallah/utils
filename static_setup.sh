@@ -10,8 +10,7 @@ add_file()
     else
         echo "We are going to add" $2
         cp $1/$2 $3/$2
-        # we have to add a file to dir or git won't keep it:
-        cd $3; touch $2/.gitignore; git add $2/.gitignore; cd - > /dev/null 
+        cd $3; git add $2; cd - > /dev/null 
     fi
 }
 
@@ -22,6 +21,9 @@ add_dir()
     else
         echo "We are going to make directory" $1
         mkdir $1
+        # we have to add a file to dir or git won't keep it:
+        touch $1/.gitignore
+        git add $1/.gitignore
     fi
 }
 
