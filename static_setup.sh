@@ -45,7 +45,7 @@ add_dir $newdir/html_src
 add_dir $newdir/templates
 add_dir $newdir/docker
 add_dir $newdir/tests
-add_dir $newdir/markdown_files
+add_dir $newdir/markdown
 
 utilsdir=utils
 if [ -n "$2" ]; then
@@ -68,5 +68,5 @@ cd $newdir;
 echo "We are going to add utils as a submodule."
 git submodule add https://github.com/gcallah/utils
 echo "We are going to update utils."
-git submodule update --init --recursive
+git submodule update --init
 
