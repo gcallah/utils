@@ -16,14 +16,13 @@ add_file()
 
 add_dir()
 {
-    if [ -d $1 ]; then
-        echo "$1 exists."
+    if [ -d $1/$2 ]; then
+        echo "$1/$2 exists."
     else
-        echo "We are going to make directory" $1
-        mkdir $1
+        echo "We are going to make directory" $1/$2
+        mkdir $1/$2
         # we have to add a file to dir or git won't keep it:
-        touch $1/.gitignore
-        git add $1/.gitignore
+        cd $1/$2; touch .gitignore; git add .gitignore; cd - > /dev/null
     fi
 }
 
@@ -44,11 +43,11 @@ else
     git clone $1 
 fi
 
-add_dir $newdir/html_src
-add_dir $newdir/templates
-add_dir $newdir/docker
-add_dir $newdir/tests
-add_dir $newdir/markdown
+add_dir $newdir html_src
+add_dir $newdir templates
+add_dir $newdir docker
+add_dir $newdir tests
+add_dir $newdir markdown
 
 utilsdir=utils
 if [ -n "$2" ]; then
