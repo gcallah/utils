@@ -1,8 +1,7 @@
 #!/bin/bash
 
-# python3 comes with venv preinstalled
-# Note: python3 is the default for python version 3+
-# sudo apt-get install python3-venv is needed prior
+# This script requires user to install flask and other requirements prior
+# It only gives you a generic flask project structure
 
 set -e
 

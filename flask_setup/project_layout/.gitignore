@@ -5,3 +5,4 @@ share
 pyvenv.cfg
 include
 __pycache__
+__init__.pyc

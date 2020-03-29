@@ -79,7 +79,7 @@ helpMessage() {
 	printf "\t Example: If \"blue-penguin\" is the directory name in pelican-themes repo\n"
 	printf "\t Then the command would be: \n\t \"setup.h <your project directory> -t blue-penguin\"\n\n"
 	printf "By default: setup.sh will provide you with a template pelican project\n\n"
-	printf "pelican-quickstart allows for more customizations during setup.\n(Enabled by -i flag)\n"
+	printf "pelican-quickstart allows for more customizations during setup.\n(Enabled by -i flag)\n\n"
 
 	printf "Please note: pelican-themes is a submodule within 'utils/pelican_setup'\n"
 	printf "The official pelican-themes repository can be found at: \nhttps://github.com/getpelican/pelican-themes\n\n"

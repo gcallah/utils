@@ -7,21 +7,17 @@
 
 ## Prerequisites
     1.) The user has the utils repo or at least the flask_setup folder in the utils repo on their machine.
-    2.) The user has python 3.x preinstalled on their machine
-    3.) The user has python3-venv preinstalled on their machine
+    2.) The user has installed the required packages found in requirements.txt or requirements-dev.txt
+    Or has at least installed flask-restplus.
 
 ## Script Behavior
     1.) Clones an existing github directory that user provides / Creates a local directory for the user
-    2.) Creates a python virtual environment with the project name, extracted from the github URL / provided in directory name
-    3.) Then copies a generic flask project structure from the script directory into the project / target directory.
-        - This comes with a default setup that allows you to immediately run a development flask server to test the setup
-          by following the directions to run the flask project
-    4.) Installs flask dependencies from requirements.txt
+    2.) Then copies a generic flask project structure from the script directory into the project / target directory.
 
 ## Environment
     The flask project runs within a virtual environment
     
-    ENV variables that are set
+    ENV variables that are set (by run.sh using export command)
     1.) FLASK_APP, default val = source
     2.) FLASK_ENV, default val = development
 
@@ -31,17 +27,11 @@
 ## Running project / script
     To run setup script
     1.) run the following line in your shell: 
-	source ./initial_flask_setup <link to clone github repo / project directory name>
+	./setup.sh <link to clone github repo / project directory name>
 
     To run flask project,
     1.) cd into the cloned git repo
-    2.) run the "run.sh" script to start the virtual environment and flask app
-
-    To activate virtual environment
-    Run "source ./bin/activate" from the root of the project directory
-
-    To deactivate virtual environment
-    Run "deactivate" in the terminal
+    2.) run the "run.sh" script to start the flask app
 
 ## Available Build Targets (pre-packaged)
     1.) make tests
