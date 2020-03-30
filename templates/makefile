@@ -12,6 +12,8 @@ INCS = $(TEMPLATE_DIR)/head.txt $(TEMPLATE_DIR)/logo.txt $(TEMPLATE_DIR)/menu.tx
 
 HTMLFILES = $(shell ls $(PTML_DIR)/*.ptml | sed -e 's/.ptml/.html/' | sed -e 's/html_src\///')
 
+MARKDOWN_FILES = $(shell ls $(MARKDOWN_DIR))
+
 FORCE:
 
 tests: FORCE
@@ -25,6 +27,13 @@ tests: FORCE
 	git add $@
 
 local: $(HTMLFILES)
+
+%.md: $(MARKDOWN_DIR)/%.md
+	# Requires pandoc, uses commonmark flavor of markdown
+	pandoc -f commonmark -t html5 <$< >$(PTML_DIR)/$@.ptml
+	mv $(PTML_DIR)/$@.ptml $(PTML_DIR)/$$(basename -s .md $<).ptml
+
+markdown: $(MARKDOWN_FILES)
 
 prod: $(INCS) $(HTMLFILES) tests
 	-git commit -a 

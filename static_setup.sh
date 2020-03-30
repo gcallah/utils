@@ -26,7 +26,7 @@ add_dir()
     fi
 }
 
-if [[ -z "$1" ]]; then
+if [ -z "$1" ]; then
     echo "Usage: static_setup.sh [repo]."
     exit 1
 fi
@@ -47,7 +47,7 @@ add_dir $newdir html_src
 add_dir $newdir templates
 add_dir $newdir docker
 add_dir $newdir tests
-add_dir $newdir markdown
+add_dir $newdir markdown_files
 
 utilsdir=utils
 if [ -n "$2" ]; then
