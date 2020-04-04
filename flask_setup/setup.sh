@@ -65,3 +65,8 @@ fi
 cd $projectDir
 git add .
 
+# Echo message for user
+echo "=== Setup complete ==="
+echo "you will have to install the packages in requirements-dev.txt"
+echo "to complete the development environment"
+
