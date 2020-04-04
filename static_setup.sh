@@ -72,3 +72,7 @@ git submodule add https://github.com/gcallah/utils
 echo "We are going to update utils."
 git submodule update --init
 
+# install requirements
+cd ..
+echo "We are going to install requirements."
+pip install -r $newdir/docker/requirements.txt
