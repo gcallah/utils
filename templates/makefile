@@ -6,6 +6,9 @@ export MARKDOWN_DIR = markdown_files
 PTML_DIR = html_src
 UTILS_DIR = utils
 DOCKER_DIR = docker
+# Change PANDOC if pandoc isn't on your PATH variable
+# Or simply add pandoc to your PATH
+PANDOC = pandoc
 # REPO = this repo!
 
 INCS = $(TEMPLATE_DIR)/head.txt $(TEMPLATE_DIR)/logo.txt $(TEMPLATE_DIR)/menu.txt
@@ -30,7 +33,7 @@ local: $(HTMLFILES)
 
 $(PTML_DIR)/%.ptml: $(MARKDOWN_DIR)/%.md
 	# Requires pandoc, uses commonmark flavor of markdown
-	pandoc -f commonmark -t html5 <$< >$@
+	$(PANDOC) -f commonmark -t html5 <$< >$@
 
 ptml: $(PTMLFILES)
 

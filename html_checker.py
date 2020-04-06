@@ -13,7 +13,7 @@ try:
 except ImportError:
     print("WARNING: Typing module is not found.")
 
-DEV_FEATURE_ON = False # type: bool
+DEV_FEATURE_ON = True # type: bool
 
 ARG_ERROR = 1   # type: int
 PARSE_ERROR = 2   # type: int
