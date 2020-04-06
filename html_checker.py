@@ -159,12 +159,16 @@ if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument("html_filename")
     arg_parser.add_argument("-t", action="store_true")
+    arg_parser.add_argument("-d", action="store_true", help="turns on dev features")
 
     args = arg_parser.parse_args()
 
     parser = OurHTMLParser()
     file_nm = args.html_filename
     tag_check = args.t
+
+    if args.d:
+        DEV_FEATURE_ON = True
 
     file = open(file_nm, "r")
     for line in file:
