@@ -41,21 +41,11 @@ def is_tag_in_spec(tag): # (str) -> bool
     """
     func to see if the tag is in content_spec
     """
-    if tag not in content_spec:
+    if tag not in content_spec and tag not in content_spec["_EXCEPTIONS"]:
         print("ERROR: " + tag + " not found in content_spec")
         saw_error = True
         return False
     return True
-
-# def process_transparent(partag):
-#     """
-#     func to get the content model of the parent from content_spec
-#     for the given tag
-#     If the tag's parent content model is "transparent", process iteratively
-#     """
-
-#     # Check for transparent content model
-#     for model in content_spec[parent_tag]["content_model"]:
         
 
 def is_valid_content(tag, attrs): # type: (str, str) -> bool
@@ -67,33 +57,43 @@ def is_valid_content(tag, attrs): # type: (str, str) -> bool
     # print("tag_stack: " + str(tag_stack))
     # print("tag_stack len: " + str(len(tag_stack)))
 
+    # If we don't know about the tag, we will not do any checks
+    # Just inform the user
+    if not is_tag_in_spec(tag):
+        return True
+
     if len(tag_stack) > 0 and tag not in content_spec["_EXCEPTIONS"]:
-        parent_tag = tag_stack[-1]
-        if parent_tag not in content_spec["_EXCEPTIONS"]:
 
-            if is_tag_in_spec(parent_tag) and is_tag_in_spec(tag):
-                parent_model = content_spec[parent_tag]["content_model"]
+        doWhile = True
+        parentIndex = -1
+        parentModel = []
 
-                tag_categories = content_spec[tag]["categories"]
+        # Processes content models that are transparent
+        # Must get model from an older parent
+        while doWhile or "transparent" in parent_model:
+            doWhile = False
 
-                # print("PARENT_MODEL: " + str(parent_model))
-                # print("TAG_CATEGORIES: " + str(tag_categories))
+            parent_tag = tag_stack[parentIndex]
 
-                # # Note if the model is transparent, 
-                # # there shouldn't be any other items in the model besides "transparent"
-                # for model in parent_model:
-                #     if model == "transparent":
-                #         process_transparent()
+            if is_tag_in_spec(parent_tag) and parent_tag not in content_spec["_EXCEPTIONS"]:
+                parent_model = content_spec[parent_tag]["content_model"]            
+                parentIndex-=1
+            else:
+                # Parent tag not in spec or is part of exceptions, default to True
+                return True
 
-                for model in parent_model:  
-                    for category in tag_categories:
-                        if model == _NO_CONTENT:
-                            return False
- 
-                        if model == _ANY_CONTENT or model == tag or model == category:
-                            return True
+        tag_categories = content_spec[tag]["categories"]
 
-                return False
+        for model in parent_model:  
+            for category in tag_categories:
+                # If parent expects no children tags, then tag is illegal
+                if model == _NO_CONTENT:
+                    return False
+
+                if model == _ANY_CONTENT or model == tag or model == category:
+                    return True
+
+        return False
     return True
 
 

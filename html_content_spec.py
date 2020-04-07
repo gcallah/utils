@@ -28,9 +28,10 @@ Generic Structure of a tag content spec
     categories can be seen as groups that the tag belong to and/or as list of valid parent tags
     content_model: what the tag expect its descendant tags to be, you can be specific or general
 '''
-_ANY_CONTENT = "_ANY_CONTENT"
-_NO_CONTENT = "_NO_CONTENT"
-_NONE_GROUP = "_NONE_GROUP"
+
+_ANY_CONTENT = "_ANY_CONTENT" # Filler for adding tags, but not sure about the content
+_NO_CONTENT = "_NO_CONTENT" # For content_models who expect no tags
+_NONE_GROUP = "_NONE_GROUP" # Group for tags that don't have a category in the spec
 
 content_spec = {"p": 
                     { 
