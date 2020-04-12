@@ -42,8 +42,9 @@ def is_tag_in_spec(tag): # (str) -> bool
     func to see if the tag is in content_spec
     """
     if tag not in content_spec and tag not in content_spec["_EXCEPTIONS"]:
-        print("ERROR: " + tag + " not found in content_spec")
-        saw_error = True
+        print("WARNING: " + tag + " not found in content_spec")
+        # Not necessarily an error, more like a warning
+        # saw_error = True
         return False
     return True
         
