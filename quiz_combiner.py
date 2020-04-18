@@ -15,47 +15,48 @@ import string
 lowerAlphaList = list(string.ascii_lowercase)
 questionList = []
 
-class Choices:
-    '''
-        represents a list of choices (max of 26 choices)
-    '''
-    def __init__(self, choices):
-        self.list = choices
-    
-    # Shuffles n-1 choices, leaving nth choice unshuffled
-    def shuffleChoices(self):
-        numSample = len(self.list)-1
-        temp = random.sample(self.list[:numSample], k=numSample)
-
-        # Copy the results
-        for i in range(len(temp)):
-            self.list[i] = temp[i]
-
-    # each time you print, the choices get shuffled
-    def __str__(self):
-        # shuffle the choices
-        self.shuffleChoices()
-
-        # Then format the results accordingly
-        result = ""
-        for choice, letter in zip(self.list, lowerAlphaList):
-            # If it is the answer
-            if(choice[1] == True):
-                result += "*"
-            
-            result = result + letter + ". " + choice[0]
-
-        return result
-
 class Question:
     '''
         represents a question
     '''
 
-    # __init__(str,obj(Choices),str) -> None
-    def __init__(self, question, choices, points): 
+    class Choices:
+        '''
+            represents a list of choices 
+            (max num choices = number of letters in lowerAlphaList)
+        '''
+        def __init__(self, choices):
+            self.list = choices
+        
+        # Shuffles n-1 choices, leaving nth choice unshuffled
+        def shuffleChoices(self):
+            numSample = len(self.list)-1
+            temp = random.sample(self.list[:numSample], k=numSample)
+
+            # Copy the results
+            for i in range(len(temp)):
+                self.list[i] = temp[i]
+
+        # each time you print, the choices get shuffled
+        def __str__(self):
+            # shuffle the choices
+            self.shuffleChoices()
+
+            # Then format the results accordingly
+            result = ""
+            for choice, letter in zip(self.list, lowerAlphaList):
+                # If it is the answer
+                if(choice[1] == True):
+                    result += "*"
+                
+                result = result + letter + ". " + choice[0]
+
+            return result
+
+    # __init__(str,list(str,bool),str) -> None
+    def __init__(self, question, choicesList, points): 
         self.question = question
-        self.choices = str(choices)
+        self.choices = str(self.Choices(choicesList))
         self.points = points
 
     def __str__(self):
@@ -99,7 +100,7 @@ def parseFiles(filenames):
                     line = inputStream.readline()
 
                 # Append and make a new instance of a question obj
-                questionList.append(Question(question, Choices(answerChoices), points))
+                questionList.append(Question(question, answerChoices, points))
 
                 # Move to the next section
                 line = inputStream.readline()
