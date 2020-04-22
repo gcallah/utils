@@ -14,14 +14,12 @@
     1.) Clones an existing github directory that user provides / Creates a local directory for the user
     2.) Then copies a generic flask project structure from the script directory into the project / target directory.
 
-## Environment
-    The flask project runs within a virtual environment
-    
+## Environment    
     ENV variables that are set (by run.sh using export command)
     1.) FLASK_APP, default val = source
     2.) FLASK_ENV, default val = development
 
-    To change or add environment variables for virtual environment
+    To change or add environment variables when running flask app
     1.) modify the "run.sh" to change or include new variables
 
 ## Running project / script
