@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 """
 Script to read in quiz questions from different files, combines and randomizes the questions
 """
@@ -64,16 +64,16 @@ class Question:
         return "{self.points}{self.question}\n{self.choices}".format(self=self)
 
 
-def parseFiles(filenames):
+def parse_files(filenames):
     for file in filenames:
-        with open(file,'r') as inputStream:
-            line = inputStream.readline()
+        with open(file, 'r') as input_stream:
+            line = input_stream.readline()
 
             # Processes per question (each separated by a newline)
             while(line):
                 # Skip over trailing newlines between questions
-                while(line == "\n"):
-                    line = inputStream.readline()
+                while(line == "\n"):   # instead line.isspace()
+                    line = input_stream.readline()
 
                 # First, get the points
                 start = line.index(" ")
@@ -81,14 +81,14 @@ def parseFiles(filenames):
     
                 # Now the question
                 question = ""
-                line = inputStream.readline()
+                line = input_stream.readline()
                 while(line != "\n"):
                     question += line
-                    line = inputStream.readline()
+                    line = input_stream.readline()
 
                 # Then the choices
                 answerChoices = []
-                line = inputStream.readline()
+                line = input_stream.readline()
                 while(line != "\n"):
                     textStart = line.index(" ")
                     # Mark which choice is the answer and strip away the letter
@@ -97,13 +97,13 @@ def parseFiles(filenames):
                     else:
                         answerChoices.append((line[textStart+1:], False))
 
-                    line = inputStream.readline()
+                    line = input_stream.readline()
 
                 # Append and make a new instance of a question obj
                 questionList.append(Question(question, answerChoices, points))
 
                 # Move to the next section
-                line = inputStream.readline()
+                line = input_stream.readline()
 
 if __name__ == "__main__":
     # Read in the questions from files
