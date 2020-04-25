@@ -380,8 +380,8 @@ if __name__ == "__main__":
 
     parse_files(quizFiles)
 
-    # # Shuffle our list of questions
-    # random.shuffle(question_list)
+    # Shuffle our list of questions
+    random.shuffle(question_list)
 
     # Output the results
     for questionNum in range(len(question_list)):
