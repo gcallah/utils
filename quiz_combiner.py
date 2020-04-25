@@ -13,11 +13,13 @@ import random
 import string
 
 lower_alpha_list = list(string.ascii_lowercase)
+whitespace_list = list(string.whitespace)
 question_list = []
 TYPE_QUESTION = "QUESTION"
 TYPE_CHOICE = "CHOICE"
 # the delimiter for question #
 # Ex: <number><delimiter> <rest of line>
+# There should be a whitespace between the question symbol and the actual question
 QUESTION_DELIMITER = "." 
 # the delimiter for choice letter
 # Ex: <letter><delimiter> <rest of line>
@@ -60,7 +62,7 @@ class Question:
                 if(choice[1] == True):
                     result += "*"
                 
-                result = result + letter + ". " + choice[0]
+                result = result + letter + CHOICE_DELIMITER + " " + choice[0]
 
             return result
 
@@ -70,6 +72,7 @@ class Question:
         self.choices = str(self.Choices(choicesList))
 
     def __str__(self):
+        #print(repr(self.choices))
         # each should have their own newline character
         return "{self.question}\n{self.choices}".format(self=self)
 
@@ -80,76 +83,85 @@ def is_int(input):
     except ValueError:
         return False
 
+# Returns the smallest nonnegative number in given list
+def min_positive(numList):
+    if(len(numList) == 0):
+        return -1
+
+    minNum = max(numList)
+
+    for num in numList:
+        if(num >= 0 and num < minNum):
+            minNum = num
+    
+    return minNum
+
 def parse_files(filenames):
-    file_lines = [] # (string, type[QUESTION, CHOICE])
+    file_lines = [] # (string, type=(TYPE_QUESTION / TYPE_CHOICE))
 
     for file in filenames:
         with open(file, 'r') as input_stream:
 
             resultLine = ""
-            CUR_TYPE = TYPE_QUESTION
+            CUR_TYPE = TYPE_QUESTION # Assume first is question
 
-            
-            # # Scan until the first question
-            # line = input_stream.readline()
-            # while(line.find(". ") == -1):
-            #     line = input_stream.readline()
-
-
-            # Scan until the first question
+            # Scan until the first question or sign of a possible question
             delimitIndex = -1
             boundaryIndex = 0
-            while(delimitIndex == -1 and delimitIndex < boundaryIndex):
+            line = ""
+            while(delimitIndex == -1):
                 line = input_stream.readline()
-                delimitIndex = line.rstrip().find(QUESTION_DELIMITER) # First "."
-                boundaryIndex = line.rstrip().find(" ") # First whitespace
+                # EOF
+                if(len(line) == 0):
+                    return
+                
+                line = line.lstrip()
 
+                # Skip blank lines
+                if(len(line) == 0):
+                    continue
+
+                # Note: the QUESTION_DELIMITER should be followed by some whitespace right after it
+                delimitIndex = line.rstrip().find(QUESTION_DELIMITER)
+                boundaryIndex = min_positive([line.find(ws) for ws in whitespace_list])
+
+                # If we found the delimiter, but it is way further down the string
+                # then we assume it was just some string that happen to have the delimiter
+                if(delimitIndex > boundaryIndex):
+                    delimitIndex = -1
 
             # Tokenize the file
             while(len(line) > 0):
                 stripedLine = line.lstrip()
-                print("=========== START")
-                print("LINE: " + stripedLine)
 
                 if(len(stripedLine) == 0 or stripedLine.isspace()):
                     line = input_stream.readline()
                     continue
                 
-                delimitIndex = stripedLine.rstrip().find(".") # First "."
-                boundaryIndex = stripedLine.rstrip().find(" ") # First whitespace
+                delimitIndex = stripedLine.rstrip().find(QUESTION_DELIMITER) # First "."
+                boundaryIndex = min_positive([stripedLine.find(ws) for ws in whitespace_list])
 
                 # Marks beginning of new state
-                # delimitIndex < boundaryIndex avoid ". " being found way past the beginning
+                # delimitIndex < boundaryIndex avoid QUESTION_DELIMITER being found way past the beginning
                 if(delimitIndex != -1 and delimitIndex < boundaryIndex):
-                    # print("CUR_TYPE: " + CUR_TYPE)
-                    # print("RL: " + resultLine)
-                    # Add what was built previously (Should be a question)
-                    # if(CUR_TYPE == TYPE_QUESTION and len(resultLine) > 0):
-                    #     file_lines.append((resultLine, CUR_TYPE))
+
                     if(len(resultLine) > 0):
                         file_lines.append((resultLine, CUR_TYPE))
     
                     # Reset
                     resultLine = ""                   
-                    resultLine += stripedLine[delimitIndex+1:].lstrip()
-                    # print("IS_INT: "+ str(is_int(stripedLine[:delimitIndex])))
+
                     # The beginning of a question
                     if(is_int(stripedLine[:delimitIndex])):
                         CUR_TYPE = TYPE_QUESTION
-
+                        resultLine = stripedLine[delimitIndex+len(QUESTION_DELIMITER):].lstrip()
                     # The beginning of a choice
                     else:
                         CUR_TYPE = TYPE_CHOICE
-                        resultLine = stripedLine.lstrip()
-                        # print("ADD CHOICE: " + resultLine)
-    
-                        # Add to the list of tokenize lines
-                        # file_lines.append((resultLine, CUR_TYPE))
-                        # resultLine = ""     
+                        resultLine = stripedLine[delimitIndex+len(CHOICE_DELIMITER):].lstrip()   
                 else:
-                    # Assume this is part of the question text
+                    # Assume continuation of CUR_TYPE
                     resultLine += stripedLine
-                    # CUR_TYPE = TYPE_QUESTION
 
                 # Move to next line
                 line = input_stream.readline()
@@ -184,15 +196,15 @@ def parse_files(filenames):
             prevChoices = []
         # New choice
         if(line_type == TYPE_CHOICE):
-            delimitIndex = line_content.find(" ")
+            # delimitIndex = min_positive([line_content.find(ws) for ws in whitespace_list])
 
-            choiceText = line_content[delimitIndex+1:]
+            # choiceText = line_content[delimitIndex+1:]
     
             # Mark which choice is the answer and strip away the letter
             if(line_content[0] == '*'):
-                prevChoices.append((choiceText, True))
+                prevChoices.append((line_content, True))
             else:
-                prevChoices.append((choiceText, False))
+                prevChoices.append((line_content, False))
         
         if(i+1 < len(file_lines)):
             NEXT_TYPE = file_lines[i+1][1]
@@ -200,8 +212,9 @@ def parse_files(filenames):
 
     print("PREV OUTSIDE: " + prevQuestion)
     print("PREV OUTSIDE C: " + str(prevChoices))
-
-    question_list.append(Question(prevQuestion, prevChoices))
+    # If we processed anything, then we have a last item
+    if(i > 0):
+        question_list.append(Question(prevQuestion, prevChoices))
 
         
 
@@ -252,4 +265,4 @@ if __name__ == "__main__":
 
     # Output the results
     for questionNum in range(len(question_list)):
-        print("{0}. {1}".format(questionNum+1, str(question_list[questionNum])))
+        print("{0}{1} {2}".format(questionNum+1, QUESTION_DELIMITER, str(question_list[questionNum])))
