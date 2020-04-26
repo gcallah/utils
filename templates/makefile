@@ -29,7 +29,7 @@ tests: FORCE
 	$(UTILS_DIR)/html_include.awk <$< >$@
 	git add $@
 
-local: $(HTMLFILES)
+local: $(HTMLFILES) $(PTMLFILES) $(INCS)
 
 $(PTML_DIR)/%.ptml: $(MARKDOWN_DIR)/%.md
 	# Requires pandoc, uses commonmark flavor of markdown
