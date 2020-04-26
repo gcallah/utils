@@ -7,6 +7,12 @@ import string
 Script to read in quiz questions from different files,
 combines and randomizes the questions & choices
 
+Generic Format / recognized formats
+==============
+<numbers><QUESTION_DELIM> <text>
+<letters><CHOICE_DELIM> <text>
+==============
+
 Notes: All questions and choices are differentiate by whether the substring
         prior to their respective delimitors is purely consisting of:
 
