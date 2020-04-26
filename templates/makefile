@@ -22,14 +22,14 @@ FORCE:
 tests: FORCE
 	echo "Here is where you should run your tests."
 
-%.html: $(PTML_DIR)/%.ptml $(INCS)
+%.html: $(PTML_DIR)/%.ptml $(PTMLFILES) $(INCS)
 	python3 $(UTILS_DIR)/html_checker.py $<
 	# Optionally use render_md.awk to render makrdown files.(Requires Mistune)
 #	$(UTILS_DIR)/render_md.awk <$< | $(UTILS_DIR)/html_include.awk >$@
 	$(UTILS_DIR)/html_include.awk <$< >$@
 	git add $@
 
-local: $(HTMLFILES) $(PTMLFILES) $(INCS)
+local: $(HTMLFILES) $(INCS)
 
 $(PTML_DIR)/%.ptml: $(MARKDOWN_DIR)/%.md
 	# Requires pandoc, uses commonmark flavor of markdown
