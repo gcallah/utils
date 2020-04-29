@@ -207,10 +207,10 @@ def fill_question_list(file_lines):
     """
 
     for line_set in file_lines:
-        set_name = line_set[0] # For error messages
+        set_name = line_set[0]  # For error messages
 
         # We assume and expect the first item to be a question
-        i = 1 # i=0 is the filename for this set of lines
+        i = 1  # i=0 is the filename for this set of lines
         NEXT_TYPE = TYPE_QUESTION
         prevQuestion = ""
         prevChoices = []
@@ -228,7 +228,7 @@ def fill_question_list(file_lines):
             # and never actually got a question as first item
             if(NEXT_TYPE != line_type):
                 print(
-                    "ERROR: EXPECTED " + NEXT_TYPE + " BUT FOUND " 
+                    "ERROR: EXPECTED " + NEXT_TYPE + " BUT FOUND "
                     + line_type + " in " + set_name)
                 exit(1)
 
@@ -247,7 +247,8 @@ def fill_question_list(file_lines):
             # New choice
             if(line_type == TYPE_CHOICE):
                 choice_DI = line_content.find(CHOICE_DELIM)
-                choiceText = line_content[choice_DI+len(CHOICE_DELIM):].lstrip()
+                choiceText = \
+                    line_content[choice_DI+len(CHOICE_DELIM):].lstrip()
 
                 # Mark which choice is the answer and strip away the letter
                 if(line_content[0] == ANSWER_MARKER):
