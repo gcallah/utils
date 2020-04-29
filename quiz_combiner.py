@@ -39,6 +39,7 @@ Usage: quiz_combiner.py [filepath...]
 Outputs results to stdout
 """
 
+# constants, don't change / really no need for change
 lower_alpha_list = list(string.ascii_lowercase)
 ws_list = list(string.whitespace)
 question_list = []
@@ -197,74 +198,83 @@ def validate_config():
 
 def fill_question_list(file_lines):
     """
-        Input: [(str, TYPE_QUESTION/TYPE_CHOICE)]
+        Input: an list of [(str, TYPE_QUESTION/TYPE_CHOICE)]
+        where the first entry is the filename associated with the set of lines
         file_lines categorized the lines into question and choice text
 
         This function creates instances of Question and puts them into the
         question_list, which can be worked on later
     """
 
-    # We assume and expect the first item to be a question
-    i = 0
-    NEXT_TYPE = TYPE_QUESTION
-    prevQuestion = ""
-    prevChoices = []
+    for line_set in file_lines:
+        set_name = line_set[0] # For error messages
 
-    # Loop through the lines
-    while(i < len(file_lines)):
-        line_type = file_lines[i][1]
-        line_content = file_lines[i][0]
+        # We assume and expect the first item to be a question
+        i = 1 # i=0 is the filename for this set of lines
+        NEXT_TYPE = TYPE_QUESTION
+        prevQuestion = ""
+        prevChoices = []
+
+        # Loop through the lines
+        while(i < len(line_set)):
+            line_type = line_set[i][1]
+            line_content = line_set[i][0]
+
+            if(DEBUG_MODE):
+                print("fill_QL() LT: " + line_type)
+                print("fill_QL() LC: " + line_content)
+
+            # Should only be true where only choices were found
+            # and never actually got a question as first item
+            if(NEXT_TYPE != line_type):
+                print(
+                    "ERROR: EXPECTED " + NEXT_TYPE + " BUT FOUND " 
+                    + line_type + " in " + set_name)
+                exit(1)
+
+            # New question
+            if(line_type == TYPE_QUESTION):
+                # Store the previous question
+                if(len(prevQuestion) > 0):
+                    if(DEBUG_MODE):
+                        print("** QUESTION: " + prevQuestion)
+                        print("** CHOICES: " + str(prevChoices))
+                    question_list.append(Question(prevQuestion, prevChoices))
+
+                # New question setup
+                prevQuestion = line_content
+                prevChoices = []
+            # New choice
+            if(line_type == TYPE_CHOICE):
+                choice_DI = line_content.find(CHOICE_DELIM)
+                choiceText = line_content[choice_DI+len(CHOICE_DELIM):].lstrip()
+
+                # Mark which choice is the answer and strip away the letter
+                if(line_content[0] == ANSWER_MARKER):
+                    prevChoices.append((choiceText, True))
+                else:
+                    prevChoices.append((choiceText, False))
+
+            if(i+1 < len(line_set)):
+                NEXT_TYPE = line_set[i+1][1]
+            i += 1
 
         if(DEBUG_MODE):
-            print("fill_QL() LT: " + line_type)
-            print("fill_QL() LC: " + line_content)
-
-        # Should only be true where only choices were found
-        # and never actually got a question as first item
-        if(NEXT_TYPE != line_type):
-            print("ERROR: EXPECTED " + NEXT_TYPE + " BUT FOUND " + line_type)
-            exit(1)
-
-        # New question
-        if(line_type == TYPE_QUESTION):
-            # Store the previous question
-            if(len(prevQuestion) > 0):
-                if(DEBUG_MODE):
-                    print("** QUESTION: " + prevQuestion)
-                    print("** CHOICES: " + str(prevChoices))
-                question_list.append(Question(prevQuestion, prevChoices))
-
-            # New question setup
-            prevQuestion = line_content
-            prevChoices = []
-        # New choice
-        if(line_type == TYPE_CHOICE):
-            choice_DI = line_content.find(CHOICE_DELIM)
-            choiceText = line_content[choice_DI+len(CHOICE_DELIM):].lstrip()
-
-            # Mark which choice is the answer and strip away the letter
-            if(line_content[0] == ANSWER_MARKER):
-                prevChoices.append((choiceText, True))
-            else:
-                prevChoices.append((choiceText, False))
-
-        if(i+1 < len(file_lines)):
-            NEXT_TYPE = file_lines[i+1][1]
-        i += 1
-
-    if(DEBUG_MODE):
-        print("** PREV OUTSIDE: " + prevQuestion)
-        print("** PREV OUTSIDE C: " + str(prevChoices))
-    # If we processed anything, then we have a last item
-    if(i > 0):
-        question_list.append(Question(prevQuestion, prevChoices))
+            print("** PREV OUTSIDE: " + prevQuestion)
+            print("** PREV OUTSIDE C: " + str(prevChoices))
+        # If we processed anything, then we have a last item
+        if(i > 0):
+            question_list.append(Question(prevQuestion, prevChoices))
 
 
 def parse_files(filenames):
-    file_lines = []  # (string, type=(TYPE_QUESTION / TYPE_CHOICE))
+    file_lines = []  # [[(string, type=(TYPE_QUESTION / TYPE_CHOICE))]...]
 
     for file in filenames:
         with open(file, 'r') as input_stream:
+            # Set of lines for this particular file
+            # First entry is the name of the file for error message
+            line_set = [file]
 
             resultLine = ""
             CUR_TYPE = TYPE_QUESTION  # Assume first is question
@@ -334,7 +344,7 @@ def parse_files(filenames):
                     if(question_DI >= 0 and is_int(stripedLine[:question_DI])):
                         # Store what was previous
                         if(len(resultLine) > 0):
-                            file_lines.append((resultLine, CUR_TYPE))
+                            line_set.append((resultLine, CUR_TYPE))
 
                         CUR_TYPE = TYPE_QUESTION
                         text = stripedLine[question_DI+len(QUESTION_DELIM):]
@@ -344,7 +354,7 @@ def parse_files(filenames):
                             is_alpha_only(stripedLine[:choice_DI])):
                         # Store what was previous
                         if(len(resultLine) > 0):
-                            file_lines.append((resultLine, CUR_TYPE))
+                            line_set.append((resultLine, CUR_TYPE))
 
                         CUR_TYPE = TYPE_CHOICE
                         resultLine = stripedLine.lstrip()
@@ -361,7 +371,9 @@ def parse_files(filenames):
 
             # Final item
             if(len(resultLine) > 0):
-                file_lines.append((resultLine, CUR_TYPE))
+                line_set.append((resultLine, CUR_TYPE))
+
+        file_lines.append(line_set)
 
     if(DEBUG_MODE):
         print(file_lines)
