@@ -228,7 +228,7 @@ def fill_question_list(file_lines):
             # and never actually got a question as first item
             if(NEXT_TYPE != line_type):
                 print(
-                    "ERROR: EXPECTED " + NEXT_TYPE + " BUT FOUND "
+                    "ERROR: EXPECTED " + NEXT_TYPE + " FIRST BUT FOUND "
                     + line_type + " in " + set_name)
                 exit(1)
 
