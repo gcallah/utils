@@ -6,7 +6,7 @@
         </title>
     </head>
 
-    <body>
+<body>
 <!--include logo.txt -->
 <!--include menu.txt -->
 # Web site
@@ -16,5 +16,5 @@ Possibly a list of topics:
 - topic 1
 - topic 2
 
-    </body>
+</body>
 </html>
