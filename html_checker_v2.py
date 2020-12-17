@@ -9,6 +9,7 @@ This conforms to the spec: https://html.spec.whatwg.org/
 import html5lib
 import argparse
 
+
 if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument("html_filename")

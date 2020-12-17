@@ -6,7 +6,7 @@ export MARKDOWN_DIR = markdown
 PTML_DIR = html_src
 UTILS_DIR = utils
 DOCKER_DIR = docker
-# Change PANDOC if pandoc isn't on your PATH variable
+# Change PANDOC if pandoc isn't in your PATH variable
 # Or simply add pandoc to your PATH
 PANDOC = pandoc
 # REPO = this repo!
@@ -22,14 +22,12 @@ FORCE:
 tests: FORCE
 	echo "Here is where you should run your tests."
 
-%.html: $(PTML_DIR)/%.ptml $(INCS)
+%.html: $(PTML_DIR)/%.ptml $(PTMLFILES) $(INCS)
 	python3 $(UTILS_DIR)/html_checker.py $<
-	# Optionally use render_md.awk to render makrdown files.(Requires Mistune)
-#	$(UTILS_DIR)/render_md.awk <$< | $(UTILS_DIR)/html_include.awk >$@
 	$(UTILS_DIR)/html_include.awk <$< >$@
 	git add $@
 
-local: $(HTMLFILES)
+local: $(HTMLFILES) $(INCS)
 
 $(PTML_DIR)/%.ptml: $(MARKDOWN_DIR)/%.md
 	# Requires pandoc, uses commonmark flavor of markdown
