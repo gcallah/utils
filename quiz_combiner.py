@@ -13,7 +13,7 @@ import random
 import string
 
 lowerAlphaList = list(string.ascii_lowercase)
-questionList = []
+question_list = []
 
 class Question:
     '''
@@ -27,7 +27,7 @@ class Question:
         '''
         def __init__(self, choices):
             self.list = choices
-        
+ 
         # Shuffles n-1 choices, leaving nth choice unshuffled
         def shuffleChoices(self):
             numSample = len(self.list)-1
@@ -48,7 +48,7 @@ class Question:
                 # If it is the answer
                 if(choice[1] == True):
                     result += "*"
-                
+
                 result = result + letter + ". " + choice[0]
 
             return result
@@ -78,7 +78,7 @@ def parse_files(filenames):
                 # First, get the points
                 start = line.index(" ")
                 points = line[start+1:]
-    
+
                 # Now the question
                 question = ""
                 line = input_stream.readline()
@@ -87,33 +87,37 @@ def parse_files(filenames):
                     line = input_stream.readline()
 
                 # Then the choices
-                answerChoices = []
+                answer_choices = []
                 line = input_stream.readline()
                 while(line != "\n"):
-                    textStart = line.index(" ")
+                    test_start = line.index(" ")
                     # Mark which choice is the answer and strip away the letter
                     if(line[0] == '*'):
-                        answerChoices.append((line[textStart+1:], True))
+                        answer_choices.append((line[test_start+1:], True))
                     else:
-                        answerChoices.append((line[textStart+1:], False))
+                        answer_choices.append((line[test_start+1:], False))
 
                     line = input_stream.readline()
 
                 # Append and make a new instance of a question obj
-                questionList.append(Question(question, answerChoices, points))
+                question_list.append(Question(question, answer_choices, points))
 
                 # Move to the next section
                 line = input_stream.readline()
 
+
 if __name__ == "__main__":
     # Read in the questions from files
-    # Append questions to questionList
-    quizFiles = sys.argv[1:]
-    parseFiles(quizFiles)
+    # Append questions to question_list
+    if len(sys.argv) < 3:
+        print("Must pass in files to combine.")
+        exit(1)
+    quiz_files = sys.argv[1:]
+    parse_files(quiz_files)
 
     # Shuffle our list of questions
-    random.shuffle(questionList)
+    random.shuffle(question_list)
 
     # Output the results
-    for questionNum in range(len(questionList)):
-        print("{0}. {1}".format(questionNum+1, str(questionList[questionNum])))
+    for qnum in range(len(question_list)):
+        print("{0}. {1}".format(qnum+1, str(question_list[qnum])))
