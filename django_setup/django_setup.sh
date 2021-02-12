@@ -81,7 +81,10 @@ if [ ! -d "$DIRECTORY" ]; then
     git add manage.py
     git add "$DIRECTORY"/*.py
     # Creates generic static directory
+    # Should be turned into shell function that does mkdir, touch, and git add.
     mkdir -p "$DIRECTORY"/static/admin/css
+    touch "$DIRECTORY"/static/admin/css/README.md
+    git add "$DIRECTORY"/static/admin/css/README.md
     mkdir -p "$DIRECTORY"/static/admin/fonts
     mkdir -p "$DIRECTORY"/static/admin/img
     mkdir -p "$DIRECTORY"/static/admin/js
