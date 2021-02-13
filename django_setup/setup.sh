@@ -73,6 +73,7 @@ pip install -r $DIRECTORY/requirements/requirements-dev.txt
 
 # Set up django project.
 echo "Setting up django project..."
+cd $DIRECTORY
 if [ ! -d "$DIRECTORY" ]; then
     # Moves $DIRECTORY contents up one directory
     django-admin startproject "$DIRECTORY"
