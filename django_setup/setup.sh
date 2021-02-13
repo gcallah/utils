@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Work in progress django setup script. Do not use this version.
 
 set -e
@@ -13,6 +13,8 @@ if [[ -z $1 ]]; then
 	echo "This script requires a github repo url or directory name"
 	exit 1;
 fi
+
+echo $1
 
 # run sed on $1 to get dir name from git or get directory name
 if [[ $1 == *"https://github.com/"* ]]; then
