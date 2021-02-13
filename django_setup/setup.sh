@@ -14,7 +14,6 @@ if [[ -z $1 ]]; then
 	exit 1;
 fi
 
-echo $1
 
 # run sed on $1 to get dir name from git or get directory name
 if [[ $1 == *"https://github.com/"* ]]; then
@@ -69,8 +68,8 @@ source $DIRECTORY/bin/activate
 
 # Install all requirements listed in requirements.txt.
 echo "Installing requirements..."
-pip install -r requirements/requirements.txt
-pip install -r requirements/requirements-dev.txt
+pip install -r $DIRECTORY/requirements/requirements.txt
+pip install -r $DIRECTORY/requirements/requirements-dev.txt
 
 # Set up django project.
 echo "Setting up django project..."
