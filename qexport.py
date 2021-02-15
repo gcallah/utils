@@ -18,6 +18,17 @@ from django.apps import AppConfig
 class QexportConfig(AppConfig):
     name = 'qexport'
 
+NYU_CLASSES = "nyu"
+
+ANSWER_COL_NAMES = {
+        'a': 'answerA',
+        'b': 'answerB',
+        'c': 'answerC',
+        'd': 'answerD',
+        'e': 'answerE'
+        }
+
+OPT_PUNC = ". "
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
@@ -48,44 +59,44 @@ def write_questions(recs, format):
         Returns:
             None (for now: we probably want success or error codes)
     """
-    if format == "nyu":
+    if format == NYU_CLASSES:
         i = 1
         for question in recs:
             print(str(i) + ". (1 point)")
             print(question["text"])
             print()
 
-            # list of answer options
-            answers = ['answerA', 'answerB', 'answerC', 'answerD', 'answerE']
-            ans_options = [question[i] for i in answers]
+            for label in ANSWER_COL_NAMES:
+                correct = '*' if label == question["correct"] else ''
+                # we output something like '*a. The correct answer'.
+                print(f"{correct}{label}{OPT_PUNC}{question[label]}")
 
-            # separate list for answer option bullets
-            options = ["a.", "b.", "c.", "d.", "e."]
-
-            # marking the correct answer by '*'
-            correct = question["correct"].lower() + "."
-            options[options.index(correct)] = "*" + options[options.index(correct)]
-            for option in ans_options:
-                if option:
-                    # matching the index for 'options' &
-                    # 'ans_options' to get correct alphabet
-                    print(options[ans_options.index(option)] + " " + option)
-                else:
-                    break
+#            # list of answer options
+#            ans_options = [question[i] for i in ANSWER_COL_NAMES]
+#
+#            # separate list for answer option bullets
+#            options = ["a.", "b.", "c.", "d.", "e."]
+#
+#            # marking the correct answer by '*'
+#            correct = question["correct"].lower() + "."
+#            ANSWER_LABELS[ANSWER_LABELS.index(correct)] = "*" + ANSWER_LABELS[ANSWER_LABELS.index(correct)]
+#            for option in ans_options:
+#                if option:
+#                    # matching the index for 'options' &
+#                    # 'ans_options' to get correct alphabet
+#                    print(ANSWER_LABELS[ans_options.index(option)] + " " + option)
+#                else:
+#                    break
             i += 1
             print()
-    if format == "gradescope":
+    elif format == "gradescope":
         i = 1
         for question in recs:
             print(question["text"])
             print()
 
             # list of answer options
-            answers = ['answerA', 'answerB', 'answerC', 'answerD', 'answerE']
-            ans_options = [question[i] for i in answers]
-
-            # separate list for answer option bullets
-            options = ["a", "b", "c", "d", "e"]
+            ans_options = [question[i] for i in ANSWER_COL_NAMES]
 
             # marking the correct answer by '*'
             correct = question["correct"].lower()
@@ -106,9 +117,10 @@ def write_questions(recs, format):
 
 def main():
     mod_nm = None
-    format = None
+    format = NYU_CLASSES
     if len(sys.argv) > 1:
         mod_nm = sys.argv[1]
+    if len(sys.argv) > 2:
         format = sys.argv[2]
 
     recs = read_questions(mod_nm)
