@@ -66,10 +66,10 @@ def write_questions(recs, format):
             print(question["text"])
             print()
 
-            for label in ANSWER_COL_NAMES:
+            for label, col_name in ANSWER_COL_NAMES.items():
                 correct = '*' if label == question["correct"] else ''
                 # we output something like '*a. The correct answer'.
-                print(f"{correct}{label}{OPT_PUNC}{question[label]}")
+                print(f"{correct}{label}{OPT_PUNC}{question[col_name]}")
 
 #            # list of answer options
 #            ans_options = [question[i] for i in ANSWER_COL_NAMES]
