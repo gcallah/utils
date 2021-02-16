@@ -59,10 +59,9 @@ def write_questions(recs, format):
         Returns:
             None (for now: we probably want success or error codes)
     """
-    if format == NYU_CLASSES:
-        i = 1
-        for question in recs:
-            print(str(i) + ". (1 point)")
+    for question_no, question in enumerate(recs, start=1):
+        if format == NYU_CLASSES:
+            print(str(question_no) + ". (1 point)")
             print(question["text"])
             print()
 
@@ -71,32 +70,17 @@ def write_questions(recs, format):
                 # we output something like '*a. The correct answer'.
                 print(f"{correct}{label}{OPT_PUNC}{question[col_name]}")
 
-            i += 1
-            print()
-    elif format == "gradescope":
-        i = 1
-        for question in recs:
+        elif format == "gradescope":
             print(question["text"])
             print()
 
-            # list of answer options
-            ans_options = [question[i] for i in ANSWER_COL_NAMES]
-
             # marking the correct answer by '*'
-            correct = question["correct"].lower()
-            options[options.index(correct)] = "(X)"
-            for option in range(len(options)):
-                if options[option] != "(X)":
-                    options[option] = "( )"
-            for option in ans_options:
-                if option:
-                    # matching the index for 'options' &
-                    # 'ans_options' to get correct alphabet
-                    print(options[ans_options.index(option)] + " " + option)
-                else:
-                    break
-            i += 1
-            print()
+            for letter, col_name in ANSWER_COL_NAMES.items():
+                check_area = '(X)' if letter == question["correct"] else '( )'
+                # matching the index for 'options' &
+                # 'ans_options' to get correct alphabet
+                print(f"{check_area} {question[col_name]}")
+        print()
 
 
 def main():
