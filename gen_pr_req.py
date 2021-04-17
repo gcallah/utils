@@ -39,6 +39,7 @@ def get_reviewers():
         with open(rev_file, 'r') as f:
             for line in f:
                 reviewers.append(line.strip())
+        return reviewers
     except FileNotFoundError:
         return DEF_REVIEWERS
 
