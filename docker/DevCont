@@ -1,0 +1,14 @@
+FROM python:3.8.0
+
+ARG repo
+ARG repo_url
+
+COPY req-dev.txt /req-dev.txt
+
+RUN pip install --upgrade pip
+
+RUN pip install -r req-dev.txt
+
+ENV PYTHONPATH "/home/$repo:${PYTHONPATH}"
+
+WORKDIR /home/$repo/
