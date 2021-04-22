@@ -18,6 +18,7 @@ from django.apps import AppConfig
 class QexportConfig(AppConfig):
     name = 'qexport'
 
+
 NYU_CLASSES = "nyu"
 
 ANSWER_COL_NAMES = {
@@ -70,49 +71,11 @@ def write_questions(recs, format):
                 correct = '*' if label == question["correct"] else ''
                 # we output something like '*a. The correct answer'.
                 print(f"{correct}{label}{OPT_PUNC}{question[col_name]}")
-
-#            # list of answer options
-#            ans_options = [question[i] for i in ANSWER_COL_NAMES]
-#
-#            # separate list for answer option bullets
-#            options = ["a.", "b.", "c.", "d.", "e."]
-#
-#            # marking the correct answer by '*'
-#            correct = question["correct"].lower() + "."
-#            ANSWER_LABELS[ANSWER_LABELS.index(correct)] = "*" + ANSWER_LABELS[ANSWER_LABELS.index(correct)]
-#            for option in ans_options:
-#                if option:
-#                    # matching the index for 'options' &
-#                    # 'ans_options' to get correct alphabet
-#                    print(ANSWER_LABELS[ans_options.index(option)] + " " + option)
-#                else:
-#                    break
             i += 1
             print()
     elif format == "gradescope":
-        i = 1
-        for question in recs:
-            print(question["text"])
-            print()
-
-            # list of answer options
-            ans_options = [question[i] for i in ANSWER_COL_NAMES]
-
-            # marking the correct answer by '*'
-            correct = question["correct"].lower()
-            options[options.index(correct)] = "(X)"
-            for option in range(len(options)):
-                if options[option] != "(X)":
-                    options[option] = "( )"
-            for option in ans_options:
-                if option:
-                    # matching the index for 'options' &
-                    # 'ans_options' to get correct alphabet
-                    print(options[ans_options.index(option)] + " " + option)
-                else:
-                    break
-            i += 1
-            print()
+        # should be re-written!
+        pass
 
 
 def main():
