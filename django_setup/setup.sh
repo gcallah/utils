@@ -71,6 +71,14 @@ echo "Installing requirements..."
 pip install -r $DIRECTORY/requirements/requirements.txt
 pip install -r $DIRECTORY/requirements/requirements-dev.txt
 
+add_dir () {
+    dir=$1
+    file=$2
+    mkdir -p $dir
+    touch $dir/$file
+    git add $dir/$file
+}
+
 # Set up django project.
 echo "Setting up django project..."
 cd $DIRECTORY
@@ -82,14 +90,15 @@ if [ ! -d "$DIRECTORY" ]; then
     rm -rf "$DIRECTORY"/"$DIRECTORY"
     git add manage.py
     git add "$DIRECTORY"/*.py
+
     # Creates generic static directory
-    # Should be turned into shell function that does mkdir, touch, and git add.
-    mkdir -p "$DIRECTORY"/static/admin/css
-    touch "$DIRECTORY"/static/admin/css/README.md
-    git add "$DIRECTORY"/static/admin/css/README.md
-    mkdir -p "$DIRECTORY"/static/admin/fonts
-    mkdir -p "$DIRECTORY"/static/admin/img
-    mkdir -p "$DIRECTORY"/static/admin/js
+    mkdir -p "$DIRECTORY"/static/admin/
+    cd $DIRECTORY/static/admin/
+    add_dir "css" README.md
+    add_dir "fonts" .gitkeep
+    add_dir "img" .gitkeep
+    add_dir "js" .gitkeep
+
 else
     echo "Directory /$DIRECTORY already exists."
 fi
