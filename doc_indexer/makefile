@@ -5,4 +5,4 @@ FORCE:
 docs: FORCE
 	pydoc -w a
 	pydoc -w b
-	$(INDEXER) *.py
+	python3 $(INDEXER) *.py
