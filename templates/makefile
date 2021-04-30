@@ -2,7 +2,7 @@
 # Need to export TEMPLATE_DIR as ENV var
 export TEMPLATE_DIR = templates
 # Export MARKDOWN_DIR
-export MARKDOWN_DIR = markdown
+export MARKDOWN_DIR = md
 PTML_DIR = html_src
 UTILS_DIR = utils
 DOCKER_DIR = docker

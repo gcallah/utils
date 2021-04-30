@@ -36,6 +36,12 @@ export newdir=$(echo $1 | sed 's/.*\/\([^\/]*\)\.git/\1/')
 
 echo "Dir name = $newdir"
 
+utilsdir=utils
+if [ -n "$2" ]; then
+    utilsdir=$2
+fi
+echo "utils dir is $utilsdir"
+
 export old_templs=$utilsdir/templates
 export new_templs=$newdir/templates
 export html_src_dir=$newdir/html_src
@@ -52,12 +58,6 @@ add_dir $newdir templates
 add_dir $newdir docker
 add_dir $newdir tests
 add_dir $newdir md
-
-utilsdir=utils
-if [ -n "$2" ]; then
-    utilsdir=$2
-fi
-echo "utils dir is $utilsdir"
 
 add_file $old_templs style.css $newdir
 add_file $old_templs index.ptml $html_src_dir
