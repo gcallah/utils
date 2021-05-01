@@ -6,7 +6,7 @@ import os
 import glob
 
 def main():
-    for name in glob.glob('*.py'):
+    for name in glob.glob('*.html'):
         print(f"name = {name}")
 
 if __name__ == "__main__":
