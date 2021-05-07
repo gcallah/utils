@@ -25,6 +25,25 @@ def ptml_start_stuff(page_title):
     return start_stuff
 
 
+def html_start_stuff(page_title):
+    """
+    For web sites where we don't pre-process our html.
+    Should be combined with above function!
+    """
+    start_stuff = "<!DOCTYPE html>\n"
+    start_stuff += "<html>\n"
+    start_stuff += "    <head>\n"
+    start_stuff += "        <title>\n"
+    start_stuff += "        " + page_title + "\n"
+    start_stuff += "        </title>\n"
+    start_stuff += "    </head>\n"
+    start_stuff += "    <body>\n"
+    start_stuff += "        <h1>\n"
+    start_stuff += "        " + page_title + "\n"
+    start_stuff += "        </h1>\n"
+    return start_stuff
+
+
 def html_end_stuff():
     end_stuff = "    </body>\n"
     end_stuff += "</html>\n"
