@@ -65,9 +65,11 @@ def write_questions(recs, format):
             print(str(question_no) + ". (1 point)")
             print(question["text"])
             print()
-
+            # if the correct answer option was specified as an uppercase
+            # letter, we'll convert it to a lowercase letter before
+            # checking if there is a match
             for label, col_name in ANSWER_COL_NAMES.items():
-                correct = '*' if label == question["correct"] else ''
+                correct = '*' if label == question["correct"].lower() else ''
                 # we output something like '*a. The correct answer'.
                 print(f"{correct}{label}{OPT_PUNC}{question[col_name]}")
             print()
@@ -77,7 +79,7 @@ def write_questions(recs, format):
 
             # marking the correct answer by '*'
             for letter, col_name in ANSWER_COL_NAMES.items():
-                check_area = '(X)' if letter == question["correct"] else '( )'
+                check_area = '(X)' if letter == question["correct"].lower() else '( )'
                 # matching the index for 'options' &
                 # 'ans_options' to get correct alphabet
                 print(f"{check_area} {question[col_name]}")
