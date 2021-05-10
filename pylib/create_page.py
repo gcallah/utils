@@ -1,4 +1,4 @@
-from pylib.html_tags import details, par, link
+import pylib.html_tags as htags
 
 indent1 = "            "  # type: str
 indent2 = "                    "  # type: str
@@ -19,28 +19,20 @@ def ptml_start_stuff(page_title):
     start_stuff += "    <body>\n"
     start_stuff += "<!--include logo.txt -->\n"
     start_stuff += "<!--include menu.txt -->\n"
-    start_stuff += "        <h1>\n"
-    start_stuff += "        " + page_title + "\n"
-    start_stuff += "        </h1>\n"
+    start_stuff += htags.heading(page_title)
     return start_stuff
 
 
-def html_start_stuff(page_title):
+def html_start_stuff(title, css="style.css"):
     """
     For web sites where we don't pre-process our html.
     Should be combined with above function!
     """
     start_stuff = "<!DOCTYPE html>\n"
     start_stuff += "<html>\n"
-    start_stuff += "    <head>\n"
-    start_stuff += "        <title>\n"
-    start_stuff += "        " + page_title + "\n"
-    start_stuff += "        </title>\n"
-    start_stuff += "    </head>\n"
+    start_stuff += htags.head(title=title, css=css)
     start_stuff += "    <body>\n"
-    start_stuff += "        <h1>\n"
-    start_stuff += "        " + page_title + "\n"
-    start_stuff += "        </h1>\n"
+    start_stuff += htags.heading(title)
     return start_stuff
 
 
@@ -56,8 +48,8 @@ def create_subtopics(subtopics, level):
         inner = ""
         if topic.subtopics is not None:
             inner += create_subtopics(topic.subtopics, level + 1)
-        s += details(topic.title, level=level, inc_par=True, inc_fig=True,
-                     inner_details=inner)
+        s += htags.details(topic.title, level=level,
+                           inc_par=True, inc_fig=True, inner_details=inner)
     return s
 
 
@@ -89,5 +81,17 @@ def create_page(inf, page_nm, subtopics=None,
 # include link to source code where indicated
         if "<!-- Include source code" in line:
             if link_insert is not None:
-                page += par(link(link_insert, "Source code"))
+                page += htags.par(htags.link(link_insert, "Source code"))
     return page
+
+
+def main():
+    print("Let's create some html!")
+    print("Here's the top o' page stuff:")
+    print(html_start_stuff("Test Page!", css="../style.css"))
+    print("Here's the bottom o' page stuff:")
+    print(html_end_stuff())
+
+
+if __name__ == "__main__":
+    main()

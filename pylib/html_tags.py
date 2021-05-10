@@ -5,6 +5,12 @@ INDENT2 = INDENT1 + INDENT1
 INDENT4 = INDENT2 + INDENT2
 
 
+def heading(text, level=1):
+    h = f"<h{level}>\n"
+    h += f"\t{text}\n"
+    return h + f"</h{level}>\n"
+
+
 def include_tag(file_nm, django=True):
     return "{% include '" + file_nm + "' %}"
 
@@ -104,13 +110,13 @@ def image(indent=INDENT4, src="", alt="", other_attr=""):
     return s
 
 
-def head(indent=INDENT4, title="", cssFile=None):  # generate meta head
+def head(indent=INDENT4, title="", css=None):  # generate meta head
     s = "<head>\n"
     s += INDENT1 + "<title>\n\n"
     s += INDENT2 + title + "\n"
     s += INDENT1 + "</title>\n"
-    if cssFile is not None:
-        s += "<link rel='stylesheet' type='text/css' href="+cssFile+">\n"
+    if css is not None:
+        s += f"<link rel='stylesheet' type='text/css' href='{css}'>\n"
     s += "</head>\n"
     return s
 
