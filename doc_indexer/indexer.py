@@ -14,6 +14,7 @@ css_loc = os.getenv("CSS_LOC", "style.css")
 def main():
     print(cp.html_start_stuff("Document Index", css=css_loc))
     links = []
+    print(tags.par("Here is the source code documentation for this package:"))
     for name in glob.glob('*.html'):
         links.append(tags.link(name, name))
     print(tags.ulist(l=links))
