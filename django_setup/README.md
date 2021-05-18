@@ -8,8 +8,7 @@ This script sets up a generic django project.
 3) The user has python3-venv preinstalled on their machine
 
 **To run this script**
-1) cd into project directory
-2) Run `bash django_setup.sh <link to github repo / project directory name>`
+2) Run `./path_to_this_folder/setup.sh <link to github repo / project directory name>`
     - If a github repo is used, no existing files in the repo will be overwritten
     - If a project directory name is used, the script will initialize a local git repo
 

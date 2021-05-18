@@ -1,0 +1,7 @@
+flask
+flask-cors
+flask-restx
+sqlalchemy
+flake8
+nose
+coverage

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Work in progress django setup script. Do not use this version.
 
 set -e
@@ -13,6 +13,7 @@ if [[ -z $1 ]]; then
 	echo "This script requires a github repo url or directory name"
 	exit 1;
 fi
+
 
 # run sed on $1 to get dir name from git or get directory name
 if [[ $1 == *"https://github.com/"* ]]; then
@@ -67,11 +68,20 @@ source $DIRECTORY/bin/activate
 
 # Install all requirements listed in requirements.txt.
 echo "Installing requirements..."
-pip install -r requirements/requirements.txt
-pip install -r requirements/requirements-dev.txt
+pip install -r $DIRECTORY/requirements/requirements.txt
+pip install -r $DIRECTORY/requirements/requirements-dev.txt
+
+add_dir () {
+    dir=$1
+    file=$2
+    mkdir -p $dir
+    touch $dir/$file
+    git add $dir/$file
+}
 
 # Set up django project.
 echo "Setting up django project..."
+cd $DIRECTORY
 if [ ! -d "$DIRECTORY" ]; then
     # Moves $DIRECTORY contents up one directory
     django-admin startproject "$DIRECTORY"
@@ -80,11 +90,15 @@ if [ ! -d "$DIRECTORY" ]; then
     rm -rf "$DIRECTORY"/"$DIRECTORY"
     git add manage.py
     git add "$DIRECTORY"/*.py
+
     # Creates generic static directory
-    mkdir -p "$DIRECTORY"/static/admin/css
-    mkdir -p "$DIRECTORY"/static/admin/fonts
-    mkdir -p "$DIRECTORY"/static/admin/img
-    mkdir -p "$DIRECTORY"/static/admin/js
+    mkdir -p "$DIRECTORY"/static/admin/
+    cd $DIRECTORY/static/admin/
+    add_dir "css" README.md
+    add_dir "fonts" .gitkeep
+    add_dir "img" .gitkeep
+    add_dir "js" .gitkeep
+
 else
     echo "Directory /$DIRECTORY already exists."
 fi

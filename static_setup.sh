@@ -32,9 +32,19 @@ if [ -z "$1" ]; then
 fi
 
 # run sed on $1 to get dir name
-newdir=$(echo $1 | sed 's/.*\/\([^\/]*\)\.git/\1/')
+export newdir=$(echo $1 | sed 's/.*\/\([^\/]*\)\.git/\1/')
 
 echo "Dir name = $newdir"
+
+utilsdir=utils
+if [ -n "$2" ]; then
+    utilsdir=$2
+fi
+echo "utils dir is $utilsdir"
+
+export old_templs=$utilsdir/templates
+export new_templs=$newdir/templates
+export html_src_dir=$newdir/html_src
 
 if [ -d $newdir ]; then
     echo "Directory already exists; not cloning."
@@ -47,21 +57,16 @@ add_dir $newdir html_src
 add_dir $newdir templates
 add_dir $newdir docker
 add_dir $newdir tests
-add_dir $newdir markdown
+add_dir $newdir md
 
-utilsdir=utils
-if [ -n "$2" ]; then
-    utilsdir=$2
-fi
-echo "utils dir is $utilsdir"
-
-add_file "$utilsdir/templates" style.css $newdir
-add_file "$utilsdir/templates" index.ptml $newdir/html_src
-add_file "$utilsdir/templates" about.ptml $newdir/html_src
-add_file "$utilsdir/templates" makefile $newdir
-add_file "$utilsdir/templates" head.txt $newdir/templates
-add_file "$utilsdir/templates" menu.txt $newdir/templates
-add_file "$utilsdir/templates" logo.txt $newdir/templates
+add_file $old_templs style.css $newdir
+add_file $old_templs index.ptml $html_src_dir
+add_file $old_templs about.ptml $html_src_dir
+add_file $old_templs index.md $newdir/md
+add_file $old_templs makefile $newdir
+add_file $old_templs head.txt $new_templs
+add_file $old_templs menu.txt $new_templs
+add_file $old_templs logo.txt $new_templs
 add_file "$utilsdir/docker" Dockerfile $newdir/docker
 add_file "$utilsdir/docker" requirements.txt $newdir/docker
 

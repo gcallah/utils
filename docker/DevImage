@@ -1,0 +1,18 @@
+FROM python:3.8.0
+
+ARG repo
+ARG req_file
+
+COPY $req_file /requirements.txt
+
+RUN ["apt-get", "update"]
+RUN ["apt-get", "install", "-y", "vim"]
+RUN apt-get install nano
+
+RUN pip install --upgrade pip
+
+RUN pip install -r requirements.txt
+
+ENV PYTHONPATH "/home/$repo:${PYTHONPATH}"
+
+WORKDIR /home/$repo/

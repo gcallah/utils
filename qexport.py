@@ -19,6 +19,18 @@ class QexportConfig(AppConfig):
     name = 'qexport'
 
 
+NYU_CLASSES = "nyu"
+
+ANSWER_COL_NAMES = {
+        'a': 'answerA',
+        'b': 'answerB',
+        'c': 'answerC',
+        'd': 'answerD',
+        'e': 'answerE'
+        }
+
+OPT_PUNC = ". "
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
 
@@ -41,47 +53,49 @@ def read_questions(mod_nm):
     return recs
 
 
-def write_questions(recs):
+def write_questions(recs, format):
     """
         Args:
             recs: the data to output
         Returns:
             None (for now: we probably want success or error codes)
     """
-    i = 1
-    for question in recs:
-        print(str(i) + ". (1 point)")
-        print(question["text"])
-        print()
+    for question_no, question in enumerate(recs, start=1):
+        if format == NYU_CLASSES:
+            print(str(question_no) + ". (1 point)")
+            print(question["text"])
+            print()
+            # if the correct answer option was specified as an uppercase
+            # letter, we'll convert it to a lowercase letter before
+            # checking if there is a match
+            for label, col_name in ANSWER_COL_NAMES.items():
+                correct = '*' if label == question["correct"].lower() else ''
+                # we output something like '*a. The correct answer'.
+                print(f"{correct}{label}{OPT_PUNC}{question[col_name]}")
+            print()
+        elif format == "gradescope":
+            print(question["text"])
+            print()
 
-        # list of answer options
-        answers = ['answerA', 'answerB', 'answerC', 'answerD', 'answerE']
-        ans_options = [question[i] for i in answers]
-
-        # separate list for answer option bullets
-        options = ["a.", "b.", "c.", "d.", "e."]
-
-        # marking the correct answer by '*'
-        correct = question["correct"].lower() + "."
-        options[options.index(correct)] = "*" + options[options.index(correct)]
-        for option in ans_options:
-            if option:
+            # marking the correct answer by '*'
+            for letter, col_name in ANSWER_COL_NAMES.items():
+                check_area = '(X)' if letter == question["correct"].lower() else '( )'
                 # matching the index for 'options' &
                 # 'ans_options' to get correct alphabet
-                print(options[ans_options.index(option)] + " " + option)
-            else:
-                break
-        i += 1
+                print(f"{check_area} {question[col_name]}")
         print()
 
 
 def main():
     mod_nm = None
+    format = NYU_CLASSES
     if len(sys.argv) > 1:
         mod_nm = sys.argv[1]
+    if len(sys.argv) > 2:
+        format = sys.argv[2]
 
     recs = read_questions(mod_nm)
-    write_questions(recs)
+    write_questions(recs, format)
 
 
 if __name__ == '__main__':

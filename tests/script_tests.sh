@@ -90,6 +90,6 @@ run_diff_test_file html_checker
 run_diff_test_file render_md
 run_sieve_test sieve
 # run_quiz_test_work qexport "$title2"
-run_url_checker url_checker $page
+# run_url_checker url_checker $page
 run_bash_powershell bash_to_powershell
 exit 0
