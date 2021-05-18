@@ -1,0 +1,3 @@
+[submodule "utils"]
+	branch = master
+	update = rebase
