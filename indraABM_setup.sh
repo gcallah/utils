@@ -14,7 +14,7 @@ echo "setting up INDRA_HOME"
 if grep -q "INDRA_HOME" ~/.bashrc ; then
    echo "INDRA_HOME is already setup."
 else 
-   echo "export INDRA_HOME=\"/home/$USER/$indra_dir\"" >> ~/.bashrc
+   echo "export INDRA_HOME=\"$HOME/$indra_dir\"" >> ~/.bashrc
 fi
 
 echo "setting up PYTHONPATH"
@@ -22,7 +22,7 @@ echo "setting up PYTHONPATH"
 if grep -q "PYTHONPATH" ~/.bashrc ; then
     echo "PYTHONPATH is already setup."
 else 
-    echo "export PYTHONPATH=\$INDRA_HOME" >> ~/.bashrc
+    echo "export PYTHONPATH=$INDRA_HOME" >> ~/.bashrc
 fi
 
 echo "pip installing some packages..."

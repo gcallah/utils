@@ -19,11 +19,11 @@ fi
 echo "Changing directory to $dir_name"
 cd $dir_name 
 
-echo "Creating requirements.txt"
 
-if ls | grep -q "requirements.txt" ; then 
+if [ -f "requirements.txt" ]; then 
     echo "requirements.txt already exists."
 else 
+    echo "Creating requirements.txt"
     touch requirements.txt
 fi
 
@@ -51,9 +51,7 @@ else
 fi
 
 echo "Installing requirements"
-
 pip3 install -r requirements.txt --user
 
 echo "Installing dev requirements"
-
 pip3 install -r requirements-dev.txt --user
