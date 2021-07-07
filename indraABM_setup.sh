@@ -25,29 +25,12 @@ else
     echo "export PYTHONPATH=$INDRA_HOME" >> ~/.bashrc
 fi
 
-echo "pip installing some packages..."
+cd $indra_dir 
 
-pip3 install gunicorn --user
-pip3 install ipython --user
-pip3 install matplotlib --user
-pip3 install scipy --user
-pip3 install numpy==1.19.0 --user
-pip3 install flask --user
-pip3 install werkzeug==0.16.1 --user
-pip3 install flask_restplus --user
-pip3 install flask-cors --user
-pip3 install propargs==0.0.16 --user
-pip3 install seaborn --user
-pip3 install asyncio --user
-pip3 install aiohttp --user
-pip3 install requests --user
+echo "Installing requirements"
+pip3 install -r requirements.txt --user 
 
-echo "pip installing dev packages..."
-
-pip3 install jupyter --user
-pip3 install flake8 --user
-pip3 install coverage --user
-pip3 install nose --user
-pip3 install urllib3 --user
+echo "Installing dev requirements"
+pip3 install -r requirements-dev.txt --user
 
 echo "set up is now complete!"
