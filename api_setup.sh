@@ -34,7 +34,7 @@ fi
 
 echo "Creating requirements-dev.txt"
 
-if ls | grep -q "requirements-dev.txt" ; then 
+if [ -f "requirements-dev.txt" ]; then 
     echo "requirements-dev.txt already exists."
 else 
     touch requirements-dev.txt
