@@ -25,10 +25,12 @@ if [ -f "requirements.txt" ]; then
 else 
     echo "Creating requirements.txt"
     touch requirements.txt
+    echo "flask" > requirements.txt
+    echo "flask_restx" >> requirements.txt
+    echo "flask-sqlalchemy" >> requirements.txt
+    echo "gunicorn" >> requirements.txt
 fi
 
-echo "flask_restx" > ~/requirements.txt
-echo "gunicorn" >> ~/requirements.txt
 
 echo "Creating requirements-dev.txt"
 
@@ -36,11 +38,11 @@ if ls | grep -q "requirements-dev.txt" ; then
     echo "requirements-dev.txt already exists."
 else 
     touch requirements-dev.txt
+    echo "flake8" > requirements-dev.txt
+    echo "nose" >> requirements-dev.txt
+    echo "coverage" >> requirements-dev.txt
 fi
 
-echo "flake8" > ~/requirements-dev.txt
-echo "nose" >> requirements-dev.txt
-echo "coverage" >> requirements-dev.txt
 
 echo "Creating a makefile"
 
