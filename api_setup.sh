@@ -6,6 +6,7 @@ read repo_url
 
 basename=$(basename $repo_url)
 dir_name=${basename%.*}
+makefile_dir="https://raw.githubusercontent.com/gcallah/utils/master/flask_setup/project_layout/makefile"
 
 echo "Cloning $dir_name..."
 
@@ -46,10 +47,10 @@ fi
 
 echo "Creating a makefile"
 
-if ls | grep -q "makefile" ; then 
+if [ -f "makefile" ]; then 
     echo "Makefile already exists."
 else 
-    touch makefile
+    curl $makefile_dir > makefile 
 fi
 
 echo "Installing requirements"
