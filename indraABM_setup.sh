@@ -28,9 +28,9 @@ fi
 cd $indra_dir 
 
 echo "Installing requirements"
-pip3 install -r requirements.txt --user 
+pip2.7 install -r requirements.txt --user 
 
 echo "Installing dev requirements"
-pip3 install -r requirements-dev.txt --user
+pip2.7 install -r requirements-dev.txt --user
 
 echo "set up is now complete!"
