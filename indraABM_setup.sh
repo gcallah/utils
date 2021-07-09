@@ -1,4 +1,8 @@
-#!/usr/bin/env bash
+#!/bin/bash
+
+. virtualenvwrapper.sh
+mkvirtualenv --python=python3.8 indra
+workon indra
 
 indra_dir=IndraABM
 
@@ -28,9 +32,9 @@ fi
 cd $indra_dir 
 
 echo "Installing requirements"
-pip2.7 install -r requirements.txt --user 
+pip3.8 install -r requirements.txt
 
 echo "Installing dev requirements"
-pip2.7 install -r requirements-dev.txt --user
+pip3.8 install -r requirements-dev.txt
 
 echo "set up is now complete!"
