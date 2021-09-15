@@ -65,6 +65,7 @@ def write_questions(recs, format):
             print(str(question_no) + ". (1 point)")
             print(question["text"])
             print()
+            print("testing")
             # if the correct answer option was specified as an uppercase
             # letter, we'll convert it to a lowercase letter before
             # checking if there is a match
