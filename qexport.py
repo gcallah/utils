@@ -65,7 +65,6 @@ def write_questions(recs, format):
             print(str(question_no) + ". (1 point)")
             print(question["text"])
             print()
-            print("testing")
             # if the correct answer option was specified as an uppercase
             # letter, we'll convert it to a lowercase letter before
             # checking if there is a match
@@ -74,7 +73,7 @@ def write_questions(recs, format):
                 # we output something like '*a. The correct answer'.
                 print(f"{correct}{label}{OPT_PUNC}{question[col_name]}")
             print()
-        elif format == "gradescope":
+        if format == "gradescope":
             print(question["text"])
             print()
 
@@ -84,8 +83,17 @@ def write_questions(recs, format):
                 # matching the index for 'options' &
                 # 'ans_options' to get correct alphabet
                 print(f"{check_area} {question[col_name]}")
-        print()
+            print()
 
+        elif format == "brightspace":
+            print("NewQuestion,MC")
+            print("QuestionText,"+ question["text"])
+            print("Points,1")
+
+            for check, col_name in ANSWER_COL_NAMES.items():
+                check_area = 'Option,100' if check == question["correct"].lower() else 'Option,0'
+                print(f"{check_area},{question[col_name]}")
+            # print(f"{check_area} {question[col_name]}")
 
 def main():
     mod_nm = None
