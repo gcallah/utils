@@ -73,7 +73,7 @@ def write_questions(recs, format):
                 # we output something like '*a. The correct answer'.
                 print(f"{correct}{label}{OPT_PUNC}{question[col_name]}")
             print()
-        if format == "gradescope":
+        elif format == "gradescope":
             print(question["text"])
             print()
 
@@ -93,7 +93,6 @@ def write_questions(recs, format):
             for check, col_name in ANSWER_COL_NAMES.items():
                 check_area = 'Option,100' if check == question["correct"].lower() else 'Option,0'
                 print(f"{check_area},{question[col_name]}")
-            # print(f"{check_area} {question[col_name]}")
 
 def main():
     mod_nm = None
