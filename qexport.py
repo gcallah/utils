@@ -19,7 +19,7 @@ class QexportConfig(AppConfig):
     name = 'qexport'
 
 
-NYU_CLASSES = "nyu"
+PLATFORM = "brightspace"
 
 ANSWER_COL_NAMES = {
         'a': 'answerA',
@@ -61,19 +61,23 @@ def write_questions(recs, format):
             None (for now: we probably want success or error codes)
     """
     for question_no, question in enumerate(recs, start=1):
-        if format == NYU_CLASSES:
-            print(str(question_no) + ". (1 point)")
-            print(question["text"])
-            print()
-            # if the correct answer option was specified as an uppercase
-            # letter, we'll convert it to a lowercase letter before
-            # checking if there is a match
-            for label, col_name in ANSWER_COL_NAMES.items():
-                correct = '*' if label == question["correct"].lower() else ''
-                # we output something like '*a. The correct answer'.
-                print(f"{correct}{label}{OPT_PUNC}{question[col_name]}")
-            print()
-        elif format == "gradescope":
+
+        # LOGIC FOR NYU_CLASSES QUIZ GENERATION TEXT FILE
+
+        # if format == NYU_CLASSES:
+        #     print(str(question_no) + ". (1 point)")
+        #     print(question["text"])
+        #     print()
+        #     # if the correct answer option was specified as an uppercase
+        #     # letter, we'll convert it to a lowercase letter before
+        #     # checking if there is a match
+        #     for label, col_name in ANSWER_COL_NAMES.items():
+        #         correct = '*' if label == question["correct"].lower() else ''
+        #         # we output something like '*a. The correct answer'.
+        #         print(f"{correct}{label}{OPT_PUNC}{question[col_name]}")
+        #     print()
+
+        if format == "gradescope":
             print(question["text"])
             print()
 
@@ -87,7 +91,7 @@ def write_questions(recs, format):
 
         elif format == "brightspace":
             print("NewQuestion,MC")
-            print("QuestionText,"+ question["text"])
+            print("QuestionText,"+'"'+question["text"]+'"' )
             print("Points,1")
 
             for check, col_name in ANSWER_COL_NAMES.items():
@@ -96,7 +100,7 @@ def write_questions(recs, format):
 
 def main():
     mod_nm = None
-    format = NYU_CLASSES
+    format = PLATFORM
     if len(sys.argv) > 1:
         mod_nm = sys.argv[1]
     if len(sys.argv) > 2:
