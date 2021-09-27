@@ -96,7 +96,7 @@ def write_questions(recs, format):
 
             for check, col_name in ANSWER_COL_NAMES.items():
                 check_area = 'Option,100' if check == question["correct"].lower() else 'Option,0'
-                print(f"{check_area},{question[col_name]}")
+                print (check_area,',','"',question[col_name],'"')
 
 def main():
     mod_nm = None
