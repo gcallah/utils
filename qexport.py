@@ -50,6 +50,7 @@ def read_questions(mod_nm):
         recs = Question.objects.values()
     else:
         recs = Question.objects.filter(module=mod_nm).values()
+    print(recs)
     return recs
 
 
