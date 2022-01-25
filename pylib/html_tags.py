@@ -121,7 +121,8 @@ def head(indent=INDENT4, title="", css=None):  # generate meta head
     s += INDENT2 + title + "\n"
     s += INDENT1 + "</title>\n"
     if css is not None:
-        s += f"<link rel='stylesheet' type='text/css' href='{css}'>\n"
+        s += ("<link rel='stylesheet' type='text/css' href='"
+             + css + ">\n")
     s += "</head>\n"
     return s
 
