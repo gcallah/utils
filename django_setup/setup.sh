@@ -64,12 +64,12 @@ echo "Activating the virtual environment in $DIRECTORY..."
 source $DIRECTORY/bin/activate
 
 # Copies our generic project folder structure to project directory
-# rsync -r --ignore-existing $scriptDir/project_layout/* $DIRECTORY
+cp -r $scriptDir/project_layout/* $DIRECTORY
 
 # Install all requirements listed in requirements.txt.
 echo "Installing requirements..."
-pip install -r $DIRECTORY/requirements/requirements.txt
-pip install -r $DIRECTORY/requirements/requirements-dev.txt
+pip3 install -r $DIRECTORY/requirements/requirements.txt
+pip3 install -r $DIRECTORY/requirements/requirements-dev.txt
 
 add_dir () {
     dir=$1

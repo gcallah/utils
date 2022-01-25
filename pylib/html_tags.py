@@ -6,9 +6,7 @@ INDENT4 = INDENT2 + INDENT2
 
 
 def heading(text, level=1):
-    h = f"<h{level}>\n"
-    h += f"\t{text}\n"
-    return h + f"</h{level}>\n"
+    return f"<h{level}>\n\t{text}\n</h{level}>\n"
 
 
 def include_tag(file_nm, django=True):
