@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 This program takes a list of topics to create and a
 page template, and then creates a page for each topic,

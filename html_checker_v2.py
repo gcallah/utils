@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 Script to check proper nesting and matching of html tags.
 Using HTML5LIB: https://github.com/html5lib/html5lib-python

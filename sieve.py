@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 from typing import List  # noqa F401
 ints = []  # type: List[bool]
 
