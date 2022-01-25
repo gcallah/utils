@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 Glossary Page Builder: Takes a text file list of key subject terms
 and their definitions (tab-delimited) and builds the glossary
