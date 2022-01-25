@@ -6,7 +6,14 @@ INDENT4 = INDENT2 + INDENT2
 
 
 def heading(text, level=1):
-    return f"<h{level}>\n\t{text}\n</h{level}>\n"
+    """
+    We have done this with str cat because the f string version was producing
+    weird errors.
+    """
+    return ('<h' + str(level)
+            + '\n\t' + text
+            + '\n</h' + str(level)
+            + '>\n')
 
 
 def include_tag(file_nm, django=True):
