@@ -1,13 +1,17 @@
 #!/bin/sh
 
 export PROJ_DIR=$(pwd)
+export BASE_NAME=${PWD##*/}
 
-python3 -m venv .venv
+export VENV_NAME="$BASE_NAME-venv"
+echo "Creating $VENV_NAME"
 
-echo "export PYTHONPATH=$PROJ_DIR" >> .venv/bin/activate
+python3 -m venv $VENV_NAME
+
+echo "export PYTHONPATH=$PROJ_DIR" >> $VENV_NAME/bin/activate
 
 echo "#/bin/bash
-source .venv/bin/activate" > act.sh
+source $VENV_NAME/bin/activate" > act.sh
 
 chmod 755 act.sh
 
