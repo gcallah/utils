@@ -1,1 +1,1 @@
-vim `gpy $1 | awk -F  ':' '// { print $1 }'`
+vim `greppy.sh $1 | awk -F  ':' '// { print $1 }'`
