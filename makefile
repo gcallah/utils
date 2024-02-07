@@ -14,6 +14,10 @@ BASH2PS = python bash_to_powershell.py
 
 FORCE:
 
+github:
+	-git commit -a
+	git push origin master
+
 container: $(DOCKER_DIR)/Dockerfile  $(DOCKER_DIR)/requirements.txt
 	docker build -t utils docker
 
@@ -54,7 +58,4 @@ pshell_tests: pshell_html_tests pshell_script_tests
 lint: 
 	flake8 $(PYTHONFILES)
 
-prod: $(INCS) $(HTMLFILES) lint tests
-	-git commit -a 
-	git pull origin master
-	git push origin master
+prod: $(INCS) $(HTMLFILES) lint tests github

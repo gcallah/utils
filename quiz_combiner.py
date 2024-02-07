@@ -405,4 +405,4 @@ if __name__ == "__main__":
     # Output the results
     for questionNum in range(len(question_list)):
         print("{0}{1} {2}".format(
-            questionNum+1, QUESTION_DELIM, str(question_list[questionNum])))
+            questionNum + 1, QUESTION_DELIM, str(question_list[questionNum])))
