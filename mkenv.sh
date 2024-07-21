@@ -8,7 +8,7 @@ echo "Creating $VENV_NAME"
 
 python3 -m venv $VENV_NAME
 
-echo "export PYTHONPATH=$PROJ_DIR" >> $VENV_NAME/bin/activate
+echo "export PYTHONPATH=$PYTHONPATH:$PROJ_DIR" >> $VENV_NAME/bin/activate
 
 echo "#/bin/bash
 source $VENV_NAME/bin/activate" > act.sh
