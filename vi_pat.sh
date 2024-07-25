@@ -1,1 +1,1 @@
-vim `greppy.sh $1 | awk -F  ':' '// { print $1 }'`
+vim `git grep $1 | awk -F  ':' '// { print $1 }'`
