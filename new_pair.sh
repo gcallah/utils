@@ -9,10 +9,10 @@ fi
 # package might need more path in it!
 package=$(basename "$PWD")
 
-mod_name = $1
-code_file = $mod_name.py
-test_dir = "tests"
-test_file = "$test_dir/test_$1.py"
+export mod_name=$1
+export code_file=$mod_name.py
+export test_dir="tests"
+export test_file="$test_dir/test_$1.py"
 echo "Writing to $code_file and $test_file."
 
 if [ ! -d $test_dir ]
@@ -24,7 +24,7 @@ echo "Enter the purpose of the pair:"
 read purpose
 
 echo "# $purpose\n" > $code_file
-main = <<EOF
+cat <<EOF >> $code_file
 def main():
     return 0
 
@@ -32,13 +32,11 @@ def main():
 if __name__ == '__main__':
     main()
 EOF
-echo $main >> $code_file
 
-main_test = <<EOF
+cat <<EOF > $test_file
 import $package.$mod_name as $mod_name
 
 
 def test_main():
     assert $mod_name.main() == 0
 EOF
-echo $main_test > $test_file
