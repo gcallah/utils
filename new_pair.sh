@@ -32,6 +32,7 @@ def main():
 if __name__ == '__main__':
     main()
 EOF
+git add $code_file
 
 cat <<EOF > $test_file
 import $package.$mod_name as $mod_name
@@ -40,3 +41,4 @@ import $package.$mod_name as $mod_name
 def test_main():
     assert $mod_name.main() == 0
 EOF
+git add $test_file
