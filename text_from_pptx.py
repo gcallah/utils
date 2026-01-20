@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+import sys
+
 from pptx import Presentation
 
 def extract_text_from_pptx(pptx_file):
@@ -18,10 +21,10 @@ def extract_text_from_pptx(pptx_file):
 
 
 def main():
-    if len(argv) < 2:
+    if len(sys.argv) < 2:
         print('You must supply a pptx to extract from.')
         exit(1)
-    file_path = argv[2]
+    file_path = sys.argv[1]
     extracted_text = extract_text_from_pptx(file_path)
     print(extracted_text)
 
